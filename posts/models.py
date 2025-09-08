@@ -1,3 +1,25 @@
 from django.db import models
 
-# Create your models here.
+from users.models import CustomUser
+
+
+class Post(models.Model):
+    title = models.CharField(max_length=90, verbose_name="Имя поста", unique=True, null=False)
+    text = models.TextField(verbose_name="Содержание", null=False)  # temporary - field will updated
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор")
+    # TODO: views - redis array
+    # TODO: likes - redis array
+    # TODO: comments field
+    created_date = models.DateField(auto_now_add=True, verbose_name="Дата создания")
+    updated_date = models.DateField(auto_now_add=True, verbose_name="Дата изменения")
+
+    def __str__(self) -> str:
+        return self.title
+    
+    def __repr__(self) -> str:
+        return f"<Post: {self.title}>"
+    
+    class Meta:
+        ordering = ["-title"]
+        verbose_name = "Пост"
+        verbose_name_plural = "Посты"
