@@ -21,4 +21,7 @@ class RegisterView(FormView):
 
 
 class ProfileView(DetailView):
-    pass
+    model = CustomUser
+    context_object_name = "user"
+    template_name = "users/profile.html"
+    

@@ -19,7 +19,7 @@
                 <li class="header__navigation-item"><a href="{% url "main" %}">Магазин</a></li>
                 
                 {% if request.user.is_authenticated %}
-                  <li class="header__navigation-item"><a href="{% url "main" %}">{{ request.user.username }}</a></li>
+                  <li class="header__navigation-item"><a href="{% url "profile" request.user.slug %}">{{ request.user.username }}</a></li>
                   <li class="header__navigation-item">
                       <form method="post" action="{% url "logout" %}"> {% csrf_token %} <input type="submit" value="Выход"> </form>
                 </li>

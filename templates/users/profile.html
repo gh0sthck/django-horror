@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.username }}{% endblock title %}
+
+{% block main %}
+<div class="profile">
+    <h1 class="profile__title">
+        {{ user.username }}
+    </h1>
+    <span class="profile__regdate">
+        на сайте с {{ user.create_date }}
+    </span>
+
+    <div class="profile__bio">
+        <p class="profile__bio-text">
+            {{ user.bio }}
+        </p>
+    </div>
+
+
+    {% if request.user == user %}
+        <a href="{% url "main" %}">Создать историю</a>
+    {% endif %}
+</div>
+{% endblock main %}

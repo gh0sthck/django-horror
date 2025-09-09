@@ -4,7 +4,7 @@ from .models import CustomUser
 
 
 class RegisterForm(forms.ModelForm):
-    repeat_password = forms.CharField(max_length=90, min_length=8, required=True, widget=forms.PasswordInput)
+    repeat_password = forms.CharField(max_length=90, min_length=8, required=True, widget=forms.PasswordInput, label="Повтор пароля")
 
     def clean_repeat_password(self) -> dict | None:
         cd = self.cleaned_data
