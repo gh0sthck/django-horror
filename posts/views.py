@@ -5,5 +5,5 @@ from django.views import View
 
 class MainPage(View):
     def get(self, request: HttpRequest) -> HttpResponse:
-        return render(request, "test.html")
+        return render(request, "posts/main.html")
 

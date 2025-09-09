@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}
+Главная
+{% endblock title %}
+
+
+{% block main %}
+    <h1 class="main_title">Добро пожаловать!..</h1>
+    {% if request.user.is_authenticated %}
+        <p>С возвращением, {{ request.user.username }}!</p>
+    {% else %}
+        <p>
+            Рады, что вы попали на наш сайт: вы сможете прочитать множество страшных рассказов
+            от нашего сообщества и администрации, а также написать свою! Чтобы взаимодействовать с сайтом,
+            <a href="#">зарегестрируйтесь</a> или <a href="#">войдите</a> в аккаунт.
+        </p>
+    {% endif %}
+
+    <h2 class="main_new_stories">Новинки</h2>
+    
+    <h2 class="main_news">Новости</h2>
+
+    <h2 class="main_day_story">Рассказ дня</h2>
+
+
+{% endblock main %}

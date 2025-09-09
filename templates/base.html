@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %} {% endblock title %}</title>
+  {% comment %} <link rel="stylesheet" href="styles.css"> {% endcomment %}
+</head>
+
+<body>
+    <header> 
+        <div class="container">
+            <nav class="header__navigation">
+              <ul class="navigation">
+                <li class="header__navigation-item"><a href="{% url "main" %}">Главная</a></li>
+                <li class="header__navigation-item"><a href="{% url "main" %}">Блог</a></li>
+                <li class="header__navigation-item"><a href="{% url "main" %}">Читать</a></li>
+                <li class="header__navigation-item"><a href="{% url "main" %}">Магазин</a></li>
+                
+                {% if request.user.is_authenticated %}
+                  <li class="header__navigation-item"><a href="{% url "main" %}">{{ request.user.username }}</a></li>
+                  <li class="header__navigation-item"><a href="{% url "main" %}">Выход</a></li>
+                {% else %}
+                  <li class="header__navigation-item"><a href="{% url "main" %}">Вход</a></li>
+                  <li class="header__navigation-item"><a href="{% url "main" %}">Регистрация</a></li>
+                {% endif %}
+                
+              </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            {% block main %}{% endblock main %}
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            
+        </div>
+    </footer>
+</body>
+</html>
