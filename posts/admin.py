@@ -11,3 +11,4 @@ class CommentsAdmin(admin.ModelAdmin):
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     list_display = ["title", "author", "created_date"]
+    prepopulated_fields = {"slug": ("title", )}

@@ -12,4 +12,6 @@ urlpatterns = [
             name="login"
         ),
     path("logout/", LogoutView.as_view(), name="logout"),
+
+    # path("<slug:slug>/")
 ]

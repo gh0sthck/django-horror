@@ -7,12 +7,17 @@ class CustomUser(AbstractUser):
     bio = models.TextField(verbose_name="О себе", max_length=256, blank=True, default="")
     email = models.EmailField(verbose_name="Электронная почта", unique=True)
     create_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата регистрации")
+    slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)
 
     def __repr__(self) -> str:
         return f"<CustomUser: {self.username}>"
 
     def __str__(self) -> str:
         return self.username
+    
+    def save(self, *args, **kwargs):
+        self.slug = self.username
+        return super().save(*args, **kwargs)
 
     class Meta:
         ordering = ["-username"]

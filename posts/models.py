@@ -1,4 +1,5 @@
 from django.db import models
+from slugify import slugify
 
 from users.models import CustomUser
 
@@ -29,6 +30,7 @@ class Post(models.Model):
     comments = models.ManyToManyField(Comments, verbose_name="Комментарии", blank=True)
     created_date = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     updated_date = models.DateField(auto_now_add=True, verbose_name="Дата изменения")
+    slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)
 
     def __str__(self) -> str:
         return self.title
@@ -36,6 +38,10 @@ class Post(models.Model):
     def __repr__(self) -> str:
         return f"<Post: {self.title}>"
     
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        return super().save()
+
     def get_comments(self) -> list[Comments]:
         return self.comments.all()
     

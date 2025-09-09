@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView
 from django import forms
 
 from users.models import CustomUser
@@ -18,4 +18,7 @@ class RegisterView(FormView):
         new_user.set_password(new_user.password)
         new_user.save()
         return redirect("main")
-    
+
+
+class ProfileView(DetailView):
+    pass
