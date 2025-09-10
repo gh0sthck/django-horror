@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Написание истории
+{% endblock title %}
+
+{% block main %}
+<div class="post_create">
+    <form method="post" class="post_create__form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Отправить">
+    </form>
+</div>
+{% endblock main %}

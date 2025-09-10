@@ -6,7 +6,8 @@
 
 
 {% block main %}
-    <h1 class="main_title">Добро пожаловать!..</h1>
+<div class="main__stories">
+    <h1 class="main__stories-title">Добро пожаловать!..</h1>
     {% if request.user.is_authenticated %}
         <p>С возвращением, {{ request.user.username }}!</p>
     {% else %}
@@ -17,11 +18,29 @@
         </p>
     {% endif %}
 
-    <h2 class="main_new_stories">Новинки</h2>
-    
-    <h2 class="main_news">Новости</h2>
+    <div class="main__stories_new_stories">
+        <h2>Новинки</h2>
 
-    <h2 class="main_day_story">Рассказ дня</h2>
+        <div class="main__stories_new_stories-stories">
+            {% for story in stories %}
+                <a  style="display: block;" 
+                    href="{% url "specific_post" story.slug %}" 
+                    class="main__stories_new_stories-story">
+                    <h3>{{ story.title }}</h3>
+                    <p>{{ story.description}}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="main__stories_news">
+        <h2>Новости</h2>
+    </div>
+
+    <div class="main__stories_day_story">
+        <h2>Рассказ дня</h2>
+    </div>
+</div>
 
 
 {% endblock main %}
