@@ -40,8 +40,8 @@
 
         </div>
 
-        {% if post.comments.all %}
-            {% for comment in post.comments.all %}
+        {% if comms %}
+
                 <div class="current_post__comment">
                     <h3 class="current_post__comment-user">
                         {{ comment.user.username }}
@@ -53,6 +53,7 @@
                         {{ comment.comment }}
                     </p>
                 </div>
+
             {% endfor %}
         {% else %}
             <h3>Тут еще нет комментариев... Будьте первыми, кто оценит работу!</h3>

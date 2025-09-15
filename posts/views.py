@@ -22,6 +22,32 @@ class PostView(DetailView):
     template_name = "posts/post.html"
     form = CommentForm
 
+    def get_comments(self) -> list[Comments | dict[Comments, list]]:
+        def solution(comments: list[Comments], ls: list=[]) -> list[Comments | dict[Comments, list]]:
+            """
+            result: 
+            [
+                Model, 
+                Model, 
+                {
+                    Model: [
+                            Model, 
+                            Model, 
+                            {Model: Model, ...}, 
+                            Model, ...
+                            ],
+                }, 
+                Model
+            ]
+            """
+            for comment in comments:
+                if len(comment.answer.all()) == 0:
+                    ls += [comment]
+                else:
+                    ls += [{comment: solution(comment.answer.all(), [])}]
+            return ls
+        return solution(self.get_object().comments.all(), [])
+
     # login_required (!)
     def post(self, *args, **kwargs):
         f: CommentForm = self.form(self.request.POST)
@@ -37,6 +63,8 @@ class PostView(DetailView):
     def get_context_data(self, **kwargs):
         data: dict = super().get_context_data(**kwargs)
         data["form"] = self.form()
+        print(self.get_comments())
+        data["comms"] = self.get_comments()
         return data
 
 
