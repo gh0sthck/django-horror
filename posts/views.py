@@ -26,14 +26,12 @@ class PostView(DetailView):
     def post(self, *args, **kwargs):
         f: CommentForm = self.form(self.request.POST)
         if f.is_valid():
-            print("FORM IS VALID")
-            data: Comments = f.save(commit=False)
-            
+            data: Comments = f.save(commit=False)  
             data.user = self.request.user
-            # fix saves - comments not create
-            data.save_base()
-            print(data.__dict__)
-            return redirect("main")
+            data.save()
+            post: Post = self.get_object()
+            post.comments.add(data)
+            return redirect("specific_post", slug=post.slug)
         return self.form()
 
     def get_context_data(self, **kwargs):
