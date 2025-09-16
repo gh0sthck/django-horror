@@ -63,6 +63,17 @@ class PostView(DetailView):
             return redirect("specific_post", slug=post.slug)
         return self.form()
 
+
+    def get(self, request: HttpRequest, *args, **kwargs):
+        if request.GET.get("is_favorite") == "fv":
+            self.request.user.add_to_favorites(self.get_object())
+            print("FAVS: ", self.request.user.favorites.all())
+        if request.GET.get("not_favorite") == "nfv":
+            self.request.user.remove_from_favorites(self.get_object())
+            print("FAVS: ", self.request.user.favorites.all())
+        
+        return super().get(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         data: dict = super().get_context_data(**kwargs)
         data["form"] = self.form()

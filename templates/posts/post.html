@@ -24,6 +24,21 @@
             <a href="{% url "update_post" post.slug %}">Редактировать</a>
         {% endif %}
 
+        {% if request.user.is_authenticated %}
+            {% if post not in request.user.favorites.all %}
+                <form method="get">
+                    <input type="hidden" name="is_favorite" value="fv">
+                    <input type="submit" value="Добавить в избранное">
+                </form>
+            {% else %}
+                <form method="get">
+                    <input type="hidden" name="not_favorite" value="nfv">
+                    <input type="submit" value="Удалить из избранного">
+                </form>
+            
+            {% endif %}
+        {% endif %}
+
 
 
         <p class="current_post__header-description">

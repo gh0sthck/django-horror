@@ -9,6 +9,8 @@ class CustomUser(AbstractUser):
     create_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата регистрации")
     birthday = models.DateField(verbose_name="Дата рождения", null=True)
     slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)
+    
+    favorites = models.ManyToManyField("posts.Post", verbose_name="Избранное", blank=True)
 
     # TODO: add achivement system (?)
 
@@ -21,6 +23,14 @@ class CustomUser(AbstractUser):
     def save(self, *args, **kwargs):
         self.slug = self.username
         return super().save(*args, **kwargs)
+    
+    def add_to_favorites(self, post):
+        self.favorites.add(post)
+        self.save()
+        
+    def remove_from_favorites(self, post):
+        self.favorites.remove(post)
+        self.save()
 
     class Meta:
         ordering = ["-username"]
