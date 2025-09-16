@@ -7,10 +7,7 @@
 
 {% block main %}
 <div class="main__stories">
-    <h1 class="main__stories-title">Добро пожаловать!..</h1>
-    {% if request.user.is_authenticated %}
-        <p>С возвращением, {{ request.user.username }}!</p>
-    {% else %}
+    {% if not request.user.is_authenticated %}
         <p>
             Рады, что вы попали на наш сайт: вы сможете прочитать множество страшных рассказов
             от нашего сообщества и администрации, а также написать свою! Чтобы взаимодействовать с сайтом,

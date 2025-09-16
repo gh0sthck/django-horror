@@ -10,12 +10,21 @@
         <h1 class="current_post__header-title">
             {{ post.title }}
         </h1>
+        <span class="current_post__header-author">
+            <a href="{% url "profile" post.author.slug %}">{{ post.author.username }}</a>
+        </span>
         <span class="current_post__header-pubdate">
             Дата публикации: {{ post.created_date }}
             {% if post.created_date != post.updated_date %}
             Последнее изменение: {{ post.updated_date }}
             {% endif %}
         </span>
+
+
+
+        <p class="current_post__header-description">
+            {{ post.description }}
+        </p>
     </div>
 
     <div class="current_post__post">
@@ -40,8 +49,11 @@
 
         </div>
 
-        {% if comms %}
+        {% comment %} if comms {% endcomment %}
+        {% if post.comments.all %} 
 
+            {% for comment in post.comments.all %}
+            
                 <div class="current_post__comment">
                     <h3 class="current_post__comment-user">
                         {{ comment.user.username }}
@@ -52,9 +64,13 @@
                     <p class="current_post__comment-text">
                         {{ comment.comment }}
                     </p>
+                    {% if request.user.is_authenticated %}
+                        <a href="#">Ответить</a>                
+                    {% endif %}
                 </div>
 
             {% endfor %}
+
         {% else %}
             <h3>Тут еще нет комментариев... Будьте первыми, кто оценит работу!</h3>
         {% endif %}
