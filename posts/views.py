@@ -2,13 +2,13 @@ from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, DetailView, UpdateView, DeleteView
 from django import forms
 
 from posts.forms import CreatePostForm
 from posts.models import Post, Comments
 from posts.forms import CommentForm
- 
+
 
 class MainPage(View):
     def get(self, request: HttpRequest) -> HttpResponse:
@@ -23,20 +23,22 @@ class PostView(DetailView):
     form = CommentForm
 
     def get_comments(self) -> list[Comments | dict[Comments, list]]:
-        def solution(comments: list[Comments], ls: list=[]) -> list[Comments | dict[Comments, list]]:
+        def solution(
+            comments: list[Comments], ls: list = []
+        ) -> list[Comments | dict[Comments, list]]:
             """
-            result: 
+            result:
             [
-                Model, 
-                Model, 
+                Model,
+                Model,
                 {
                     Model: [
-                            Model, 
-                            Model, 
-                            {Model: Model, ...}, 
+                            Model,
+                            Model,
+                            {Model: Model, ...},
                             Model, ...
                             ],
-                }, 
+                },
                 Model
             ]
             """
@@ -46,13 +48,14 @@ class PostView(DetailView):
                 else:
                     ls += [{comment: solution(comment.answer.all(), [])}]
             return ls
+
         return solution(self.get_object().comments.all(), [])
 
     # login_required (!)
     def post(self, *args, **kwargs):
         f: CommentForm = self.form(self.request.POST)
         if f.is_valid():
-            data: Comments = f.save(commit=False)  
+            data: Comments = f.save(commit=False)
             data.user = self.request.user
             data.save()
             post: Post = self.get_object()
@@ -63,7 +66,6 @@ class PostView(DetailView):
     def get_context_data(self, **kwargs):
         data: dict = super().get_context_data(**kwargs)
         data["form"] = self.form()
-        print(self.get_comments())
         data["comms"] = self.get_comments()
         return data
 
@@ -79,3 +81,20 @@ class CreatePostView(FormView):
         post.author = self.request.user
         post.save()
         return redirect("specific_post", slug=post.slug)
+
+
+# login required (!)
+class UpdatePostView(UpdateView):
+    model = Post
+    context_object_name = "post"
+    fields = ["title", "text", "description"]
+    template_name = "posts/update_post.html"
+    success_url = reverse_lazy("main")
+
+
+# login required (!)
+class DeletePostView(DeleteView):
+    model = Post
+    context_object_name = "post"
+    template_name = "posts/delete_post.html"
+    success_url = reverse_lazy("main")

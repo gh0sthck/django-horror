@@ -20,6 +20,10 @@
             {% endif %}
         </span>
 
+        {% if request.user == post.author %}
+            <a href="{% url "update_post" post.slug %}">Редактировать</a>
+        {% endif %}
+
 
 
         <p class="current_post__header-description">
