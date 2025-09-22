@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}
+Избранные
+{% endblock title %}
+
+{% block main %}
+
+<div class="profile_favorites">
+
+    {% if not favs %}
+        <h3 class="profile_favorites__title">
+            У {{ request.user.username }} нет избранных...
+        </h3>
+    {% else %}
+        {% for f_post in favs %}
+            <a  style="display: block;" 
+                href="{% url "specific_post" f_post.slug %}" 
+                class="profile_favorites__post post">
+                <h3>{{ f_post.title }}</h3>
+                <p>{{ f_post.description}}</p>
+            </a>
+        {% endfor %}
+    {% endif %}
+    
+</div>
+
+{% endblock main %}

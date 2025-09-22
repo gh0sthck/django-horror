@@ -18,6 +18,7 @@
     </div>
 
 
+    <a href="{% url "favs" user.slug %}">Избранное</a>
     {% if request.user == user %}
         <a href="{% url "create_post" %}">Создать историю</a>
     {% endif %}

@@ -22,7 +22,7 @@
             {% for story in stories %}
                 <a  style="display: block;" 
                     href="{% url "specific_post" story.slug %}" 
-                    class="main__stories_new_stories-story">
+                    class="main__stories_new_stories-story post">
                     <h3>{{ story.title }}</h3>
                     <p>{{ story.description}}</p>
                 </a>

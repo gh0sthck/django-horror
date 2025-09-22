@@ -67,10 +67,8 @@ class PostView(DetailView):
     def get(self, request: HttpRequest, *args, **kwargs):
         if request.GET.get("is_favorite") == "fv":
             self.request.user.add_to_favorites(self.get_object())
-            print("FAVS: ", self.request.user.favorites.all())
         if request.GET.get("not_favorite") == "nfv":
             self.request.user.remove_from_favorites(self.get_object())
-            print("FAVS: ", self.request.user.favorites.all())
         
         return super().get(request, *args, **kwargs)
 
