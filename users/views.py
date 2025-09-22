@@ -6,6 +6,7 @@ from django.views.generic import FormView, DetailView, ListView
 from django import forms
 from django.http import Http404
 
+from blog.models import BlogNote
 from posts.models import Post
 from users.models import CustomUser
 
@@ -28,6 +29,11 @@ class ProfileView(DetailView):
     model = CustomUser
     context_object_name = "user"
     template_name = "users/profile.html"
+    
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["blog_notes"] = BlogNote.objects.filter(author=self.get_object())
+        return ctx
 
 
 # Can be private or not

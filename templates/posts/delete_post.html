@@ -11,13 +11,13 @@
             Удалить {{ post.title }}?
         </h1>
         <p class="post_deleting__header-description">
-            Дорогой, {{ request.user.username }}, если вы удалите "{{ post.title }}", то никогда больше не сможете восстановить её
+            Дорогой {{ request.user.username }}, если вы удалите "{{ post.title }}", то никогда больше не сможете восстановить её
             посредством администрации и этого сайта в принципе. Другие люди, которые добавили эту историю себе
             в избранное или читают сейчас - потеряют к ней доступ. Вы уверены, что хотите продолжить? 
         </p>
     </div>
 
-    <div class="post_deletng__form">
+    <div class="post_deleting__form">
         <a href="{% url "specific_post" post.slug %}">Нет, не уверен</a>
 
         <form method="post" class="post_deleting__form-form">

@@ -10,7 +10,7 @@ class NewsView(View):
     pass
 
 
-class FeedView(View):
+class UserNotesView(View):
     pass
 
 
@@ -29,7 +29,15 @@ class EditNoteView(UpdateView):
 class CreateNoteView(FormView):
     form = CreateNoteForm
     template_name = "blog/edit_note.html"
-    success_url = reverse_lazy("feed")
+    success_url = reverse_lazy("main")
+    form_class = CreateNoteForm
+    
+    def form_valid(self, form: CreateNoteForm):
+        data: BlogNote = form.save(commit=False)
+        data.author = self.request.user
+        data.save()
+        return super().form_valid(form)
+        
 
 
 class DeleteNoteView(DeleteView):

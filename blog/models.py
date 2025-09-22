@@ -5,7 +5,7 @@ from users.models import CustomUser
 
 
 class BlogNote(models.Model):
-    title = models.SlugField(verbose_name="Заголовок", max_length=90, unique=True)
+    title = models.CharField(verbose_name="Заголовок", max_length=90)
     slug = models.SlugField(verbose_name="Слаг", max_length=90)
     text = models.TextField(verbose_name="Текст", null=False)
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор")

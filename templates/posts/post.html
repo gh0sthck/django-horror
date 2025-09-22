@@ -22,6 +22,7 @@
 
         {% if request.user == post.author %}
             <a href="{% url "update_post" post.slug %}">Редактировать</a>
+            <a href="{% url "delete_post" post.slug %}">Удалить</a>
         {% endif %}
 
         {% if request.user.is_authenticated %}

@@ -21,6 +21,29 @@
     <a href="{% url "favs" user.slug %}">Избранное</a>
     {% if request.user == user %}
         <a href="{% url "create_post" %}">Создать историю</a>
+        <a href="{% url "create_note" %}">Написать запись</a>
     {% endif %}
+
+    <div class="profile__blog">
+        {% if blog_notes %}
+            <h3 class="profile__blog-title">
+                Записи {{ user.username }}
+            </h3>
+            {% for note in blog_notes %}
+            
+                <a class="display: block;" 
+                href="{% url "specific_note" note.slug %}" 
+                class="profil__blog-note">
+                    {{ note.title }}
+                </a>
+
+            {% endfor %}
+        {% else %}
+            <h3 class="profile__blog-title">
+                {{ user.username }} пока не сделал ни одну запись
+            </h3>
+        {% endif %}
+
+    </div>
 </div>
 {% endblock main %}

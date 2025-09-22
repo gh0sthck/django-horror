@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ note.title }}
+{% endblock title %}
+
+{% block main %}
+<div class="note">
+     <div class="note__header">
+        <h1 class="note__header-title">
+            {{ note.title }}
+        </h1>
+
+        <span class="note__header-author">
+            {{ note.author }}
+        </span>
+
+        <span class="note__header-pubdate">
+            {{ note.pubdate }}
+        </span>
+
+        {% if note.author == request.user %}
+            <a href="{% url "edit_note" note.slug %}" class="note__header-edit">Изменить</a>
+            <a href="{% url "delete_note" note.slug %}" class="note__header-delete">Удалить</a>
+        {% endif %}
+        
+    </div> 
+
+    <div class="note__body">
+    
+        <p class="note__body-text">
+            {{ note.text }}
+        </p>
+    </div>
+</div>
+{% endblock main %}

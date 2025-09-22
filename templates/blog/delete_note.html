@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}
+Удалить {{ note.title }}
+{% endblock title %}
+
+{% block main %}
+<div class="note_deleting">
+    <div class="note_deleting__header">
+        <h1 class="note_deleting__header-title">
+            Удалить {{ note.title }}?
+        </h1>
+        <p class="note_deleting__header-description">
+            Дорогой {{ request.user.username }}, если вы удалите "{{ note.title }}", то никогда больше не сможете восстановить его
+            посредством администрации и этого сайта в принципе. Другие люди, которые добавили этот пост в
+            в избранное или читают сейчас - потеряют к нему доступ. Вы уверены, что хотите продолжить? 
+        </p>
+    </div>
+
+    <div class="note_deleting__form">
+        <a href="{% url "specific_note" note.slug %}">Нет, не уверен</a>
+
+        <form method="post" class="note_deleting__form-form">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Удалить">
+        </form>
+    </div>
+</div>
+{% endblock main %}
