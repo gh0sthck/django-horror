@@ -22,6 +22,7 @@ class NoteView(DetailView):
 
 class EditNoteView(UpdateView):
     model = BlogNote
+    fields = ["title", "text"]
     template_name = "blog/edit_note.html"
     success_url = reverse_lazy("main")
 
@@ -44,3 +45,4 @@ class DeleteNoteView(DeleteView):
     model = BlogNote
     success_url = reverse_lazy("main")
     template_name = "blog/delete_note.html"
+    context_object_name = "note"
