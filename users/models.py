@@ -32,6 +32,14 @@ class CustomUser(AbstractUser):
     def remove_from_favorites(self, post):
         self.favorites.remove(post)
         self.save()
+        
+    def follow_user(self, user):
+        self.blog_following.add(user)
+        self.save()
+        
+    def unfollow_user(self, user):
+        self.blog_following.delete(user)
+        self.save()
 
     class Meta:
         ordering = ["-username"]

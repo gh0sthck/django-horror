@@ -11,10 +11,13 @@ from users.models import CustomUser
 
 class NewsView(View):
     def get(self, request: HttpRequest):
-        admin_notes: QuerySet[BlogNote] = BlogNote.objects.filter(is_news=True)
+        admin_notes: list[BlogNote] = list(BlogNote.objects.filter(is_news=True))
         if request.user.is_authenticated:
-            following_notes: QuerySet[BlogNote] = BlogNote.objects.filter(pk=3333)
-            admin_notes.union(following_notes)
+            current_user: CustomUser = request.user
+            following_notes: list[CustomUser] = current_user.blog_following.all()  # Date filter will be add
+            for user in following_notes:
+                for note in BlogNote.objects.filter(author=user):
+                    admin_notes.append(note)
         return render(request, "blog/news.html", {"news": admin_notes})
 
 

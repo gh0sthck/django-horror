@@ -24,20 +24,53 @@
         <a href="{% url "create_note" %}">Написать запись</a>
     {% endif %}
 
+    {% if user != request.user %}
+    
+        {% if user not in request.user.blog_following.all %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="sub" value="1">
+                <input type="submit" value="Подписаться">
+            </form>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="sub" value="0">
+                <input type="submit" value="Отписаться">
+            </form>
+        {% endif %}
+        
+    {% endif %}
+
+
+    <h3>Подписки</h3>
+    <ul>
+    {% for following in user.blog_following.all %}
+        
+            <li><a href="{% url "profile" following.slug %}">{{ following.username }}</a></li>
+        
+    {% endfor %}
+    </ul>
+    
     <div class="profile__blog">
         {% if blog_notes %}
             <h3 class="profile__blog-title">
                 Записи {{ user.username }}
             </h3>
-            {% for note in blog_notes %}
+            <ul>
+                {% for note in blog_notes %}
             
-                <a class="display: block;" 
-                href="{% url "specific_note" note.slug %}" 
-                class="profil__blog-note">
-                    {{ note.title }}
-                </a>
+                    <li>
+                        <a class="display: block;" 
+                        href="{% url "specific_note" note.slug %}" 
+                        class="profil__blog-note">
+                            {{ note.title }}
+                        </a>
+                    </li>
 
             {% endfor %}
+            </ul>
+            
         {% else %}
             <h3 class="profile__blog-title">
                 {{ user.username }} пока не сделал ни одну запись

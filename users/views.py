@@ -35,6 +35,17 @@ class ProfileView(DetailView):
         ctx["blog_notes"] = BlogNote.objects.filter(author=self.get_object())
         return ctx
 
+    def post(self, request: HttpRequest, slug):
+        user: CustomUser = self.request.user
+        current_user: CustomUser = self.get_object()
+        print("POST", request.POST)
+        if request.POST["sub"] == "1":
+            user.follow_user(current_user)
+        if request.POST["sub"] == "0":
+            user.unfollow_user(current_user)
+        return redirect("profile", slug=slug)
+        
+
 
 # Can be private or not
 class ProfileFavoritesList(View):
