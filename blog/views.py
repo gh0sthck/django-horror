@@ -1,13 +1,21 @@
+from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import View, DetailView, FormView, UpdateView, DeleteView
+from django.db.models import QuerySet
 
 from blog.forms import CreateNoteForm
 from blog.models import BlogNote
+from users.models import CustomUser
 
 
 class NewsView(View):
-    pass
+    def get(self, request: HttpRequest):
+        admin_notes: QuerySet[BlogNote] = BlogNote.objects.filter(is_news=True)
+        if request.user.is_authenticated:
+            following_notes: QuerySet[BlogNote] = BlogNote.objects.filter(pk=3333)
+            admin_notes.union(following_notes)
+        return render(request, "blog/news.html", {"news": admin_notes})
 
 
 class UserNotesView(View):
@@ -22,7 +30,7 @@ class NoteView(DetailView):
 
 class EditNoteView(UpdateView):
     model = BlogNote
-    fields = ["title", "text"]
+    fields = ["title", "text", "is_news"]
     template_name = "blog/edit_note.html"
     success_url = reverse_lazy("main")
 

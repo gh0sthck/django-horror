@@ -11,6 +11,7 @@ class CustomUser(AbstractUser):
     slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)
     
     favorites = models.ManyToManyField("posts.Post", verbose_name="Избранное", blank=True)
+    blog_following = models.ManyToManyField("CustomUser", verbose_name="Подписки", blank=True)
 
     # TODO: add achivement system (?)
 

@@ -6,6 +6,10 @@
 
 {% block main %}
 <div class="blog_edit">
+    {% if not request.user.is_staff %}
+        {{ form.delete_news }}
+    {% endif %}
+    
     <form method="post" class="blog_edit__form">
         {% csrf_token %}
         {{ form.as_p }}
