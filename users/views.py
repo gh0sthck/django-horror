@@ -2,12 +2,11 @@ from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, DetailView, ListView
+from django.views.generic import FormView, DetailView
 from django import forms
 from django.http import Http404
 
 from blog.models import BlogNote
-from posts.models import Post
 from users.models import CustomUser
 
 from .forms import RegisterForm
@@ -38,7 +37,6 @@ class ProfileView(DetailView):
     def post(self, request: HttpRequest, slug):
         user: CustomUser = self.request.user
         current_user: CustomUser = self.get_object()
-        print("POST", request.POST)
         if request.POST["sub"] == "1":
             user.follow_user(current_user)
         if request.POST["sub"] == "0":

@@ -38,7 +38,7 @@ class CustomUser(AbstractUser):
         self.save()
         
     def unfollow_user(self, user):
-        self.blog_following.delete(user)
+        self.blog_following.remove(user)
         self.save()
 
     class Meta:

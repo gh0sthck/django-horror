@@ -17,7 +17,7 @@ class NewsView(View):
             following_notes: list[CustomUser] = current_user.blog_following.all()  # Date filter will be add
             for user in following_notes:
                 for note in BlogNote.objects.filter(author=user):
-                    admin_notes.append(note)
+                    admin_notes.append(note) if note not in admin_notes else ""
         return render(request, "blog/news.html", {"news": admin_notes})
 
 

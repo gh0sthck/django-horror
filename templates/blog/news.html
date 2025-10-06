@@ -8,7 +8,17 @@
 {% block main %}
 <div class="blog">
     {% for news_post in news %}
-        {{ news_post.title }}
+        <a style="display: block;" href="{% url "specific_note" news_post.slug %}" class="blog__note">
+            <h3 class="blog__note-title">
+                {{ news_post.title }}
+            </h3>
+            <span class="blog__note-author">
+                {{ news_post.author }}
+            </span>
+            <span class="blog__note-time">
+                {{ news_post.pubdate }}
+            </span>
+        </a> 
     {% endfor %}
 </div>
 {% endblock main %}
