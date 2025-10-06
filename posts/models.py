@@ -6,7 +6,7 @@ from users.models import CustomUser
 
 class Comments(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор комментария")
-    comment = models.TextField(verbose_name="Текст комментария", null=False)
+    comment = models.TextField(verbose_name="Оставьте свой комментарий", null=False)
     answer = models.ManyToManyField("Comments", blank=True) # (?) to comment threads
     # TODO: likes to commnt (redis?)
     date = models.DateTimeField(verbose_name="Дата комменатрия", auto_now_add=True)
