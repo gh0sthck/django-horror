@@ -7,7 +7,7 @@ from django import forms
 from django.core.paginator import Paginator
 
 from posts.forms import CreatePostForm
-from posts.models import Post, Comments
+from posts.models import Category, Post, Comments
 from posts.forms import CommentForm
 
 
@@ -115,6 +115,8 @@ class ReadView(View):
         posts = Post.objects.all()
         all_posts_count = len(posts)
         
+        categories = Category.objects.all()
+        
         paginator = Paginator(posts, 10)
         current_page = request.GET.get("page") if request.GET.get("page") else "1"
         posts_per_page = paginator.get_page(int(current_page))
@@ -122,4 +124,4 @@ class ReadView(View):
         
         url = "?page="
         
-        return render(request, "posts/read.html", {"posts_cnt": all_posts_count, "posts": posts_per_page, "url": url, "pages": pages_count})
+        return render(request, "posts/read.html", {"posts_cnt": all_posts_count, "posts": posts_per_page, "url": url, "pages": pages_count, "categories": categories})

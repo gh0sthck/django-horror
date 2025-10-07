@@ -116,3 +116,41 @@ header {
 .post {
     text-decoration: none;
 }
+
+
+/* READ */
+
+.read__body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  min-height: 100%;
+}
+
+.read__body-posts {
+  min-width: 70%;
+}
+
+.read__body-filters {
+  min-width: 25%;
+}
+
+.read__body-post {
+  background-color: rgba(24, 17, 29, 0.8);
+  padding: 30px 50px;
+  margin-bottom: 30px;
+
+}
+
+.read__body-post:hover {
+  transition: .5s;
+  background-color: rgba(223, 218, 226, 0.8); 
+  margin-top: 60px;
+  margin-bottom: 50px;
+  cursor: pointer;
+
+}
+
+.read__body-post:hover * {
+  color: rgba(24, 17, 29, 0.8);
+}
