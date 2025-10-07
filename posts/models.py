@@ -23,6 +23,21 @@ class Comments(models.Model):
         verbose_name_plural = "Комменатрии"
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=90, verbose_name="Имя категории", unique=True, null=False)
+    
+    def __str__(self) -> str:
+        return self.name
+    
+    def __repr__(self) -> str:
+        return f"<Category: {self.name}>"
+    
+    class Meta:
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+        ordering = ["-name"]
+
+
 class Post(models.Model):
     title = models.CharField(max_length=90, verbose_name="Имя поста", unique=True, null=False)
     text = models.TextField(verbose_name="Содержание", null=False)  # temporary - field will updated
@@ -35,6 +50,7 @@ class Post(models.Model):
     created_date = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     updated_date = models.DateField(auto_now_add=True, verbose_name="Дата изменения")
     slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
     def __str__(self) -> str:
         return self.title

@@ -4,6 +4,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import FormView, DetailView, UpdateView, DeleteView
 from django import forms
+from django.core.paginator import Paginator
 
 from posts.forms import CreatePostForm
 from posts.models import Post, Comments
@@ -107,3 +108,18 @@ class DeletePostView(DeleteView):
     context_object_name = "post"
     template_name = "posts/delete_post.html"
     success_url = reverse_lazy("main")
+
+
+class ReadView(View):
+    def get(self, request: HttpRequest):
+        posts = Post.objects.all()
+        all_posts_count = len(posts)
+        
+        paginator = Paginator(posts, 10)
+        current_page = request.GET.get("page") if request.GET.get("page") else "1"
+        posts_per_page = paginator.get_page(int(current_page))
+        pages_count = paginator.num_pages
+        
+        url = "?page="
+        
+        return render(request, "posts/read.html", {"posts_cnt": all_posts_count, "posts": posts_per_page, "url": url, "pages": pages_count})

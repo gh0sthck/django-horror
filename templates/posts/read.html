@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+Поиск
+{% endblock title %}
+
+{% block main %}
+<div class="read">
+    <div class="read__header">
+        <div class="read__header-search">
+
+        </div>
+    </div>
+    <div class="read__body">
+        <p class="read__body-count">Всего найдено: {{ posts_cnt }}</p>
+        <div class="read__body-posts">
+            
+            {% for post in posts %}
+            <div class="read__body-post">
+                {{ post.title }}
+            </div>
+            {% endfor %}
+
+            {% with current_page=posts pages=pages url=url %}
+                {% include "posts/pagination.html" %}
+            {% endwith %}
+        </div>
+
+        <div class="read__body-filters">
+            
+        </div>
+    </div>
+</div>
+{% endblock main %}
