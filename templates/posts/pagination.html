@@ -2,7 +2,7 @@
 
     {% if current_page.has_previous %}
         {% if not current_page.previous_page_number == 1 %}
-            <a href="{{ url }}" class="paginator__element">1</a> 
+            <a href="{{ url }}1" class="paginator__element">1</a> 
             <span class="more">...</span>
         {% endif %} 
             <a class="paginator__element" href="{{ url }}{{ current_page.previous_page_number }}">{{ current_page.previous_page_number }}</a>
