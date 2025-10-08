@@ -113,14 +113,32 @@ class DeletePostView(DeleteView):
 class ReadView(View):
     def get(self, request: HttpRequest):
         posts = Post.objects.all()
-        url = "?page="
+        url = ""
         q = None
         categories = Category.objects.all()
         
+        
+        # Search filter
         if request.GET.get("q"):
             q = request.GET.get("q")
             posts = Post.objects.filter(title__contains=q)  # iexact don't work - sqlite issue? change to postgres
+            # url = f"?q={q}&page="
+            
+        cats = [cat for cat in Category.objects.all() if cat.name in request.GET.getlist("cat")]
+
+        if cats:
+            posts = [post for post in posts if post.category in cats]
+        
+       
+        if request.GET.get("q") and cats:
+            url = "?" + "&".join("cat="+c.name for c in cats) + f"&q={q}" + "&page="
+        elif cats:
+            url = "?" + "&".join("cat="+c.name for c in cats) + "&page="
+        elif request.GET.get("q"):
             url = f"?q={q}&page="
+        else:
+            url = "?page="
+        
         
         all_posts_count = len(posts)
         

@@ -44,7 +44,7 @@
         </div>
 
         <div class="read__body-filters">
-            <form action="get" class="">
+            <form method="get">
 
                 <div class="read__body-filters-cats">
                     <h3>Категории</h3>
@@ -52,7 +52,7 @@
                     
                         {% for category in categories %}
                             <label for="{{ category.name }}">{{ category.name }}</label>
-                            <input type="checkbox" name="{{ category.name }}" value="{{ category.name }}" />
+                            <input type="checkbox" name="cat" value="{{ category.name }}" />
                             <br>
                         {% endfor %}
 
