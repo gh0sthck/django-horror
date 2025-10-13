@@ -8,6 +8,7 @@
   list-style-type: none;
   text-decoration: none;
   font-size: 16px;
+  margin: 0 auto;
   font-weight: normal;
   outline: none;
   border: none;
@@ -115,6 +116,56 @@ header {
 
 .post {
     text-decoration: none;
+}
+
+.main__stories_new_stories-stories {
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.story {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  width: 210px;
+  margin-right: 10px;
+  background-color: #201924;
+  border-radius: 10px;
+  
+}
+
+
+.story:hover {
+transition: all .5s ease 0s;
+position: relative;
+bottom: 20px;
+  background-color: rgba(223, 218, 226, 0.8); 
+}
+
+.story:hover * {
+  color: rgba(24, 17, 29, 0.8);
+}
+
+.story img {
+  display: block;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.story__body {
+  padding: 15px;
+
+
+}
+
+.story p {
+
+  white-space: initial;
+  overflow-wrap: break-word;
+}
+
+.story h3 {
+  font-weight: 500;
 }
 
 /* PAGINATION */

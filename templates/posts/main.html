@@ -17,14 +17,18 @@
 
     <div class="main__stories_new_stories">
         <h2>Новинки</h2>
-
-        <div class="main__stories_new_stories-stories">
+        <div class="main__stories_new_stories-stories row">
+            
             {% for story in stories %}
-                <a  style="display: block;" 
+                <a 
                     href="{% url "specific_post" story.slug %}" 
-                    class="main__stories_new_stories-story post">
-                    <h3>{{ story.title }}</h3>
-                    <p>{{ story.description}}</p>
+                    class="main__stories_new_stories-story story col">
+                        <img class="row" src="#" alt="Image here">
+
+                    <div class="story__body row">
+                        <h3>{{ story.title }}</h3>
+                        <p>{{ story.description|truncatechars:"30" }}</p>
+                    </div>
                 </a>
             {% endfor %}
         </div>
@@ -32,10 +36,22 @@
     
     <div class="main__stories_news">
         <h2>Новости</h2>
+
+        <div class="main__stories_news-news">
+            {% for story in news %}
+                <a  style="display: block;" 
+                    href="{% url "specific_post" story.slug %}" 
+                    class="main__stories_news-new new">
+                    <h3>{{ story.title }}</h3>
+                    <p>{{ story.description}}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
     </div>
 
     <div class="main__stories_day_story">
-        <h2>Рассказ дня</h2>
+        <h2>Рассказ недели</h2>
     </div>
 </div>
 

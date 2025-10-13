@@ -6,15 +6,20 @@ from django.views.generic import FormView, DetailView, UpdateView, DeleteView
 from django import forms
 from django.core.paginator import Paginator
 
+from datetime import datetime
+
+from blog.models import BlogNote
 from posts.forms import CreatePostForm
 from posts.models import Category, Post, Comments
 from posts.forms import CommentForm
 
 
+
 class MainPage(View):
     def get(self, request: HttpRequest) -> HttpResponse:
         stories = Post.objects.all()[:5]
-        return render(request, "posts/main.html", {"stories": stories})
+        news = BlogNote.objects.filter(is_news=True)[:5]
+        return render(request, "posts/main.html", {"stories": stories, "news": news})
 
 
 class PostView(DetailView):
@@ -122,7 +127,6 @@ class ReadView(View):
         if request.GET.get("q"):
             q = request.GET.get("q")
             posts = Post.objects.filter(title__contains=q)  # iexact don't work - sqlite issue? change to postgres
-            # url = f"?q={q}&page="
             
         cats = [cat for cat in Category.objects.all() if cat.name in request.GET.getlist("cat")]
 
