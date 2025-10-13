@@ -16,14 +16,25 @@
     {% endif %}
 
     <div class="main__stories_new_stories">
-        <h2>Новинки</h2>
+        <div class="main__stories_new_stories-header">
+            <div class="header__title">
+                <h2>Новинки</h2>
+                {% comment %} <h2 style="display: block; height: 100%">Новинки</h2> {% endcomment %}
+            </div>
+            
+            <div style="text-align: end;width: 100%;" class="header__link">
+                <a href="{% url "read" %}">Все новинки →</a>
+            </div>
+            {% comment %} <a style="display: block; width: 100%; text-align: end;" href="{% url "read" %}">Все новинки →</a> {% endcomment %}
+        </div>
+        
         <div class="main__stories_new_stories-stories row">
             
             {% for story in stories %}
                 <a 
                     href="{% url "specific_post" story.slug %}" 
                     class="main__stories_new_stories-story story col">
-                        <img class="row" src="#" alt="Image here">
+                    <img class="row" src="#" alt="Image here">
 
                     <div class="story__body row">
                         <h3>{{ story.title }}</h3>
@@ -35,15 +46,29 @@
     </div>
     
     <div class="main__stories_news">
-        <h2>Новости</h2>
+        <div 
+            class="man__stories_news-header">
+            
+            <div class="header__title">
+                <h2 style="display: block; width: 100%;">Новости</h2>
+            </div>
 
-        <div class="main__stories_news-news">
-            {% for story in news %}
-                <a  style="display: block;" 
-                    href="{% url "specific_post" story.slug %}" 
-                    class="main__stories_news-new new">
-                    <h3>{{ story.title }}</h3>
-                    <p>{{ story.description}}</p>
+            <div style="text-align: end;width: 100%;" class="header__link">
+               <a href="{% url "blog" %}">Перейти в блог →</a>
+            </div>
+            
+        </div>
+
+        <div class="main__stories_news-news row">
+            {% for post in news %}
+                <a  
+                    href="{% url "specific_note" post.slug %}" 
+                    class="main__stories_news-new new col">
+                    <img class="row" src="#" alt="Image here">
+
+                    <div class="story__body row">
+                        <h3>{{ post.title }}</h3>
+                    </div>
                 </a>
             {% endfor %}
         </div>

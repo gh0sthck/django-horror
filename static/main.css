@@ -114,6 +114,12 @@ header {
 
 /* MAIN */
 
+.main__stories_new_stories-header, .man__stories_news-header {
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+}
+
 .post {
     text-decoration: none;
 }
@@ -121,6 +127,15 @@ header {
 .main__stories_new_stories-stories {
   margin-bottom: 30px;
   margin-top: 30px;
+}
+
+
+
+
+
+.main__stories_news-news {
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 .story {
@@ -134,16 +149,31 @@ header {
   
 }
 
+.new {
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    width: 210px;
+    margin-right: 10px;
+    background-color: #201924;
+    border-radius: 10px;
+}
 
-.story:hover {
-transition: all .5s ease 0s;
-position: relative;
-bottom: 20px;
+
+.story:hover, .new:hover {
+  transition: all .5s ease 0s;
+  position: relative;
+  bottom: 20px;
   background-color: rgba(223, 218, 226, 0.8); 
 }
 
+
 .story:hover * {
   color: rgba(24, 17, 29, 0.8);
+}
+
+.new:hover * {
+    color: rgba(24, 17, 29, 0.8);
 }
 
 .story img {
@@ -154,12 +184,9 @@ bottom: 20px;
 
 .story__body {
   padding: 15px;
-
-
 }
 
 .story p {
-
   white-space: initial;
   overflow-wrap: break-word;
 }
@@ -167,6 +194,8 @@ bottom: 20px;
 .story h3 {
   font-weight: 500;
 }
+
+
 
 /* PAGINATION */
 
