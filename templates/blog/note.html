@@ -11,6 +11,11 @@
             {{ note.title }}
         </h1>
 
+        {% if note.author == request.user %}
+            <a href="{% url "edit_note" note.slug %}" class="note__header-edit">Изменить</a>
+            <a href="{% url "delete_note" note.slug %}" class="note__header-delete">Удалить</a>
+        {% endif %}
+
         <span class="note__header-author">
             {{ note.author }}
         </span>
@@ -19,10 +24,7 @@
             {{ note.pubdate }}
         </span>
 
-        {% if note.author == request.user %}
-            <a href="{% url "edit_note" note.slug %}" class="note__header-edit">Изменить</a>
-            <a href="{% url "delete_note" note.slug %}" class="note__header-delete">Удалить</a>
-        {% endif %}
+        
         
     </div> 
 
