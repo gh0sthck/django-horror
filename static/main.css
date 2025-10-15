@@ -8,7 +8,7 @@
   list-style-type: none;
   text-decoration: none;
   font-size: 16px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
   font-weight: normal;
   outline: none;
   border: none;
@@ -18,7 +18,6 @@
   font-style: normal;
   color: rgb(235, 235, 235);
   font-variation-settings: "slnt" 0, "CRSV" 0, "SHRP" 0;
-  overflow: hidden;
 }
 
 h1,
@@ -139,10 +138,6 @@ header {
   margin-top: 30px;
 }
 
-
-
-
-
 .main__stories_news-news {
   margin-top: 30px;
   margin-bottom: 30px;
@@ -217,6 +212,7 @@ header {
 
 .paginator__element {
   border: 1px solid #875ca7;
+  
   border-radius: 100%;
   text-decoration: none;
   padding: 7px 15px;
@@ -266,7 +262,7 @@ header {
   background-color: rgba(24, 17, 29, 0.8);
   padding: 30px 50px;
   margin-bottom: 30px;
-
+  border-radius: 5px;
 }
 
 .read__body-post:hover {

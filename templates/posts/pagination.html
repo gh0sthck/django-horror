@@ -3,7 +3,6 @@
     {% if current_page.has_previous %}
         {% if not current_page.previous_page_number == 1 %}
             <a href="{{ url }}1" class="paginator__element">1</a> 
-            <span class="more">...</span>
         {% endif %} 
             <a class="paginator__element" href="{{ url }}{{ current_page.previous_page_number }}">{{ current_page.previous_page_number }}</a>
     {% endif %}
@@ -13,7 +12,6 @@
     {% if current_page.has_next %}
         <a class="paginator__element" href="{{ url }}{{current_page.next_page_number}}">{{ current_page.next_page_number }}</a> 
         {% if not current_page.next_page_number == pages %}
-            <span class="more">...</span>
             <a class="paginator__element" href="{{ url }}{{ pages }}">{{ pages }}</a>
         {% endif %}        
     {% endif %}

@@ -28,7 +28,7 @@
                     <div class="read__body-post">
                         <div class="read__post-img"></div>
                         <div class="read__post-content">
-                            <h4>{{ post.title }}</h5>
+                            <h4 style="line-height: 1;">{{ post.title|truncatechars:"50" }}</h5>
                             
                             <p>{{ post.description|truncatechars:"50" }}</p>
                             <span>{{ post.author }} {{ post.created_date }}</span>
