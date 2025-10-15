@@ -1,56 +1,15 @@
-{% extends "base.html" %}
+{% extends "users/base.html" %}
 
-{% block title %}{{ user.username }}{% endblock title %}
+{% block profile_title %}{{ user.username }}{% endblock profile_title %}
 
-{% block main %}
-<div class="profile">
-    <h1 class="profile__title">
-        {{ user.username }}
-    </h1>
-    <span class="profile__regdate">
-        на сайте с {{ user.create_date }}
-    </span>
-
-    <div class="profile__bio">
-        <p class="profile__bio-text">
-            {{ user.bio }}
-        </p>
-    </div>
-
-
-    <a href="{% url "favs" user.slug %}">Избранное</a>
+{% block profile_body %}
+    
     {% if request.user == user %}
         <a href="{% url "create_post" %}">Создать историю</a>
         <a href="{% url "create_note" %}">Написать запись</a>
     {% endif %}
 
-    {% if user != request.user %}
     
-        {% if user not in request.user.blog_following.all %}
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="sub" value="1">
-                <input type="submit" value="Подписаться">
-            </form>
-        {% else %}
-            <form method="post">
-                {% csrf_token %}
-                <input type="hidden" name="sub" value="0">
-                <input type="submit" value="Отписаться">
-            </form>
-        {% endif %}
-        
-    {% endif %}
-
-
-    <h3>Подписки</h3>
-    <ul>
-    {% for following in user.blog_following.all %}
-        
-            <li><a href="{% url "profile" following.slug %}">{{ following.username }}</a></li>
-        
-    {% endfor %}
-    </ul>
     
     <div class="profile__blog">
         {% if blog_notes %}
@@ -69,7 +28,7 @@
                     </li>
 
             {% endfor %}
-            </ul>
+        </ul>
             
         {% else %}
             <h3 class="profile__blog-title">
@@ -77,6 +36,6 @@
             </h3>
         {% endif %}
 
-    </div>
-</div>
-{% endblock main %}
+        </div>
+{% endblock profile_body %}
+    

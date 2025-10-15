@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% block profile_title %}
+
+{% endblock profile_title %}
+{% endblock title %}
+
+{% block main %}
+<div class="profile">
+    <div class="profile__header">
+        <div class="profile__header-image">
+            <img 
+            style="
+                width: 150px; 
+                height: 150px; 
+                border-radius: 100%;
+                {% if user.is_active %}
+                    border: 3px solid #b994d4ff;
+                {% endif %}
+            "
+            src="https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg" 
+            alt="Profile image"/>
+        </div>
+
+        <div class="profile__header-info">
+            <h1 class="profile__header-title" style="font-size: 25px;">
+                {{ user.username }}
+                <span class="profile__header-active">
+                    {% if user.is_active %}
+                        Онлайн
+                    {% else %}
+                        Офлайн
+                    {% endif %}
+                </span>
+            </h1>
+
+            <span style="font-size: 14px;" class="profile__header-regdate">
+                на сайте с {{ user.create_date }}
+            </span>
+
+            <p style="margin-top: 5px;" class="profile__status-text">
+                Здесь статус...
+            </p>
+
+            {% if request.user.is_authenticated %}
+                {% if user != request.user %}
+                    {% if user not in request.user.blog_following.all %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="sub" value="1">
+                            <input type="submit" value="Подписаться">
+                        </form>
+                    {% else %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="sub" value="0">
+                            <input type="submit" value="Отписаться">
+                        </form>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="profile__body">
+       <div class="profile__body-content">
+            {% block profile_body %}
+        
+            {% endblock profile_body %}
+       </div>  
+
+        <div class="profile__body-navigation">
+            <ul class="profile__body-navigation">
+                <a href="#" class="nav-link-f">
+                    <li class="profile__body-navigation-element">
+                        Подписки ({{ user.blog_following.all|length }})
+                    </li>
+                </a>
+                <a href="#" >
+                    <li class="profile__body-navigation-element">
+                        Подписчики (12)
+                    </li>
+                </a>
+                <a href="#" >
+                    <li class="profile__body-navigation-element">
+                        Истории (132)
+                    </li>
+                </a>
+                <a href="{% url "favs" user.slug %}" class="nav-link-l">
+                    <li class="profile__body-navigation-element">
+                        Избранное ({{ user.favorites.all|length }})
+                    </li>
+                </a>
+            </ul>
+        </div>
+    </div>
+        
+    
+</div>
+{% endblock main %}

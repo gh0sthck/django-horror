@@ -52,5 +52,12 @@ class ProfileFavoritesList(View):
         user_favs = []
         if user:
             user_favs = [p for p in user[0].favorites.all()]
-            return render(request, "users/favorites.html", {"favs": user_favs})
+            return render(
+                request, 
+                "users/favorites.html", 
+                {
+                    "favs": user_favs, 
+                    "user": user[0],
+                }
+            )
         raise Http404("Такого пользователя не существует")
