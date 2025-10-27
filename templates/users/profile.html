@@ -5,37 +5,36 @@
 {% block profile_body %}
     
     {% if request.user == user %}
-        <a href="{% url "create_post" %}">Создать историю</a>
-        <a href="{% url "create_note" %}">Написать запись</a>
+        <div style="margin-bottom: 20px; display: flex; justify-content: space-between" class="profile__control">
+             <a class="link_purple" href="{% url "create_post" %}">Создать историю</a>
+            <a class="link_purple" href="{% url "create_note" %}">Написать запись</a>
+        </div>
+        <hr>
     {% endif %}
-
-    
     
     <div class="profile__blog">
+        <div class="profile__blog-bio">
+            <p style="font-size: 15px;">{{ user.bio }}</p>
+        </div>
         {% if blog_notes %}
-            <h3 class="profile__blog-title">
-                Записи {{ user.username }}
-            </h3>
             <ul>
                 {% for note in blog_notes %}
-            
                     <li>
-                        <a class="display: block;" 
+                        <a class="profile__blog-note" 
                         href="{% url "specific_note" note.slug %}" 
                         class="profil__blog-note">
                             {{ note.title }}
+                            <br>
+                            {{ note.pubdate }}
                         </a>
                     </li>
-
-            {% endfor %}
-        </ul>
-            
+                {% endfor %}
+            </ul>
         {% else %}
-            <h3 class="profile__blog-title">
-                {{ user.username }} пока не сделал ни одну запись
-            </h3>
+            <p style="color: #827688;; font-style: italic;">
+                Пока что, тут пусто...
+            </p>
         {% endif %}
-
-        </div>
+    </div>
 {% endblock profile_body %}
     

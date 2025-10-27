@@ -64,6 +64,20 @@ body {
   background-color: #0c0213;
 }
 
+.link_purple {
+  text-decoration: none;
+  border: 1px solid #875ca7;
+  padding: 5px 15px;
+  color: #875ca7;
+  border-radius: 5px;
+}
+
+.link_purple:hover {
+    transition: .4s;
+    background-color: #875ca7;
+    color: rgb(235, 235, 235);
+}
+
 .text {
   font-family: "Noto Serif", serif;
   font-optical-sizing: auto;
@@ -342,12 +356,13 @@ ul a {
 }
 
 .profile__body-content {
-  padding: 10px;
+  padding: 20px;
   width: 80%;
 }
 
 .profile__body-navigation {
   width: 20%;
+  height: 250px;
 }
 
 .profile__body-navigation ul {
@@ -395,4 +410,25 @@ ul a {
   bottom:35px;
   left: 2%;
   z-index: 2;
+}
+
+.profile__blog ul {
+  padding: 0; 
+  margin: 0;
+}
+
+.profile__blog-note {
+  display: block;
+  background-color: rgba(30, 23, 36, 0.8);
+  padding: 10px 25px;
+  color: rgb(235, 235, 235);
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
+.profile__blog-note:hover {
+  transition: .3s;
+  background-color: rgb(235, 235, 235);
+  color: rgba(30, 23, 36, 0.8);
 }
