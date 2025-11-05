@@ -9,9 +9,9 @@
 <div class="profile_favorites">
 
     {% if not favs %}
-        <h3 class="profile_favorites__title">
+        <p class="profile_favorites__title" style="color: #827688;; font-style: italic;">
             У {{ user.username }} нет избранных...
-        </h3>
+        </p>
     {% else %}
         {% for f_post in favs %}
             <a  style="display: block;" 

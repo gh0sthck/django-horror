@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
-from users.views import ProfileFavoritesList, ProfileView, RegisterView
+from users.views import ProfileFavoritesList, ProfileFollowersView, ProfileStoriesView, ProfileSubscribesView, ProfileView, RegisterView
 
 
 urlpatterns = [
@@ -14,5 +14,8 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
 
     path("<slug:slug>/", ProfileView.as_view(), name="profile"),
-    path("favs/<slug:slug>/", ProfileFavoritesList.as_view(), name="favs")
+    path("favs/<slug:slug>/", ProfileFavoritesList.as_view(), name="favs"),
+    path("subs/<slug:slug>/", ProfileSubscribesView.as_view(), name="subs"),
+    path("followers/<slug:slug>/", ProfileFollowersView.as_view(), name="follows"),
+    path("stories/<slug:slug>/", ProfileStoriesView.as_view(), name="us_stories"),
 ]

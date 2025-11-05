@@ -1,0 +1,16 @@
+{% extends "users/base.html" %}
+
+{% block profile_title %}
+Истории {{ user }}
+{% endblock profile_title %}
+
+{% block profile_body %}
+<div class="profile__stories">
+    {% for story in stories %}
+        <div class="post">
+            {{ story.title }}
+        </div>
+    {% endfor %}
+</div>
+{% endblock profile_body %}
+

@@ -73,19 +73,19 @@
 
         <div class="profile__body-navigation">
             <ul class="profile__body-navigation">
-                <a href="#" class="nav-link-f">
+                <a href="{% url "subs" user.slug %}" class="nav-link-f">
                     <li class="profile__body-navigation-element">
                         Подписки ({{ user.blog_following.all|length }})
                     </li>
                 </a>
-                <a href="#" >
+                <a href="{% url "follows" user.slug %}" >
                     <li class="profile__body-navigation-element">
-                        Подписчики (12)
+                        Подписчики ({{ followers_len }})
                     </li>
                 </a>
-                <a href="#" >
+                <a href="{% url "us_stories" user.slug %}" >
                     <li class="profile__body-navigation-element">
-                        Истории (132)
+                        Истории ({{ stories_len }})
                     </li>
                 </a>
                 <a href="{% url "favs" user.slug %}" class="nav-link-l">

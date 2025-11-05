@@ -1,0 +1,15 @@
+{% extends "users/base.html" %}
+
+{% block profile_title %}
+Подписчики {{ user.username }}
+{% endblock profile_title %}
+
+{% block profile_body %}
+<div class="profile__subscriptions">
+    <div class="row row-cols-2 subscriptions__list">
+        {% for s in subs %}
+            <div class="col subscriptions__list-item"> {{ s }}</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock profile_body %}

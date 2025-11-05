@@ -8,6 +8,7 @@ from django.http import Http404
 from django.core.paginator import Paginator
 
 from blog.models import BlogNote
+from posts.models import Post
 from users.models import CustomUser
 
 from .forms import RegisterForm
@@ -39,6 +40,8 @@ class ProfileView(DetailView):
         ctx["blog_notes"] = posts_per_page
         ctx["pages"] = pages_cnt
         ctx["url"] = "?page="
+        ctx["followers_len"] = len(CustomUser.objects.filter(blog_following__in=[self.get_object()]))
+        ctx["stories_len"] = len(Post.objects.filter(author=self.get_object()))
         return ctx
 
     def post(self, request: HttpRequest, slug):
@@ -49,22 +52,62 @@ class ProfileView(DetailView):
         if request.POST["sub"] == "0":
             user.unfollow_user(current_user)
         return redirect("profile", slug=slug)
+
+
+class ProfileSubscribesView(View):
+    def get(self, request: HttpRequest, slug):
+        user = CustomUser.objects.get(slug=slug)
+        subscriptions: list[CustomUser] = user.blog_following.all()
         
+        return render(request, "users/subscriptions.html", {
+            "user": user,
+            "subs": subscriptions,
+            "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
+            "stories_len": len(Post.objects.filter(author=user)),
+        })
+        
+
+class ProfileFollowersView(View):
+    def get(self, request: HttpRequest, slug):
+        user = CustomUser.objects.get(slug=slug)
+        followers = CustomUser.objects.filter(blog_following__in=[user])
+        
+        return render(request, "users/subscriptions.html", {
+            "user": user,
+            "subs": followers,
+            "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
+            "stories_len": len(Post.objects.filter(author=user)),
+        })
 
 
 # Can be private or not
 class ProfileFavoritesList(View):
     def get(self, request: HttpRequest, slug):
-        user: CustomUser = CustomUser.objects.filter(slug=slug)
+        user: CustomUser = CustomUser.objects.get(slug=slug)
         user_favs = []
         if user:
-            user_favs = [p for p in user[0].favorites.all()]
+            user_favs = [p for p in user.favorites.all()]
             return render(
                 request, 
                 "users/favorites.html", 
                 {
                     "favs": user_favs, 
-                    "user": user[0],
+                    "user": user,
+                    "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
+                    "stories_len": len(Post.objects.filter(author=user))
                 }
             )
         raise Http404("Такого пользователя не существует")
+
+
+class ProfileStoriesView(View):
+    def get(self, request: HttpRequest, slug):
+        user = CustomUser.objects.get(slug=slug)
+        user_stories = Post.objects.filter(author=user)
+        
+        return render(request, "users/stories.html", {
+            "user": user,
+            "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
+            "stories_len": len(user_stories),
+            "stories": user_stories,
+        })
