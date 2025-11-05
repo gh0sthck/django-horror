@@ -30,6 +30,9 @@
                     </li>
                 {% endfor %}
             </ul>
+            {% with pages=pages url=url current_page=blog_notes %}
+                {% include "users/pagination.html" %}
+            {% endwith %}
         {% else %}
             <p style="color: #827688;; font-style: italic;">
                 Пока что, тут пусто...

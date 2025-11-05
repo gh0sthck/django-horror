@@ -6,8 +6,6 @@ from django.views.generic import FormView, DetailView, UpdateView, DeleteView
 from django import forms
 from django.core.paginator import Paginator
 
-from datetime import datetime
-
 from blog.models import BlogNote
 from posts.forms import CreatePostForm
 from posts.models import Category, Post, Comments

@@ -1,0 +1,18 @@
+<div class="paginator">
+
+    {% if current_page.has_previous %}
+        {% if not current_page.previous_page_number == 1 %}
+            <a href="{{ url }}1" class="pr-paginator__element">1</a> 
+        {% endif %} 
+            <a class="pr-paginator__element" href="{{ url }}{{ current_page.previous_page_number }}">{{ current_page.previous_page_number }}</a>
+    {% endif %}
+    
+    <span class="pr-paginator__element-inactive">{{ current_page.number }}</span>
+
+    {% if current_page.has_next %}
+        <a class="pr-paginator__element" href="{{ url }}{{current_page.next_page_number}}">{{ current_page.next_page_number }}</a> 
+        {% if current_page.next_page_number != pages %}
+            <a class="pr-paginator__element" href="{{ url }}{{ pages }}">{{ pages }}</a>
+        {% endif %}        
+    {% endif %}
+</div>

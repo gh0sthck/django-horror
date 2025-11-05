@@ -5,6 +5,7 @@ from django.views import View
 from django.views.generic import FormView, DetailView
 from django import forms
 from django.http import Http404
+from django.core.paginator import Paginator
 
 from blog.models import BlogNote
 from users.models import CustomUser
@@ -31,7 +32,13 @@ class ProfileView(DetailView):
     
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx["blog_notes"] = BlogNote.objects.filter(author=self.get_object())
+        paginator = Paginator(BlogNote.objects.filter(author=self.get_object()), 4)
+        current_page = self.request.GET.get("page") if self.request.GET.get("page") else "1"
+        posts_per_page = paginator.get_page(int(current_page))
+        pages_cnt = paginator.num_pages
+        ctx["blog_notes"] = posts_per_page
+        ctx["pages"] = pages_cnt
+        ctx["url"] = "?page="
         return ctx
 
     def post(self, request: HttpRequest, slug):
