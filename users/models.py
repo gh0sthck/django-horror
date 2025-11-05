@@ -6,6 +6,7 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=90, verbose_name="Имя пользователя", unique=True, null=False)
     bio = models.TextField(verbose_name="О себе", max_length=256, blank=True, default="")
     email = models.EmailField(verbose_name="Электронная почта", unique=True)
+    status = models.CharField(verbose_name="Статус", max_length=80, null=True, default="")
     create_date = models.DateTimeField(auto_now_add=True, verbose_name="Дата регистрации")
     birthday = models.DateField(verbose_name="Дата рождения", null=True)
     slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)

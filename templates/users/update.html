@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}
+Редактирование профиля
+{% endblock title %}
+
+{% block main %}
+<div class="profile">
+    <form method="post">
+    {% csrf_token %}
+    <div class="profile__header">
+        <div class="profile__header-image">
+            <img 
+            style="
+                width: 150px; 
+                height: 150px; 
+                border-radius: 100%;
+                {% if user.is_active %}
+                    border: 3px solid #b994d4ff;
+                {% endif %}
+            "
+            src="https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg" 
+            alt="Profile image"/>
+        </div>
+
+        <div class="profile__header-info">
+            {{ form.username }}
+
+            <span style="font-size: 14px;" class="profile__header-regdate">
+                {{ form.birthday }}
+            </span>
+
+            <p style="margin-top: 5px;" class="profile__status-text">
+                {{ form.status }}
+            </p>
+
+            <input type="submit" value="Сохранить">
+
+            <a href="#">Удалить профиль</a>
+
+            
+        </div>
+
+    </div>
+
+    <div class="profile__body">
+       <div class="profile__body-content">
+            {{ form.bio }}
+       </div>  
+
+        <div class="profile__body-navigation">
+            
+        </div>
+    </div>
+        
+    </form>
+</div>
+{% endblock main %}

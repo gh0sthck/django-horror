@@ -40,10 +40,14 @@
             </span>
 
             <p style="margin-top: 5px;" class="profile__status-text">
-                Здесь статус...
+                {{ user.status }}
             </p>
 
             {% if request.user.is_authenticated %}
+                {% if request.user == user %}
+                    <a href="{% url "us_update" user.slug %}">Изменить</a>
+                {% endif %}
+
                 {% if user != request.user %}
                     {% if user not in request.user.blog_following.all %}
                         <form method="post">
@@ -60,6 +64,8 @@
                     {% endif %}
                 {% endif %}
             {% endif %}
+
+           
         </div>
 
     </div>

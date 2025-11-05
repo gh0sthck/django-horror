@@ -2,7 +2,7 @@ from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, DetailView, UpdateView
 from django import forms
 from django.http import Http404
 from django.core.paginator import Paginator
@@ -24,6 +24,13 @@ class RegisterView(FormView):
         new_user.set_password(new_user.password)
         new_user.save()
         return redirect("main")
+    
+
+class ProfileEditView(UpdateView):
+    model = CustomUser
+    template_name = "users/update.html"
+    fields = ["username", "birthday", "status", "bio"]
+    success_url = reverse_lazy("main")
 
 
 class ProfileView(DetailView):
