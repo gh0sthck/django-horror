@@ -36,7 +36,13 @@
 
             <input type="submit" value="Сохранить">
 
-            <a href="#">Удалить профиль</a>
+            <a style="text-decoration: none;     
+            border: 1px solid #875ca7;
+            color: #875ca7;
+            background: none;
+            border-radius:5px;
+            padding: 7px 15px; " 
+            href="{% url "us_delete" form.username.value %}">Удалить профиль</a>
 
             
         </div>

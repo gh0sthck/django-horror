@@ -1,7 +1,7 @@
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 
-from users.views import ProfileEditView, ProfileFavoritesList, ProfileFollowersView, ProfileStoriesView, ProfileSubscribesView, ProfileView, RegisterView
+from users.views import ProfileDeleteView, ProfileEditView, ProfileFavoritesList, ProfileFollowersView, ProfileStoriesView, ProfileSubscribesView, ProfileView, RegisterView
 
 
 urlpatterns = [
@@ -19,4 +19,5 @@ urlpatterns = [
     path("followers/<slug:slug>/", ProfileFollowersView.as_view(), name="follows"),
     path("stories/<slug:slug>/", ProfileStoriesView.as_view(), name="us_stories"),
     path("edit/<slug:slug>/", ProfileEditView.as_view(), name="us_update"),
+    path("delete/<slug:slug>/", ProfileDeleteView.as_view(), name="us_delete"),
 ]

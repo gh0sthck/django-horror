@@ -2,7 +2,7 @@ from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import FormView, DetailView, UpdateView
+from django.views.generic import FormView, DetailView, UpdateView, DeleteView
 from django import forms
 from django.http import Http404
 from django.core.paginator import Paginator
@@ -31,6 +31,13 @@ class ProfileEditView(UpdateView):
     template_name = "users/update.html"
     fields = ["username", "birthday", "status", "bio"]
     success_url = reverse_lazy("main")
+    
+    def get_form_class(self):
+        form: forms.Form = super().get_form_class()
+        for field in form.base_fields.values():
+            field.widget.attrs["class"] = "def_input"
+            field.widget.attrs["placeholder"] = str(field.label)
+        return form
 
 
 class ProfileView(DetailView):
@@ -118,3 +125,10 @@ class ProfileStoriesView(View):
             "stories_len": len(user_stories),
             "stories": user_stories,
         })
+        
+
+class ProfileDeleteView(DeleteView):
+    model = CustomUser
+    success_url = reverse_lazy("main")
+    template_name = "users/delete.html"
+    context_object_name = "del_user"

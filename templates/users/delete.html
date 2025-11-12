@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+Удалить профиль {{ del_user }}
+{% endblock title %}
+
+{% block main %}
+Вы точно хотите удалить аккаунт? Дальнейшая возможность восстановления невозможна.
+
+<form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Удалить">
+</form>
+{% endblock main %}

@@ -87,6 +87,15 @@ body {
   font-variation-settings: "wdth" 100;
 }
 
+/* MISC */
+.def_input {
+  background-color: #201924;
+  color: #827688;
+  border-radius: 5px;
+  padding: 5px 10px;
+}
+
+
 /* BASE */
 header {
   background-color: #0c0213;
