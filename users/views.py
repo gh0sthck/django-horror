@@ -119,11 +119,20 @@ class ProfileStoriesView(View):
         user = CustomUser.objects.get(slug=slug)
         user_stories = Post.objects.filter(author=user)
         
+        pag = Paginator(user_stories, 7)
+        current_page = request.GET.get("page") if request.GET.get("page") else "1"
+        stories = pag.get_page(int(current_page))
+        pages = pag.num_pages
+        url = "?page="
+        
         return render(request, "users/stories.html", {
             "user": user,
             "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
             "stories_len": len(user_stories),
-            "stories": user_stories,
+            "stories": stories,
+            "url": url,
+            "pages": pages,
+            "current_page": current_page,
         })
         
 

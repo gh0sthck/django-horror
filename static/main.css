@@ -441,3 +441,50 @@ ul a {
   background-color: rgb(235, 235, 235);
   color: rgba(30, 23, 36, 0.8);
 }
+
+/* PROFILE-OTHER */
+
+.subscriptions__list-item {
+  display: block;
+  text-decoration: none;
+  color: rgb(235, 235, 235);
+  border-radius: 5px;
+  padding: 10px 5px;
+  width: 50%;
+  margin-top: 10px;
+}
+
+.subscriptions__list-item:hover {
+  transition: .5s;
+  background-color: rgba(175, 175, 175, 0.1);
+}
+
+.pag-prof_elem {
+  border-radius: 100%;
+  height: 18px;
+  width: 18px;
+  font-size: 11px;
+  text-decoration: none;
+  margin-right: 5px;
+  color: rgba(235, 235, 235, 0);
+  text-align: center;
+  border: 1px solid rgb(235, 235, 235);
+}
+
+.pag-prof_elem:hover {
+  transition: .3s;
+    color: rgb(37, 34, 34);
+  background-color: rgb(235, 235, 235);
+}
+
+.pag-prof_inac {
+  margin-right: 5px;
+  border-radius: 100%;
+  font-size: 11px;
+  text-decoration: none;
+  color: rgb(37, 34, 34);
+  text-align: center;
+  height: 18px;
+  width: 18px;
+  background-color: rgb(235, 235, 235);
+}

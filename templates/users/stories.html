@@ -6,11 +6,20 @@
 
 {% block profile_body %}
 <div class="profile__stories">
-    {% for story in stories %}
-        <div class="post">
-            {{ story.title }}
-        </div>
-    {% endfor %}
+    <ul style="margin: 0; padding: 0;">
+        {% for story in stories %}
+            <li>
+                <a href="{% url "specific_post" story.slug %}" class="profile__blog-note">
+                    {{ story.title }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% with current_page=stories url=url pages=pages %}
+        {% include "users/pagination.html" %}
+    {% endwith %}
+    
 </div>
 {% endblock profile_body %}
 

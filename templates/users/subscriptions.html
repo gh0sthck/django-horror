@@ -8,7 +8,9 @@
 <div class="profile__subscriptions">
     <div class="row row-cols-2 subscriptions__list">
         {% for s in subs %}
-            <div class="col subscriptions__list-item"> {{ s }}</div>
+            <a href="{% url "profile" s.username %}" class="col subscriptions__list-item"> 
+                {{ s.username }}
+            </a>
         {% endfor %}
     </div>
 </div>
