@@ -13,14 +13,19 @@
             У {{ user.username }} нет избранных...
         </p>
     {% else %}
-        {% for f_post in favs %}
-            <a  style="display: block;" 
-                href="{% url "specific_post" f_post.slug %}" 
-                class="profile_favorites__post post">
-                <h3>{{ f_post.title }}</h3>
-                <p>{{ f_post.description}}</p>
-            </a>
-        {% endfor %}
+        <ul>
+            {% for f_post in favs %}
+            <li>
+                <a href="{% url "specific_post" f_post.slug %}"  class="profile__blog-note">
+                    {{ f_post.title }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% with url=url current_page=favs pages=num_pages %}
+            {% include "users/pagination.html" %}
+        {% endwith %}
     {% endif %}
     
 </div>

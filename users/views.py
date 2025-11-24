@@ -101,14 +101,25 @@ class ProfileFavoritesList(View):
         user_favs = []
         if user:
             user_favs = [p for p in user.favorites.all()]
+            
+            fv_pagin = Paginator(user_favs, 5)
+            
+            num_pages = fv_pagin.num_pages
+            url = "?page="
+            current_page = request.GET.get("page") if request.GET.get("page") else "1"
+            pg = fv_pagin.get_page(int(current_page))
+            
             return render(
                 request, 
                 "users/favorites.html", 
                 {
-                    "favs": user_favs, 
+                    "favs": pg, 
                     "user": user,
                     "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
-                    "stories_len": len(Post.objects.filter(author=user))
+                    "stories_len": len(Post.objects.filter(author=user)),
+                    "num_pages": num_pages,
+                    "current_page": current_page,
+                    "url": url
                 }
             )
         raise Http404("Такого пользователя не существует")
