@@ -44,8 +44,11 @@
         {% endif %}
 
 
-        <div style="padding: 25px;  margin: 10px 0px;" class="current__post-hader-description">
-            <p>
+        <div style="padding: 25px; display: flex;  margin: 10px 0px;" class="current__post-hader-description">
+            {% if post.cover %}
+                <div style="background-image: url('{{post.cover.url}}'); width: 35%; height: 280px;"></div>
+            {% endif %}
+            <p style="padding: 25px; width: 65%;">
                 {{ post.description }}
             </p>
         </div>

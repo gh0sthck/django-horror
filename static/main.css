@@ -295,10 +295,24 @@ ul a {
 
 .read__body-post {
   background-color: rgba(24, 17, 29, 0.8);
-  padding: 30px 50px;
+  display: flex;
   margin-bottom: 30px;
   border-radius: 5px;
 }
+
+.read__post-img {
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  width: 40%;
+}
+
+.read__post-content {
+    padding: 30px 50px;
+    width: 90%;
+}
+
 
 .read__body-post:hover {
   transition: .5s;
@@ -307,6 +321,10 @@ ul a {
   margin-bottom: 50px;
   cursor: pointer;
 
+}
+
+.read__body-post:hover .read__post-img div { 
+  display: none;
 }
 
 .read__body-post:hover * {
@@ -497,4 +515,12 @@ ul a {
   height: 18px;
   width: 18px;
   background-color: rgb(235, 235, 235);
+}
+
+/* POST */
+
+.current__post-hader-description div {
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 10px;
 }
