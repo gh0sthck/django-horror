@@ -21,7 +21,7 @@
     </div>
 
     <div class="post_editing__form">
-        <form method="post" class="post_editing__form-form">
+        <form method="post" class="post_editing__form-form" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
             <input type="submit" value="Обновить">

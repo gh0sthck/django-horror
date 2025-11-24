@@ -32,10 +32,10 @@
                 <a 
                     href="{% url "specific_post" story.slug %}" 
                     class="main__stories_new_stories-story story col">
-                    <img class="row" src="#" alt="Image here">
+                    <img class="row" src="{{ story.cover.url }}" alt="Image here">
 
                     <div class="story__body row">
-                        <h3>{{ story.title }}</h3>
+                        <h3 style="word-break: break-all;">{{ story.title }}</h3>
                         <p>{{ story.description|truncatechars:"30" }}</p>
                     </div>
                 </a>
@@ -62,7 +62,7 @@
                 <a  
                     href="{% url "specific_note" post.slug %}" 
                     class="main__stories_news-new new col">
-                    <img class="row" src="#" alt="Image here">
+                    <img class="row" src="https://avatars.mds.yandex.net/i?id=2ab4ad8eec1d5a8f48c87579f9ad094b_l-4299853-images-thumbs&n=13" alt="Image here">
 
                     <div class="story__body row">
                         <h3>{{ post.title }}</h3>

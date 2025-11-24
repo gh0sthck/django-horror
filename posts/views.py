@@ -15,7 +15,7 @@ from posts.forms import CommentForm
 
 class MainPage(View):
     def get(self, request: HttpRequest) -> HttpResponse:
-        stories = Post.objects.all()[:5]
+        stories = Post.objects.all()[:4]
         news = BlogNote.objects.filter(is_news=True)[:5]
         return render(request, "posts/main.html", {"stories": stories, "news": news})
 
@@ -100,7 +100,7 @@ class CreatePostView(FormView):
 class UpdatePostView(UpdateView):
     model = Post
     context_object_name = "post"
-    fields = ["title", "text", "description"]
+    fields = ["title", "text", "description", "cover"]
     template_name = "posts/update_post.html"
     success_url = reverse_lazy("main")
 

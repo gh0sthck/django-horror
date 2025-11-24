@@ -176,7 +176,6 @@ ul a {
   margin-right: 10px;
   background-color: #201924;
   border-radius: 10px;
-  
 }
 
 .new {
@@ -206,10 +205,21 @@ ul a {
     color: rgba(24, 17, 29, 0.8);
 }
 
-.story img {
+.story img, .new img {
   display: block;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+
+.story img {
+  height: 260px;
+  object-fit: cover;
+
+}
+
+.new img {
+  height: 260px;  /* 60% */
+  object-fit: cover;
 }
 
 .story__body {

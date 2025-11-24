@@ -6,7 +6,7 @@
 
 {% block main %}
 <div class="post_create">
-    <form method="post" class="post_create__form">
+    <form method="post" class="post_create__form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Отправить">

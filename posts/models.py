@@ -51,6 +51,7 @@ class Post(models.Model):
     updated_date = models.DateField(auto_now_add=True, verbose_name="Дата изменения")
     slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    cover = models.ImageField(verbose_name="Обложка", null=True, blank=True, upload_to="posts")
 
     def __str__(self) -> str:
         return self.title
@@ -60,7 +61,7 @@ class Post(models.Model):
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        return super().save()
+        return super().save(*args, **kwargs)
 
     def get_comments(self) -> list[Comments]:
         return self.comments.all()
