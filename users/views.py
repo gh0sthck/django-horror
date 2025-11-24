@@ -29,7 +29,7 @@ class RegisterView(FormView):
 class ProfileEditView(UpdateView):
     model = CustomUser
     template_name = "users/update.html"
-    fields = ["username", "birthday", "status", "bio"]
+    fields = ["username", "avatar", "birthday", "status", "bio"]
     success_url = reverse_lazy("main")
     
     def get_form_class(self):

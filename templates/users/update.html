@@ -6,7 +6,7 @@
 
 {% block main %}
 <div class="profile">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="profile__header">
         <div class="profile__header-image">
@@ -19,9 +19,11 @@
                     border: 3px solid #b994d4ff;
                 {% endif %}
             "
-            src="https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg" 
+            src="{{ user.avatar.url }}" 
             alt="Profile image"/>
         </div>
+
+        {{ form.avatar }}
 
         <div class="profile__header-info">
             {{ form.username }}

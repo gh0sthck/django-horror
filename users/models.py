@@ -11,6 +11,8 @@ class CustomUser(AbstractUser):
     birthday = models.DateField(verbose_name="Дата рождения", null=True)
     slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)
     
+    avatar = models.ImageField(verbose_name="Аватар", null=True, blank=True, upload_to="users")
+    
     favorites = models.ManyToManyField("posts.Post", verbose_name="Избранное", blank=True)
     blog_following = models.ManyToManyField("CustomUser", verbose_name="Подписки", blank=True)
 

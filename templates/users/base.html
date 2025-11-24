@@ -15,13 +15,17 @@
                 width: 150px; 
                 height: 150px; 
                 border-radius: 100%;
+                object-fit: cover;
                 {% if user.is_active %}
                     border: 3px solid #b994d4ff;
                 {% endif %}
             "
-            src="https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg" 
-            alt="Profile image"/>
+            {% comment %} https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg {% endcomment %}
+            src="{{ user.avatar.url }}" 
+            alt="Profile avatar not found"/>
         </div>
+
+        
 
         <div class="profile__header-info">
             <h1 class="profile__header-title" style="font-size: 25px;">

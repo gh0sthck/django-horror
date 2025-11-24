@@ -15,5 +15,5 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ["username", "email", "birthday", "bio", "password"]
+        fields = ["username", "avatar", "email", "birthday", "bio", "password"]
         widgets = {"password": forms.PasswordInput()} # add date choice in form (?: "birthday": forms.DateInput())

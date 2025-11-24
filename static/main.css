@@ -524,3 +524,23 @@ ul a {
   background-size: cover;
   border-radius: 10px;
 }
+
+.current_post__header-author {
+  display: block;
+
+  border: 1px dashed rgb(42, 31, 49);
+  max-width: 20%;
+  padding: 7px 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: rgb(223, 218, 226);
+  border-radius: 7px;
+  font-size: 17px;
+}
+
+.current_post__header-author:hover {
+  transition: .3s;
+  border: 1px solid rgba(135, 92, 167, 0.2);
+  background-color: rgba(135, 92, 167, 0.2);
+}

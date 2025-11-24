@@ -23,9 +23,15 @@
             {% if post.created_date != post.updated_date %}
             Последнее изменение: {{ post.updated_date }}
             {% endif %}
-            <span class="current_post__header-author">
-                <a href="{% url "profile" post.author.slug %}">{{ post.author.username }}</a>
-            </span>
+                <a class="current_post__header-author" 
+                style="
+
+                " 
+                href="{% url "profile" post.author.slug %}">
+                <img src="{{ post.author.avatar.url }}" alt="Avatar not found" style="border-radius: 100%; width: 40px; height: 40px; margin-right: 10px;">
+
+                    {{ post.author.username }}
+                </a>
         </span>
 
         {% if request.user.is_authenticated %}
@@ -86,8 +92,12 @@
 
                 {% for comment in post.comments.all %}
                 
-                    <div style="border: 2px dashed rgb(24, 17, 29); padding: 15px 45px; border-radius: 10px; margin-bottom: 30px;" class="current_post__comment">
-                        <span class="current_post__comment-user">
+                    <div style="border: 2px dashed rgb(24, 17, 29); padding: 15px 45px; border-radius: 10px; margin-bottom: 30px; display: flex;" class="current_post__comment">
+                        <div style="width: 60px; height: 60px; background-image: url('{{ comment.user.avatar.url }}'); background-size: cover; background-position: center; border-radius: 100%; margin-right: 15px; margin-top: 3px;" class="post__comment-image">
+
+                        </div>
+                        <div class="post__comment-content">
+                         <span class="current_post__comment-user">
                             <a style="font-weight: 600; font-size: 18px; text-decoration: none;" href="{% url "profile" comment.user.slug %}" >{{ comment.user.username }}</a>
                             <span style="color: #827688;  font-size: 14px;" class="current_post__comment-pubdate">
                                 {{ comment.date }}
@@ -100,6 +110,7 @@
                         {% if request.user.is_authenticated %}
                             <a href="#">Ответить</a>                
                         {% endif %}
+                       </div>
                     </div>
 
                 {% endfor %}
