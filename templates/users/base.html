@@ -20,8 +20,12 @@
                     border: 3px solid #b994d4ff;
                 {% endif %}
             "
-            {% comment %} https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg {% endcomment %}
-            src="{{ user.avatar.url }}" 
+            {% if user.avatar %}
+            src="{{ user.avatar.url }}"
+            {% else %}
+            src="https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg" 
+            {% endif %}
+            
             alt="Profile avatar not found"/>
         </div>
 

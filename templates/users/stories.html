@@ -8,8 +8,7 @@
 <div class="profile__stories">
     <ul style="margin: 0; padding: 0;">
         {% for story in stories %}
-            <li>
-                <a href="{% url "specific_post" story.slug %}" class="profile__blog-note">
+                <a href="{% url "specific_post" story.slug %}" class="profile__blog-note profile__stories-story">
                     {{ story.title }}
                 </a>
             </li>

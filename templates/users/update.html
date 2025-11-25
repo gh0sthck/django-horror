@@ -9,21 +9,19 @@
     <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="profile__header">
-        <div class="profile__header-image">
-            <img 
-            style="
+        <div class="profile__header-image" style="
                 width: 150px; 
                 height: 150px; 
                 border-radius: 100%;
-                {% if user.is_active %}
-                    border: 3px solid #b994d4ff;
-                {% endif %}
-            "
-            src="{{ user.avatar.url }}" 
-            alt="Profile image"/>
-        </div>
+                background-image: url('{{user.avatar.url}}');
+                background-size: cover;
+                background-position: center;
 
-        {{ form.avatar }}
+            ">
+            <div class="wrapper-avatar">
+                {{ form.avatar }}
+            </div>
+        </div>
 
         <div class="profile__header-info">
             {{ form.username }}
@@ -38,14 +36,7 @@
 
             <input type="submit" value="Сохранить">
 
-            <a style="text-decoration: none;     
-            border: 1px solid #875ca7;
-            color: #875ca7;
-            background: none;
-            border-radius:5px;
-            padding: 7px 15px; " 
-            href="{% url "us_delete" form.username.value %}">Удалить профиль</a>
-
+            <a class="link_purple" href="{% url "us_delete" form.username.value %}">Удалить профиль</a>
             
         </div>
 

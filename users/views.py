@@ -24,7 +24,9 @@ class RegisterView(FormView):
         new_user.set_password(new_user.password)
         new_user.save()
         return redirect("main")
-    
+
+
+
 
 class ProfileEditView(UpdateView):
     model = CustomUser
@@ -37,6 +39,9 @@ class ProfileEditView(UpdateView):
         for field in form.base_fields.values():
             field.widget.attrs["class"] = "def_input"
             field.widget.attrs["placeholder"] = str(field.label)
+            if isinstance(field.widget, forms.widgets.ClearableFileInput):
+                field.widget = forms.FileInput()
+                field.widget.attrs["class"] = "avatar_input"
         return form
 
 
