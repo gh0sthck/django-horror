@@ -23,7 +23,7 @@
                         <a class="profile__blog-note" 
                         href="{% url "specific_note" note.slug %}" 
                         class="profil__blog-note">
-                            {{ note.title }}
+                            {{ note.title }} {% if note.is_news %} <span style="color: #bf97f5ff; font-size: 12px;">[Новость]</span> {% endif %}
                             <br>
                             {{ note.pubdate }}
                         </a>

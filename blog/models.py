@@ -15,6 +15,7 @@ class BlogNote(models.Model):
     # TODO: tags
     # TODO: likes
     # TODO: view
+    cover = models.ImageField(verbose_name="Обложка", upload_to="news", null=True, blank=True)
 
     def __repr__(self) -> str:
         return f"<BlogNote: {self.title}>"

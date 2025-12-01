@@ -33,7 +33,7 @@ class NoteView(DetailView):
 
 class EditNoteView(UpdateView):
     model = BlogNote
-    fields = ["title", "text", "is_news"]
+    fields = ["title", "cover", "text", "is_news"]
     template_name = "blog/edit_note.html"
     success_url = reverse_lazy("main")
 

@@ -55,8 +55,9 @@ textarea {
   width: 100%;
   background-color: rgba(24, 17, 29, 0.8); 
   padding: 15px; 
-  height: 70px;
+
   border-radius: 5px;
+  resize: none;
   color: #827688;
 }
 
@@ -201,7 +202,7 @@ ul a {
   flex-direction: column;
   width: 210px;
   margin-right: 10px;
-  background-color: #201924;
+  background-color: rgba(24, 17, 29, 0.8);
   border-radius: 10px;
 }
 
@@ -571,4 +572,47 @@ ul a {
   transition: .3s;
   border: 1px solid rgba(135, 92, 167, 0.2);
   background-color: rgba(135, 92, 167, 0.2);
+}
+
+/* BLOG */
+
+.blog__note {
+  border-radius: 5px;
+  background-position: center;
+  background-size: cover;
+  height: 130px;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  margin: 40px 0px;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.wrapper-content {
+  width: 100%;
+}
+
+.blog__note:hover {
+  transition: .3s;
+  height: 190px;
+  background-image: none !important;
+  background-color: rgb(235, 235, 235) !important;
+}
+
+.blog__note:hover .wrapper-content * {
+  color: #0c0213;
+}
+
+.wrapper {
+  background-color: rgba(0, 0, 0, .3); 
+  width: 100%; 
+  height: 130px; 
+  display: flex;
+  padding: 20px;
+  align-items: center;
+}
+
+.blog__note:hover .wrapper {
+  background-color: rgba(0, 0, 0, 0);
 }

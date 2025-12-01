@@ -42,6 +42,12 @@ class ProfileEditView(UpdateView):
             if isinstance(field.widget, forms.widgets.ClearableFileInput):
                 field.widget = forms.FileInput()
                 field.widget.attrs["class"] = "avatar_input"
+            if isinstance(field.widget, forms.widgets.Textarea):
+                field.widget.attrs["style"] = "height: 220px;"
+            if isinstance(field.widget, forms.widgets.DateInput):
+                print(field.widget.__dict__, dir(field.widget))
+                field.widget.input_type = "date"
+                
         return form
 
 
