@@ -212,7 +212,7 @@ ul a {
     flex-direction: column;
     width: 210px;
     margin-right: 10px;
-    background-color: #201924;
+    background-color: rgba(24, 17, 29, 0.8);
     border-radius: 10px;
 }
 
@@ -615,4 +615,47 @@ ul a {
 
 .blog__note:hover .wrapper {
   background-color: rgba(0, 0, 0, 0);
+}
+
+.note__header {
+  background-position: center;
+  background-size: cover;
+  height: 350px;
+  width: 100%;
+
+}
+
+.note__header-wrapper {
+  background-color: rgba(0, 0, 0, 0.6); 
+  width: 100%; 
+  height: 350px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.note__header-info {
+  display: flex;
+  justify-content: center;
+
+}
+
+.note__header-info a {
+      color: #875ca7;
+}
+
+.note__header-info * {
+  margin-right: 15px;
+  color: #ebebeb;
+  text-decoration: none;
+}
+
+.note__body {
+  margin-top: 30px;
+  max-width: 100%;
+}
+
+.note__body p {
+  line-height: 33px;
 }

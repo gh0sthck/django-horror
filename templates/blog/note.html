@@ -4,32 +4,38 @@
 {{ note.title }}
 {% endblock title %}
 
+{% block container_outer %}
+     <div class="note__header" style="background-image: url('{{note.cover.url}}');" >
+        <div class="note__header-wrapper">
+            
+            <div class="note__header-content">
+                <h1 class="note__header-title">
+                    {{ note.title }}
+                </h1>
+
+                <div class="note__header-info">
+                    {% if note.author == request.user %}
+                        <a href="{% url "edit_note" note.slug %}" class="note__header-edit">Изменить</a>
+                        <a href="{% url "delete_note" note.slug %}" class="note__header-delete">Удалить</a>
+                    {% endif %}
+
+                    <span class="note__header-author">
+                        <a href="{% url "profile" note.author.slug %}" style="color: #ebebeb">{{ note.author }}</a>
+                    </span>
+
+                    <span class="note__header-pubdate">
+                        {{ note.pubdate }}
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div> 
+{% endblock container_outer %}
+
 {% block main %}
 <div class="note">
-     <div class="note__header">
-        <h1 class="note__header-title">
-            {{ note.title }}
-        </h1>
-
-        {% if note.author == request.user %}
-            <a href="{% url "edit_note" note.slug %}" class="note__header-edit">Изменить</a>
-            <a href="{% url "delete_note" note.slug %}" class="note__header-delete">Удалить</a>
-        {% endif %}
-
-        <span class="note__header-author">
-            {{ note.author }}
-        </span>
-
-        <span class="note__header-pubdate">
-            {{ note.pubdate }}
-        </span>
-
-        
-        
-    </div> 
-
     <div class="note__body">
-    
         <p class="text note__body-text">
             {{ note.text }}
         </p>
