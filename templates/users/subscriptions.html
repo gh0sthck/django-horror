@@ -9,7 +9,8 @@
     <div class="row row-cols-2 subscriptions__list">
         {% for s in subs %}
             <a href="{% url "profile" s.username %}" class="col subscriptions__list-item"> 
-                {{ s.username }}
+                <img src="{{ s.avatar.url }}" style="border-radius: 100%; width: 46px; height: 45px; margin-right: 10px;" alt="">
+                <span>{{ s.username }}</span>
             </a>
         {% endfor %}
     </div>
