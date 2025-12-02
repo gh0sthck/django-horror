@@ -6,10 +6,15 @@
 
 
 {% block main %}
-<h1>Вход</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Вход">
-</form>
+<div class="register">
+    <div class="register__container">
+        <h2>Вход</h2>
+
+        <form style="display: flex; flex-direction: column;" method="post" enctype="multipart/form-data">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <input style="align-self: center;" type="submit" value="Войти">
+        </form>
+    </div>    
+</div>
 {% endblock main %}

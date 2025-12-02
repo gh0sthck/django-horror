@@ -7,6 +7,7 @@ from django.views.generic import FormView, DetailView, UpdateView, DeleteView
 from django import forms
 from django.http import Http404
 from django.core.paginator import Paginator
+from django.contrib.auth.views import LoginView
 
 from blog.models import BlogNote
 from posts.models import Post
@@ -14,6 +15,17 @@ from users.models import CustomUser
 
 from .forms import RegisterForm
 
+
+class CustomLoginView(LoginView):
+    def get_form_class(self):
+        form: forms.Form = super().get_form_class()
+        for field in form.base_fields.values():
+            if isinstance(field.widget, forms.widgets.TextInput):
+                field.widget.attrs["placeholder"] = "Имя пользователя"
+            else:
+                field.widget.attrs["placeholder"] = "Пароль"
+            field.label = ""
+        return form
 
 class RegisterView(FormView):
     template_name = "users/register.html"
