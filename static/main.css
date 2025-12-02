@@ -659,3 +659,60 @@ ul a {
 .note__body p {
   line-height: 33px;
 }
+
+/* REGISTER-LOGIN */
+
+.register {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.register h2 {
+  text-align: center;
+}
+
+.register__container {
+  width: 700px;
+}
+
+.register p input, p textarea {
+  border: 1px dashed #875ca7;
+  padding: 10px 20px;
+  background-color: rgba(24, 17, 29, 0.8);
+  color: #ebebeb;
+  border-radius: 5px;
+  font-family: "Noto Serif", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.register p input:focus, p textarea:focus {
+  transition: .2s;
+  border: 1px solid #875ca7;
+    padding: 15px 25px;
+}
+
+
+
+.register p input::placeholder {
+  color: #827688;
+}
+
+.errorlist {
+  background-color: rgb(161, 93, 93, .5);
+  border-radius: 5px;
+  border: 1.5px solid rgb(214, 79, 79);
+  padding: 5px 15px;
+  
+}
+
+.errorlist li {
+  color: rgb(214, 79, 79);
+  font-size: 15px;
+}

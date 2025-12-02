@@ -1,3 +1,4 @@
+import copy
 from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -25,7 +26,11 @@ class RegisterView(FormView):
         new_user.save()
         return redirect("main")
 
-
+    def get_form_class(self):
+        form: forms.Form = super().get_form_class()
+        for field in form.base_fields.values():
+            field.label = ""
+        return form
 
 
 class ProfileEditView(UpdateView):
@@ -45,7 +50,6 @@ class ProfileEditView(UpdateView):
             if isinstance(field.widget, forms.widgets.Textarea):
                 field.widget.attrs["style"] = "height: 220px;"
             if isinstance(field.widget, forms.widgets.DateInput):
-                print(field.widget.__dict__, dir(field.widget))
                 field.widget.input_type = "date"
                 
         return form
