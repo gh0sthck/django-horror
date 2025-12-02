@@ -19,9 +19,10 @@
                         <a href="{% url "delete_note" note.slug %}" class="note__header-delete">Удалить</a>
                     {% endif %}
 
-                    <span class="note__header-author">
-                        <a href="{% url "profile" note.author.slug %}" style="color: #ebebeb">{{ note.author }}</a>
-                    </span>
+                    <a href="{% url "profile" note.author.slug %}" style="color: #ebebeb; margin-right: 6px;" class="note__header-author">
+                        <img style="border-radius: 100%; width: 30px; height: 29px; margin-right: 5px;" src="{{ note.author.avatar.url }}" alt="Avatar">
+                        {{ note.author }}
+                    </a>
 
                     <span class="note__header-pubdate">
                         {{ note.pubdate }}

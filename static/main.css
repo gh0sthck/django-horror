@@ -638,17 +638,26 @@ ul a {
 .note__header-info {
   display: flex;
   justify-content: center;
-
+  align-items: center;
 }
 
 .note__header-info a {
-      color: #875ca7;
+  color: #875ca7;
 }
 
 .note__header-info * {
   margin-right: 15px;
   color: #ebebeb;
   text-decoration: none;
+}
+
+.note__header-author {
+  border: 1px dashed #875ca7;
+  margin-right: 5px;
+  padding: 3px 5px;
+  background-color: rgba(76, 52, 94, 0.5);
+  border-radius: 10px;
+
 }
 
 .note__body {
@@ -676,7 +685,6 @@ ul a {
 
 .register__container {
   width: 700px;
-  /* border: 1px solid red; */
   padding: 30px 50px;
   border-radius: 20px;
   -webkit-box-shadow: -2px 3px 45px 11px rgba(135, 92, 167, 0.2);
