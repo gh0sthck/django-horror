@@ -5,15 +5,44 @@
 {% endblock title %}
 
 {% block main %}
-<div class="blog_edit">
-    {% if not request.user.is_staff %}
-        {{ form.delete_news }}
-    {% endif %}
-    
-    <form method="post" class="blog_edit__form" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Подтвердить">
+    <div class="blog_edit" style="margin-top: 20px;">
+        <form method="post" class="blog_edit__form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="note__header-edit" style="
+            {% if is_editing %}
+            background-image: url('{{note.cover.url}}'); 
+            background-size: cover;
+            background-position: center; 
+            {% endif %}
+            border-radius: 5px;" >
+
+                <div class="wrapper" style="background-color: rgba(0, 0, 0, 0.5)">
+                    {{ form.cover }}
+                </div>
+            </div> 
+
+            <div style="margin-bottom: 20px; margin-top: 20px;">
+                {{ form.title }}
+            </div>
+
+            <div style="margin-top: 20px; margin-bottom: 20px;">
+                {{ form.text }}
+            </div>
+
+            {% if request.user.is_staff %}
+                <span style="margin-bottom: 20px;">
+                    Новость {{ form.is_news }}
+                </span>
+            {% endif %}
+        
+            {% comment %} ??? {% endcomment %}
+            {% if not request.user.is_staff %}
+                {{ form.delete_news }}
+            {% endif %}
+
+            <br>
+            <input type="submit" value="Подтвердить">
     </form>
 </div>
 {% endblock main %}

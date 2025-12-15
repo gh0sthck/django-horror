@@ -1,3 +1,4 @@
+from django import forms
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -34,9 +35,24 @@ class NoteView(DetailView):
 class EditNoteView(UpdateView):
     model = BlogNote
     fields = ["title", "cover", "text", "is_news"]
+    context_object_name = "note"
     template_name = "blog/edit_note.html"
     success_url = reverse_lazy("main")
-
+    
+    def get_form_class(self):
+        form: forms.Form = super().get_form_class()
+        for field in form.base_fields.values():
+            field.widget.attrs["placeholder"] = field.label
+            if isinstance(field.widget, forms.widgets.ClearableFileInput):
+                field.widget = forms.widgets.FileInput()
+            else:
+                field.widget.attrs["class"] = "post_create_input" 
+        return form
+    
+    def get_context_data(self, **kwargs):
+        cd: dict = super().get_context_data(**kwargs)
+        cd["is_editing"] = True
+        return cd
 
 class CreateNoteView(FormView):
     form = CreateNoteForm
@@ -49,6 +65,17 @@ class CreateNoteView(FormView):
         data.author = self.request.user
         data.save()
         return super().form_valid(form)
+    
+    def get_form_class(self):
+        form: forms.Form = super().get_form_class()
+        for field in form.base_fields.values():
+            field.widget.attrs["placeholder"] = field.label
+            if isinstance(field.widget, forms.widgets.ClearableFileInput):
+                field.widget = forms.widgets.FileInput()
+            else:
+                field.widget.attrs["class"] = "post_create_input" 
+        return form
+
         
 
 

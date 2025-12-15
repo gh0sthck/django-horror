@@ -15,7 +15,7 @@
 
                 <div class="note__header-info">
                     {% if note.author == request.user %}
-                        <a href="{% url "edit_note" note.slug %}" class="note__header-edit">Изменить</a>
+                        <a href="{% url "edit_note" note.slug %}" class="note__header-editt">Изменить</a>
                         <a href="{% url "delete_note" note.slug %}" class="note__header-delete">Удалить</a>
                     {% endif %}
 

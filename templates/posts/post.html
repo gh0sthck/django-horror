@@ -91,7 +91,7 @@
             {% if post.comments.all %} 
 
                 {% for comment in post.comments.all %}
-                
+
                     <div style="border: 2px dashed rgb(24, 17, 29); padding: 15px 45px; border-radius: 10px; margin-bottom: 30px; display: flex;" class="current_post__comment">
                         <div style="width: 60px; height: 60px; background-image: url('{{ comment.user.avatar.url }}'); background-size: cover; background-position: center; border-radius: 100%; margin-right: 15px; margin-top: 3px;" class="post__comment-image">
 

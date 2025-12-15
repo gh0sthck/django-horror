@@ -95,15 +95,40 @@ class CreatePostView(FormView):
         post.save()
         return redirect("specific_post", slug=post.slug)
 
+    def get_form_class(self):
+        form: forms.Form = super().get_form_class()
+        for field in form.base_fields.values():
+            field.widget.attrs["placeholder"] = field.label
+            if isinstance(field.widget, forms.widgets.ClearableFileInput):
+                field.widget = forms.widgets.FileInput()
+            else:
+                field.widget.attrs["class"] = "post_create_input" 
+            
+        return form
+
 
 # login required (!)
 class UpdatePostView(UpdateView):
     model = Post
     context_object_name = "post"
     fields = ["title", "text", "description", "cover"]
-    template_name = "posts/update_post.html"
+    template_name = "posts/create_post.html"
     success_url = reverse_lazy("main")
-
+    
+    def get_form_class(self):
+        form: forms.Form = super().get_form_class()
+        for field in form.base_fields.values():
+            field.widget.attrs["placeholder"] = field.label
+            if isinstance(field.widget, forms.widgets.ClearableFileInput):
+                field.widget = forms.widgets.FileInput()
+            else:
+                field.widget.attrs["class"] = "post_create_input" 
+        return form
+    
+    def get_context_data(self, **kwargs):
+        cd: dict = super().get_context_data(**kwargs)
+        cd["is_editing"] = True
+        return cd
 
 # login required (!)
 class DeletePostView(DeleteView):

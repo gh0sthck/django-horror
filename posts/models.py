@@ -1,8 +1,14 @@
+from dataclasses import dataclass
+from typing import Optional
 from django.db import models
 from slugify import slugify
 
 from users.models import CustomUser
 
+@dataclass
+class CommentModel:
+    comment: str
+    answer: Optional["CommentModel"] = None
 
 class Comments(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор комментария")
@@ -10,6 +16,19 @@ class Comments(models.Model):
     answer = models.ManyToManyField("Comments", blank=True) # (?) to comment threads
     # TODO: likes to commnt (redis?)
     date = models.DateTimeField(verbose_name="Дата комменатрия", auto_now_add=True)
+
+    # def get_answers(self, ls=None, result:list=[]):
+    #     if not ls:
+    #         ls = Comments.objects.filter(answer=self)
+    #     for comment in ls:
+    #         answers_to_comment = Comments.objects.filter(answer=comment)
+    #         print("curr commnt", comment)
+    #         if len(answers_to_comment) == 0:
+    #             print("comment lst", comment)
+    #             return 
+    #         else:
+    #             self.get_answers(answers_to_comment)
+    #         return result
 
     def __repr__(self) -> str:
         return f"<Comment: {self.user.username}: {self.comment[:20]}>"

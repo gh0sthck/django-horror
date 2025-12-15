@@ -8,8 +8,58 @@
 <div class="post_create">
     <form method="post" class="post_create__form" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Отправить">
+
+        {% if is_editing %}
+            <div class="post_edit_block" style="margin-top: 15px; margin-bottom: 15px;">   
+                <span class="post_editing__header-date">
+                    Дата создания: {{ post.created_date }}
+                </span>
+                <br>
+                <span class="post_editing__header-date">
+                    Последняя дата изменения: {{ post.updated_date }}
+                </span>
+                <br>
+                <span class="post_editing__header-author">
+                    Автор: {{ post.author }}
+                </span>
+                <br>
+                <a href="{% url "delete_post" post.slug %}">Удалить</a>
+            </div>
+        {% endif %}
+
+        <h2 class="current_post__header-title">
+            {{ form.title }}
+        </h2>
+
+        <div style="padding: 25px 0px; display: flex; margin: 10px 0px;" class="current__post-hader-description">
+            <div style="
+            height: 100%; 
+            width: 50%; 
+            padding: 0; 
+            {% if is_editing %} 
+            background-image: url('{{ post.cover.url }}');
+            background-size: cover;
+            background-position: center; 
+            {% endif %}" 
+            class="post_create_input current__post-cover">
+            
+                <div class="wrapper" style="height: 100%; width: 100%; background: rgba(0, 0, 0, 0.3)">
+                    {{ form.cover }} 
+                </div>
+                
+            </div>
+
+            <span style="width: 50%; margin-left: 10px;">
+                {{ form.description }}
+            </span>
+        </div>
+        
+
+        <div class="create_post__text">
+            {{ form.text }}
+        </div>
+
+        <input type="submit" value="{% if is_editing %} Подтвердить {% else %} Опубликовать {% endif %}">
     </form>
 </div>
 {% endblock main %}

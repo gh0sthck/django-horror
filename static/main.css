@@ -85,6 +85,9 @@ body {
   font-weight: 4000;
   font-style: normal;
   font-size: 18px;
+  overflow-wrap: anywhere;
+  white-space: initial;
+  max-width: 100%;
   font-variation-settings: "wdth" 100;
 }
 
@@ -574,6 +577,59 @@ ul a {
   background-color: rgba(135, 92, 167, 0.2);
 }
 
+.post_create {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.post_create form {
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.post_create input[type=submit] {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.post_create #id_description {
+  height: 100%;
+}
+
+.post_create #id_cover {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  opacity: 0;
+}
+
+.current__post-cover .wrapper::before {
+  content: "Изменить";
+  position:relative;
+  left: 43%;
+  font-size: 18px;
+}
+
+.current__post-cover .wrapper {
+  opacity: 0;
+}
+
+.current__post-cover .wrapper:hover {
+  opacity: 100;
+}
+
+.post_create_input {
+  border: 2px dashed #473e4e;
+  padding: 15px 35px;
+  background-color: rgba(24, 17, 29, 0.8);
+  color: #ebebeb;
+  border-radius: 5px;
+}
+
 /* BLOG */
 
 .blog__note {
@@ -635,6 +691,35 @@ ul a {
   justify-content: center;
 }
 
+.note__header-edit {
+  background-color: rgb(24, 17, 29);
+  height: 350px;
+}
+
+.note__header-edit .wrapper {
+  opacity: 0;
+    height: 350px;
+}
+
+.note__header-edit .wrapper::before {
+  content: "Изменить";
+  font-size: 18px;
+  position: relative;
+  left: 50%;
+}
+
+.note__header-edit .wrapper input {
+  opacity: 0;
+  width: 100%;
+  height: 350px;
+}
+
+.note__header-edit .wrapper:hover {
+  opacity: 1;
+}
+
+
+
 .note__header-info {
   display: flex;
   justify-content: center;
@@ -693,7 +778,7 @@ ul a {
   margin-bottom: 20px;
 }
 
-.register p input, p textarea {
+.register p input, .register p textarea {
   border: 1px dashed #875ca7;
   padding: 10px 20px;
   background-color: rgba(24, 17, 29, 0.8);
@@ -711,7 +796,7 @@ ul a {
   height: 80px;
 }
 
-.register p input:focus, p textarea:focus {
+.register p input:focus, .register p textarea:focus {
   transition: .2s;
   border: 1px solid #875ca7;
     padding: 15px 25px;
