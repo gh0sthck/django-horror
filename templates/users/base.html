@@ -23,7 +23,8 @@
             {% if user.avatar %}
             src="{{ user.avatar.url }}"
             {% else %}
-            src="https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg" 
+            {% comment %} src="https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg"  {% endcomment %}
+            src="{{ user.get_avatar }}"
             {% endif %}
             
             alt="Profile avatar not found"/>

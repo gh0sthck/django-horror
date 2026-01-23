@@ -20,7 +20,7 @@
                     {% endif %}
 
                     <a href="{% url "profile" note.author.slug %}" style="color: #ebebeb; margin-right: 6px;" class="note__header-author">
-                        <img style="border-radius: 100%; width: 30px; height: 29px; margin-right: 5px;" src="{{ note.author.avatar.url }}" alt="Avatar">
+                        <img style="border-radius: 100%; width: 30px; height: 29px; margin-right: 5px;" src="{{ note.author.get_avatar }}" alt="Avatar">
                         {{ note.author }}
                     </a>
 

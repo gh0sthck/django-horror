@@ -21,6 +21,13 @@ class CustomUser(AbstractUser):
     def __repr__(self) -> str:
         return f"<CustomUser: {self.username}>"
 
+    def get_avatar(self):
+        try:  
+            avatar = self.avatar.url
+        except ValueError:
+            avatar = "/static/defaults/avatar.png"
+        return avatar
+
     def __str__(self) -> str:
         return self.username
     
