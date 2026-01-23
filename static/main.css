@@ -91,6 +91,15 @@ body {
   font-variation-settings: "wdth" 100;
 }
 
+.text * {
+  font-family: "Noto Serif", serif;
+  font-optical-sizing: auto;
+  overflow-wrap: anywhere;
+  white-space: initial;
+  max-width: 100%;
+  font-variation-settings: "wdth" 100;
+}
+
 /* MISC */
 .def_input {
   background-color: #201924;

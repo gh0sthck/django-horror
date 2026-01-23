@@ -3,7 +3,7 @@ from django.http import HttpRequest
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import View, DetailView, FormView, UpdateView, DeleteView
-from django.db.models import QuerySet
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 from blog.forms import CreateNoteForm
 from blog.models import BlogNote
@@ -46,7 +46,8 @@ class EditNoteView(UpdateView):
             if isinstance(field.widget, forms.widgets.ClearableFileInput):
                 field.widget = forms.widgets.FileInput()
             else:
-                field.widget.attrs["class"] = "post_create_input" 
+                if not isinstance(field.widget, CKEditor5Widget):
+                    field.widget.attrs["class"] = "post_create_input" 
         return form
     
     def get_context_data(self, **kwargs):
@@ -73,7 +74,8 @@ class CreateNoteView(FormView):
             if isinstance(field.widget, forms.widgets.ClearableFileInput):
                 field.widget = forms.widgets.FileInput()
             else:
-                field.widget.attrs["class"] = "post_create_input" 
+                if not isinstance(field.widget, CKEditor5Widget):
+                    field.widget.attrs["class"] = "post_create_input" 
         return form
 
         

@@ -4,6 +4,10 @@
 Добавить запись в блог
 {% endblock title %}
 
+{% block header %}
+    {{ form.media }}
+{% endblock header %}
+
 {% block main %}
     <div class="blog_edit" style="margin-top: 20px;">
         <form method="post" class="blog_edit__form" enctype="multipart/form-data">

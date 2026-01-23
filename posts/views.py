@@ -5,6 +5,7 @@ from django.views import View
 from django.views.generic import FormView, DetailView, UpdateView, DeleteView
 from django import forms
 from django.core.paginator import Paginator
+from django_ckeditor_5.widgets import CKEditor5Widget
 
 from blog.models import BlogNote
 from posts.forms import CreatePostForm
@@ -102,7 +103,8 @@ class CreatePostView(FormView):
             if isinstance(field.widget, forms.widgets.ClearableFileInput):
                 field.widget = forms.widgets.FileInput()
             else:
-                field.widget.attrs["class"] = "post_create_input" 
+                if not isinstance(field.widget, CKEditor5Widget):
+                    field.widget.attrs["class"] = "post_create_input" 
             
         return form
 
@@ -122,7 +124,8 @@ class UpdatePostView(UpdateView):
             if isinstance(field.widget, forms.widgets.ClearableFileInput):
                 field.widget = forms.widgets.FileInput()
             else:
-                field.widget.attrs["class"] = "post_create_input" 
+                if not isinstance(field.widget, CKEditor5Widget):
+                    field.widget.attrs["class"] = "post_create_input" 
         return form
     
     def get_context_data(self, **kwargs):

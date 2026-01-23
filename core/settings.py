@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_ckeditor_5",
     "users.apps.UsersConfig",
     "posts.apps.PostsConfig",
     "blog.apps.BlogConfig",
@@ -126,6 +127,21 @@ STATICFILES_DIRS = [BASE_DIR / STATIC_URL]
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / MEDIA_URL
 MEDIAFILS_DIRS = [MEDIA_ROOT]
+
+CKEDITOR_5_CONFIGS = {
+    'default': {
+        'toolbar': {
+            'items': ['heading', '|', 'bold', 'italic', 'link',
+                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+                    }
+
+    },
+}
+
+CKEDITOR_5_CUSTOM_CSS = "/static/editor.css" 
+
+
+CKEDITOR_5_FILE_UPLOAD_PERMISSION = "authenticated"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

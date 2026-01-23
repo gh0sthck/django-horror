@@ -4,6 +4,10 @@
 Редактирование {{ post.title }}
 {% endblock title %}
 
+{% block header %}
+    {{ form.media }}
+{% endblock header %}
+
 {% block main %}
 <div class="post_editing">
     <div class="post_editing__header">

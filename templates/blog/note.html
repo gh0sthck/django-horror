@@ -37,9 +37,9 @@
 {% block main %}
 <div class="note">
     <div class="note__body">
-        <p class="text note__body-text">
-            {{ note.text }}
-        </p>
+        <div class="text note__body-text">
+            {{ note.text|safe }}
+        </div>
     </div>
 </div>
 {% endblock main %}

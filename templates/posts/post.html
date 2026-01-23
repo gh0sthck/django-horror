@@ -62,9 +62,9 @@
     </div>
 
     <div class="current_post__post">
-        <p class="text current_post__post-text">
-            {{ post.text }}
-        </p>
+        <div class="text current_post__post-text">
+            {{ post.text|safe }}
+        </div>
     </div>
 
     <div style="margin-top: 50px;" class="current_post__comments">

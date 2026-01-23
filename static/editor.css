@@ -1,0 +1,52 @@
+:root {
+    /* Переопределение цветов темы */
+    --ck-color-focus-border: #473e4e;
+    --ck-color-base-background: rgba(24, 17, 29, 0.8);
+    --ck-color-base-color: #ebebeb;
+    --ck-color-base-border: #473e4e;
+    /* Переопределение стилей шрифта контента */
+    --ck-content-font-family: "Noto Serif", serif;;
+    --ck-content-font-size: 18px;
+    --ck-content-line-height: 1.8;
+}
+
+.ck.ck-editor {
+    border-radius: 5px;
+    border: 2px dashed #473e4e;
+    overflow: hidden;
+}
+
+.ck.ck-button {
+    background-color: #352e3a;
+    color: #dbd0d0;
+}
+
+.ck.ck-list__item .ck.ck-button span {
+    color: #dbd0d0;
+}
+
+.ck.ck-list__item .ck.ck-button:hover span {
+    color: #352e3a;
+}
+
+.ck.ck-button:hover {
+    color: #352e3a;
+}
+
+
+.ck.ck-toolbar, .ck.ck-content:focus {
+    border: none;
+    border-radius: 25px;
+}
+
+.ck.ck-content {
+    color: #ebebeb;
+}
+
+
+/* 
+  border: 2px dashed #473e4e;
+  padding: 15px 35px;
+  background-color: rgba(24, 17, 29, 0.8);
+  color: #ebebeb;
+  border-radius: 5px;

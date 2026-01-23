@@ -4,6 +4,10 @@
 Написание истории
 {% endblock title %}
 
+{% block header %}
+    {{ form.media }}
+{% endblock header %}
+
 {% block main %}
 <div class="post_create">
     <form method="post" class="post_create__form" enctype="multipart/form-data">
