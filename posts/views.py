@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
@@ -148,24 +149,48 @@ class ReadView(View):
         q = None
         categories = Category.objects.all()
         tags = Tag.objects.all()
-        
+        tg = [tag for tag in tags if tag.name in request.GET.getlist("tags")]
+        cats = [cat for cat in categories if cat.name in request.GET.getlist("cat")] 
         
         # Search filter
-        if request.GET.get("q"):
+        """if request.GET.get("q") and tg:
             q = request.GET.get("q")
-            posts = Post.objects.filter(title__contains=q)  # iexact don't work - sqlite issue? change to postgres
-            
+            posts = Post.objects.filter(title__contains=q, tags__in=tg)  # iexact don't work - sqlite issue? change to postgres
+        elif request.GET.get("q"):
+            q = request.GET.get("q")
+            posts = Post.objects.filter(title__contains=q) 
+        else:
+            posts = Post.objects.filter(tags__in=tg) 
+         
         cats = [cat for cat in Category.objects.all() if cat.name in request.GET.getlist("cat")]
 
         if cats:
-            posts = [post for post in posts if post.category in cats]
-        
+            posts = [post for post in posts if post.category in cats] """
        
-        if request.GET.get("q") and cats:
+        if request.GET.get("q") and cats and tg:
+            q = request.GET.get("q")
+            posts = [post for post in Post.objects.filter(title__contains=q, tags__name__in=tg, category__name__in=cats)]
+            url = "?" + "&".join("cat="+c.name for c in cats) + "&".join("tags="+t.name for t in tg) + f"&q={q}" + "&page="
+        elif request.GET.get("q") and cats:
+            q = request.GET.get("q")
+            posts = [post for post in Post.objects.filter(title__contains=q, category__name__in=cats)]
             url = "?" + "&".join("cat="+c.name for c in cats) + f"&q={q}" + "&page="
+        elif request.GET.get("q") and tg:
+            q = request.GET.get("q")
+            posts = [post for post in Post.objects.filter(title__contains=q, tags__name__in=tg)]
+            url = "?" + "&".join("tags="+t.name for t in tg) + f"&q={q}" + "&page="
+        elif tg and cats:
+            posts = [post for post in Post.objects.filter(tags__name__in=tg, category__name__in=cats)]
+            url = "?" + "&".join("cat="+c.name for c in cats) + "&".join("tags="+t.name for t in tg) + "&page="
+        elif tg:
+            posts = [post for post in Post.objects.filter(tags__name__in=tg)] 
+            url = "?" + "&".join("tags="+t.name for t in tg) + "&page="
         elif cats:
+            posts = [post for post in Post.objects.filter(category__name__in=cats)]
             url = "?" + "&".join("cat="+c.name for c in cats) + "&page="
         elif request.GET.get("q"):
+            q = request.GET.get("q")
+            posts = [post for post in Post.objects.filter(title__contains=q)]
             url = f"?q={q}&page="
         else:
             url = "?page="
@@ -173,7 +198,7 @@ class ReadView(View):
         
         all_posts_count = len(posts)
         
-        paginator = Paginator(posts, 10)
+        paginator = Paginator(posts, 6)
         current_page = request.GET.get("page") if request.GET.get("page") else "1"
         posts_per_page = paginator.get_page(int(current_page))
         pages_count = paginator.num_pages

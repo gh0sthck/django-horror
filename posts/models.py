@@ -82,7 +82,6 @@ class Post(models.Model):
     tags = models.ManyToManyField(Tag, verbose_name="Теги", blank=True)
     # TODO: views - redis array
     # TODO: likes - redis array
-    # TODO: tags - many-to-many in orm
     comments = models.ManyToManyField(Comments, verbose_name="Комментарии", blank=True)
     created_date = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     updated_date = models.DateField(auto_now_add=True, verbose_name="Дата изменения")
@@ -95,6 +94,13 @@ class Post(models.Model):
     
     def __repr__(self) -> str:
         return f"<Post: {self.title}>"
+   
+    def get_cover(self):
+        try:  
+            cover = self.cover.url
+        except ValueError:
+            cover = "/static/defaults/avatar.png"
+        return cover
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
