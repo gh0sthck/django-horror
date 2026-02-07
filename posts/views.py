@@ -114,7 +114,7 @@ class CreatePostView(FormView):
 class UpdatePostView(UpdateView):
     model = Post
     context_object_name = "post"
-    fields = ["title", "text", "description", "cover"]
+    fields = ["title", "text", "description", "cover", "category", "tags"]
     template_name = "posts/create_post.html"
     success_url = reverse_lazy("main")
     
