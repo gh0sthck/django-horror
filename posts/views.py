@@ -9,7 +9,7 @@ from django_ckeditor_5.widgets import CKEditor5Widget
 
 from blog.models import BlogNote
 from posts.forms import CreatePostForm
-from posts.models import Category, Post, Comments
+from posts.models import Category, Post, Comments, Tag
 from posts.forms import CommentForm
 
 
@@ -147,6 +147,7 @@ class ReadView(View):
         url = ""
         q = None
         categories = Category.objects.all()
+        tags = Tag.objects.all()
         
         
         # Search filter
@@ -187,5 +188,6 @@ class ReadView(View):
                 "pages": pages_count, 
                 "categories": categories,
                 "q": q,
+                "tags": tags,
             }
         )

@@ -286,8 +286,7 @@ ul a {
 }
 
 .paginator__element {
-  border: 1px solid #875ca7;
-  
+  border: 1px solid #875ca7; 
   border-radius: 100%;
   text-decoration: none;
   padding: 7px 15px;
@@ -668,6 +667,38 @@ ul a {
 .blog__note:hover .wrapper-content * {
   color: #0c0213;
 }
+
+.dropdown-btn {
+    background-color: #875ca7;
+    cursor: pointer;
+}
+
+.filters-tags-content {
+    display: none;
+    position: absolute;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    background-color: #201924;
+    border-radius: 10px;
+    height: 200px;
+    padding: 7px;
+}
+
+.filters-tags-content option {
+    color: #875ca7;
+    background-color: #19151b;
+    padding: 4px;
+    margin-top: 3px;
+    font-size: 17px;
+    border-radius: 5px;
+}
+
+.read__body-filters-tags:hover .filters-tags-content {
+    display: block;
+}
+
+
 
 .wrapper {
   background-color: rgba(0, 0, 0, .3); 

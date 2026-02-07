@@ -58,12 +58,28 @@ class Category(models.Model):
         ordering = ["-name"]
 
 
+class Tag(models.Model):
+    name = models.CharField(verbose_name="Имя тега", max_length=80, null=False)
+    
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"<Tag: {self.name}>"
+    
+    class Meta:
+        verbose_name = "Тег"
+        verbose_name_plural = "Теги"
+        ordering = ["-name"]
+
+
 class Post(models.Model):
     title = models.CharField(max_length=90, verbose_name="Имя поста", unique=True, null=False)
     # text = models.TextField(verbose_name="Содержание", null=False)  # temporary - field will updated
     text = CKEditor5Field("Содержание")
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор")
     description = models.TextField(max_length=512, verbose_name="Описание", null=True, blank=True)
+    tags = models.ManyToManyField(Tag, verbose_name="Теги", blank=True)
     # TODO: views - redis array
     # TODO: likes - redis array
     # TODO: tags - many-to-many in orm

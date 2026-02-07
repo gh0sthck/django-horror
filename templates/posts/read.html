@@ -58,13 +58,17 @@
 
                 </div>
 
-                <div class="read__body-filters-tags">
-                    <h3>Теги</h3>
+                <div style="display: inline-block; position: relative;" class="read__body-filters-tags">
+                    <h3>Теги ▼</h3>
                     <hr />
-                    <p>В разработке...</p>
+                    <select class="filters-tags-content" name="tags" id="langs" multiple>
+                        {% for tag in tags %}
+                            <option value="{{ tag.name }}">#{{ tag.name }}</option> 
+                        {% endfor %} 
+                    </select>
                 </div>
 
-                <input type="submit" value="Применить фильтры">
+                <input style="display: block;" type="submit" value="Применить фильтры">
             </form>
         </div>
     </div>
