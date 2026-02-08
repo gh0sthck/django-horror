@@ -42,6 +42,8 @@ class RegisterView(FormView):
         form: forms.Form = super().get_form_class()
         for field in form.base_fields.values():
             field.label = ""
+            if isinstance(field.widget, forms.SelectDateWidget):
+                field.widget.attrs["class"] = "date_input"
         return form
 
 
@@ -62,8 +64,10 @@ class ProfileEditView(UpdateView):
             if isinstance(field.widget, forms.widgets.Textarea):
                 field.widget.attrs["style"] = "height: 220px;"
             if isinstance(field.widget, forms.widgets.DateInput):
-                field.widget.input_type = "date"
-                
+                field.widget = forms.SelectDateWidget(years=tuple(y for y in range(1990, 2021)))
+                field.widget.attrs["class"] = "def_input"
+                field.widget.attrs["style"] = "padding: 8px 10px; margin-left: 5px;"
+                        
         return form
 
 

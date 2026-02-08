@@ -136,6 +136,32 @@ body {
   opacity: 1;
 }
 
+.date_input{
+  border: 1px dashed #875ca7;
+  padding: 10px 20px;
+  background-color: rgba(24, 17, 29, 0.8);
+  color: #ebebeb;
+  border-radius: 5px;
+  font-family: "Noto Serif", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 14px;
+  font-style: normal;
+  font-variation-settings: "wdth" 100;
+}
+
+.date_input:focus {
+  transition: .2s;
+  border: 1px solid #875ca7;
+    padding: 15px 25px;
+}
+
+p:has(.date_input) {
+    display: flex;
+    width: 55%;
+    justify-content: space-between;
+}
+
 /* BASE */
 header {
   background-color: #0c0213;
@@ -509,6 +535,9 @@ ul a {
   color: rgba(30, 23, 36, 0.8);
 }
 
+.profile__blog-note:hover * {
+    color: rgba(235, 235, 235);
+}
 
 /* PROFILE-OTHER */
 

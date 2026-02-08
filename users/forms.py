@@ -1,4 +1,3 @@
-from tokenize import Comment
 from django import forms
 
 from .models import CustomUser
@@ -12,6 +11,7 @@ class RegisterForm(forms.ModelForm):
         widget=forms.PasswordInput(attrs={"placeholder": "Повтор пароля"}),
         label="Повтор пароля",
     )
+    birthday = forms.DateField(widget=forms.SelectDateWidget(empty_label="Nothing", years=tuple(y for y in range(1990, 2021))))
 
     def clean_repeat_password(self) -> dict | None:
         cd = self.cleaned_data

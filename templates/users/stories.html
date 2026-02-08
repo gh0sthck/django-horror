@@ -10,6 +10,12 @@
         {% for story in stories %}
                 <a href="{% url "specific_post" story.slug %}" class="profile__blog-note profile__stories-story">
                     {{ story.title }}
+                    <br>
+                        <span style="font-size: 13px;background-color: rgba(45, 33, 54, 0.8); border-radius: 4px; padding: 3px 5px;">{{ story.category.name}}: 
+                        {% for tag in story.tags.all|slice:"0:3" %}
+                            #{{ tag.name }} 
+                        {% endfor %}
+                        </span> 
                 </a>
             </li>
         {% endfor %}

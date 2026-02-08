@@ -39,13 +39,17 @@
                     {% if user.is_active %}
                         Онлайн
                     {% else %}
-                        Офлайн
+                        Оффлайн
                     {% endif %}
                 </span>
             </h1>
 
             <span style="font-size: 14px;" class="profile__header-regdate">
-                на сайте с {{ user.create_date }}
+                На сайте с {{ user.create_date }}
+            </span>
+            <br>
+            <span style="font-size: 14px;" class="profile__header-birthday">
+                День рождения: {{ user.birthday }}
             </span>
 
             <p style="margin-top: 5px;" class="profile__status-text">
