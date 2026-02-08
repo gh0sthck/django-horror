@@ -46,7 +46,7 @@
             width: 50%; 
             padding: 0; 
             {% if is_editing %} 
-            background-image: url('{{ post.cover.url }}');
+            background-image: url('{{ post.get_cover }}');
             background-size: cover;
             background-position: center; 
             {% endif %}" 

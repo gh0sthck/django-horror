@@ -152,21 +152,6 @@ class ReadView(View):
         tg = [tag for tag in tags if tag.name in request.GET.getlist("tags")]
         cats = [cat for cat in categories if cat.name in request.GET.getlist("cat")] 
         
-        # Search filter
-        """if request.GET.get("q") and tg:
-            q = request.GET.get("q")
-            posts = Post.objects.filter(title__contains=q, tags__in=tg)  # iexact don't work - sqlite issue? change to postgres
-        elif request.GET.get("q"):
-            q = request.GET.get("q")
-            posts = Post.objects.filter(title__contains=q) 
-        else:
-            posts = Post.objects.filter(tags__in=tg) 
-         
-        cats = [cat for cat in Category.objects.all() if cat.name in request.GET.getlist("cat")]
-
-        if cats:
-            posts = [post for post in posts if post.category in cats] """
-       
         if request.GET.get("q") and cats and tg:
             q = request.GET.get("q")
             posts = [post for post in Post.objects.filter(title__contains=q, tags__name__in=tg, category__name__in=cats)]
@@ -183,7 +168,7 @@ class ReadView(View):
             posts = [post for post in Post.objects.filter(tags__name__in=tg, category__name__in=cats)]
             url = "?" + "&".join("cat="+c.name for c in cats) + "&".join("tags="+t.name for t in tg) + "&page="
         elif tg:
-            posts = [post for post in Post.objects.filter(tags__name__in=tg)] 
+            posts = [post for post in Post.objects.filter(tags__name__in=tg)]
             url = "?" + "&".join("tags="+t.name for t in tg) + "&page="
         elif cats:
             posts = [post for post in Post.objects.filter(category__name__in=cats)]
@@ -195,10 +180,9 @@ class ReadView(View):
         else:
             url = "?page="
         
-        
         all_posts_count = len(posts)
         
-        paginator = Paginator(posts, 6)
+        paginator = Paginator(posts, 10)
         current_page = request.GET.get("page") if request.GET.get("page") else "1"
         posts_per_page = paginator.get_page(int(current_page))
         pages_count = paginator.num_pages

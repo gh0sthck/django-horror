@@ -75,7 +75,6 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=90, verbose_name="Имя поста", unique=True, null=False)
-    # text = models.TextField(verbose_name="Содержание", null=False)  # temporary - field will updated
     text = CKEditor5Field("Содержание")
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор")
     description = models.TextField(max_length=512, verbose_name="Описание", null=True, blank=True)

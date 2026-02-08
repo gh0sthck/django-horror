@@ -677,7 +677,6 @@ ul a {
     display: none;
     position: absolute;
     min-width: 230px;
-    /* box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); */
     z-index: 1;
     background-color: rgb(12, 2, 19);
     border: 1px solid #875ca7;
@@ -687,9 +686,9 @@ ul a {
 }
 
 .filters-tags-content option {
-    color: #875ca7;
-    background-color: #19151b;
-    padding: 4px;
+    color: #ebebeb;    
+    background-color: rgb(24, 17, 29, 0.8);
+    padding: 6px;
     margin-top: 3px;
     font-size: 17px;
     border-radius: 2px;
