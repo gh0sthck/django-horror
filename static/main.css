@@ -887,3 +887,34 @@ ul a {
   color: rgb(214, 79, 79);
   font-size: 15px;
 }
+
+/* SHOP */
+
+.products {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+
+.product {
+  flex-basis: 250px;
+  margin-top: 10px;
+  -webkit-box-shadow: -2px 3px 45px 11px rgba(135, 92, 167, 0.2);
+  -moz-box-shadow: -2px 3px 45px 11px rgba(135, 92, 167, 0.2);
+  box-shadow: -2px 3px 45px 11px rgba(135, 92, 167, 0.2);
+  border-radius: 10px;
+  background-color: #0c0213;
+}
+
+.product__description {
+    padding: 25px;
+}
+
+.product__image {
+  width: 250px;
+  height: 250px;
+  border-radius: 10px;
+}
