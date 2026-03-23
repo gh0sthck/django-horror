@@ -96,8 +96,15 @@
         </div>
 
         <div style="margin-top: 20px;" class="current_post__comments-comms">
-            {% comment %} if comms {% endcomment %}
             {% if post.comments.all %} 
+
+                {% for l in post.comments.all %}
+                1123
+                   {{ l.get_comms }}
+
+
+                {% endfor %}
+
 
                 {% for comment in post.comments.all %}
 

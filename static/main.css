@@ -100,6 +100,23 @@ body {
   font-variation-settings: "wdth" 100;
 }
 
+.text strong {
+  font-weight: 700;
+}
+
+.text i {
+  font-style: italic;
+}
+
+.text ul {
+  list-style: circle;
+  list-style-type: circle;
+}
+
+.text ol {
+  list-style-type: decimal;
+}
+
 /* MISC */
 .def_input {
   background-color: #201924;
@@ -668,6 +685,8 @@ ul a {
 }
 
 /* BLOG */
+
+
 
 .blog__note {
   border-radius: 5px;
