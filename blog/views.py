@@ -1,12 +1,13 @@
 from django import forms
 from django.http import HttpRequest
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import View, DetailView, FormView, UpdateView, DeleteView
 from django_ckeditor_5.widgets import CKEditor5Widget
 
-from blog.forms import CreateNoteForm
+from blog.forms import CommentForm, CreateNoteForm
 from blog.models import BlogNote
+from posts.models import Comments
 from users.models import CustomUser
 
 
@@ -30,6 +31,28 @@ class NoteView(DetailView):
     model = BlogNote
     template_name = "blog/note.html"
     context_object_name = "note"
+    form = CommentForm
+    
+    def post(self, *args, **kwargs):
+        f: CommentForm = self.form(self.request.POST)
+        if f.is_valid():
+            data: Comments = f.save(commit=False)
+            data.user = self.request.user
+            data.save()
+            
+            note: BlogNote = self.get_object()
+            if self.request.POST.get("answer_to"):
+                answer_to_comment: Comments = Comments.objects.get(id=self.request.POST.get("answer_to"))
+                answer_to_comment.answer.add(data) 
+            else: 
+                note.comments.add(data)
+            return redirect("specific_note", slug=note.slug)
+        return self.form()
+    
+    def get_context_data(self, **kwargs):
+        data =  super().get_context_data(**kwargs)
+        data["form"] = self.form() 
+        return data
 
 
 class EditNoteView(UpdateView):

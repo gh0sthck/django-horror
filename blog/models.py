@@ -2,6 +2,7 @@ from django.db import models
 from slugify import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
+from posts.models import Comments
 from users.models import CustomUser
 
 
@@ -18,6 +19,7 @@ class BlogNote(models.Model):
     # TODO: likes
     # TODO: view
     cover = models.ImageField(verbose_name="Обложка", upload_to="news", null=True, blank=True)
+    comments = models.ManyToManyField(Comments, verbose_name="Комментарии", blank=True)
 
     def __repr__(self) -> str:
         return f"<BlogNote: {self.title}>"

@@ -41,5 +41,64 @@
             {{ note.text|safe }}
         </div>
     </div>
+
+    {% if not note.is_news %} 
+        <div style="margin-top: 50px;" class="current_post__comments">
+            <h4>Комментарии</h4> 
+            <div class="crrent_post__send-comment">
+                
+                {% if request.user.is_authenticated %}
+                    <form method="post" class="current_post__comments-form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Отправить">
+                    </form>
+                {% else %}
+                    <p>
+                        <a href="{% url "login" %}">Войдите</a> или <a href="{% url "register" %}">зарегестрируйтесь</a>, чтобы оставлять комментарии
+                    </p>
+                {% endif %}
+            </div>
+        <div>
+    {% endif %}
+
+    <div style="margin-top: 20px;" class="current_post__comments-comms">
+        {% if note.comments.all and not note.is_news %} 
+            {% for comment in note.comments.all %}
+                {% for index, comment in comment.get_answers_for_comment %}
+                    
+                    <div style="border: 1px dashed rgb(42, 32, 49); padding: 15px 45px; border-radius: 10px; margin-bottom: 30px; display: flex; {% if index > 1 %} margin-left: {{ index }}8px {% endif %}" class="current_note__comment">
+                        <div style="width: 60px; height: 60px; background-image: url('{{ comment.user.get_avatar }}'); background-size: cover; background-position: center; border-radius: 100%; margin-right: 15px; margin-top: 3px;" class="note__comment-image">
+                        </div>
+
+                        <div class="note__comment-content" style="width: 100%;">
+                            <span class="current_note__comment-user">
+                                <a style="font-weight: 600; font-size: 18px; text-decoration: none;" href="{% url "profile" comment.user.slug %}" >{{ comment.user.username }}</a>
+                                <span style="color: #827688;  font-size: 14px;" class="current_note__comment-pubdate">
+                                    {{ comment.date }}
+                                </span>
+                            </span>
+                                
+                            <p style="font-size: 18px;" class="current_note__comment-text">
+                                {{ comment.comment }}
+                            </p>
+                            {% if request.user.is_authenticated %}
+                                <div class="answer_form">
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        {{ form }}
+                                        <input type="hidden" name="answer_to" value={{ comment.id }}>
+                                        <input type="submit" value="Ответить">
+                                    </form>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+            {% endfor %} 
+        {% endif %}
+    <div>
 </div>
 {% endblock main %}
