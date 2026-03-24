@@ -18,30 +18,16 @@ class Comments(models.Model):
     # TODO: likes to commnt (redis?)
     date = models.DateTimeField(verbose_name="Дата комменатрия", auto_now_add=True)
 
-    def get_comms(self, index: int = 1, comment: "Comments" = None, ls: list = []):
+    def get_answers_for_comment(self, ls: list | None = None, index: int = 1, comment: "Comments" = None):  
+        if not ls: ls = [] 
         if not comment:
             comment = self
-        ls.append((index, comment))
-        for answer in comment.answer.all():
-            if answer.answer.all():
-                ls.append(Post.get_comms(index=index+1, comment=answer.answer, ls=ls))
-                # return ls
-        print(ls)
+        ls.append([(index, comment)])
+        if comment.answer:
+            for answer in comment.answer.all():
+                return self.get_answers_for_comment(index=index+1, comment=answer, ls=ls)
         return ls
-
-    # def get_answers(self, ls=None, result:list=[]):
-    #     if not ls:
-    #         ls = Comments.objects.filter(answer=self)
-    #     for comment in ls:
-    #         answers_to_comment = Comments.objects.filter(answer=comment)
-    #         print("curr commnt", comment)
-    #         if len(answers_to_comment) == 0:
-    #             print("comment lst", comment)
-    #             return 
-    #         else:
-    #             self.get_answers(answers_to_comment)
-    #         return result
-
+    
     def __repr__(self) -> str:
         return f"<Comment: {self.user.username}: {self.comment[:20]}>"
     
