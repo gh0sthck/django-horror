@@ -28,35 +28,6 @@ class PostView(DetailView):
     template_name = "posts/post.html"
     form = CommentForm
 
-    def get_comments(self) -> list[Comments | dict[Comments, list]]:
-        def solution(
-            comments: list[Comments], ls: list = []
-        ) -> list[Comments | dict[Comments, list]]:
-            """
-            result:
-            [
-                Model,
-                Model,
-                {
-                    Model: [
-                            Model,
-                            Model,
-                            {Model: Model, ...},
-                            Model, ...
-                            ],
-                },
-                Model
-            ]
-            """
-            for comment in comments:
-                if len(comment.answer.all()) == 0:
-                    ls += [comment]
-                else:
-                    ls += [{comment: solution(comment.answer.all(), [])}]
-            return ls
-
-        return solution(self.get_object().comments.all(), [])
-
     # login_required (!)
     def post(self, *args, **kwargs):
         f: CommentForm = self.form(self.request.POST)
@@ -64,8 +35,13 @@ class PostView(DetailView):
             data: Comments = f.save(commit=False)
             data.user = self.request.user
             data.save()
+            
             post: Post = self.get_object()
-            post.comments.add(data)
+            if self.request.POST.get("answer_to"):
+                answer_to_comment: Comments = Comments.objects.get(id=self.request.POST.get("answer_to"))
+                answer_to_comment.answer.add(data) 
+            else: 
+                post.comments.add(data)
             return redirect("specific_post", slug=post.slug)
         return self.form()
 
@@ -81,7 +57,6 @@ class PostView(DetailView):
     def get_context_data(self, **kwargs):
         data: dict = super().get_context_data(**kwargs)
         data["form"] = self.form()
-        data["comms"] = self.get_comments()
         return data
 
 

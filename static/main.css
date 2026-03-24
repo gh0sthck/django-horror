@@ -631,6 +631,24 @@ ul a {
   background-color: rgba(135, 92, 167, 0.2);
 }
 
+.answer_form textarea {
+    height: 40px;
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: rgba(23, 15, 26, .3);
+}
+
+.answer_form input {
+    border: none;
+    padding: 0;
+    color: #604f6d;
+}
+
+.answer_form input:hover {
+    background: none;
+    color: #604f6d;
+}
+
 .post_create {
   display: flex;
   width: 100%;

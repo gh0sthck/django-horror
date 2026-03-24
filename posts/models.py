@@ -18,14 +18,14 @@ class Comments(models.Model):
     # TODO: likes to commnt (redis?)
     date = models.DateTimeField(verbose_name="Дата комменатрия", auto_now_add=True)
 
-    def get_answers_for_comment(self, ls: list | None = None, index: int = 1, comment: "Comments" = None):  
-        if not ls: ls = [] 
+    def get_answers_for_comment(self, index: int = 1, comment: "Comments" = None): 
         if not comment:
-            comment = self
-        ls.append([(index, comment)])
-        if comment.answer:
+            comment = self 
+        ls = [(index, comment)] 
+        if len(comment.answer.all()) > 0:
             for answer in comment.answer.all():
-                return self.get_answers_for_comment(index=index+1, comment=answer, ls=ls)
+                ls += self.get_answers_for_comment(index=index+1, comment=answer) 
+            return ls
         return ls
     
     def __repr__(self) -> str:
