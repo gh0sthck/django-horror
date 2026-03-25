@@ -9,6 +9,7 @@ from blog.forms import CommentForm, CreateNoteForm
 from blog.models import BlogNote
 from posts.models import Comments
 from users.models import CustomUser
+from utils.auth import ClassLoginRequired, authenticate_required
 
 
 class NewsView(View):
@@ -33,6 +34,7 @@ class NoteView(DetailView):
     context_object_name = "note"
     form = CommentForm
     
+    @authenticate_required
     def post(self, *args, **kwargs):
         f: CommentForm = self.form(self.request.POST)
         if f.is_valid():
@@ -55,7 +57,7 @@ class NoteView(DetailView):
         return data
 
 
-class EditNoteView(UpdateView):
+class EditNoteView(ClassLoginRequired, UpdateView):
     model = BlogNote
     fields = ["title", "cover", "text", "is_news"]
     context_object_name = "note"
@@ -78,7 +80,8 @@ class EditNoteView(UpdateView):
         cd["is_editing"] = True
         return cd
 
-class CreateNoteView(FormView):
+
+class CreateNoteView(ClassLoginRequired, FormView):
     form = CreateNoteForm
     template_name = "blog/edit_note.html"
     success_url = reverse_lazy("main")
@@ -101,10 +104,8 @@ class CreateNoteView(FormView):
                     field.widget.attrs["class"] = "post_create_input" 
         return form
 
-        
 
-
-class DeleteNoteView(DeleteView):
+class DeleteNoteView(ClassLoginRequired, DeleteView):
     model = BlogNote
     success_url = reverse_lazy("main")
     template_name = "blog/delete_note.html"

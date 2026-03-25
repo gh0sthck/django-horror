@@ -1,4 +1,3 @@
-from django.db.models import QuerySet
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
@@ -12,6 +11,7 @@ from blog.models import BlogNote
 from posts.forms import CreatePostForm
 from posts.models import Category, Post, Comments, Tag
 from posts.forms import CommentForm
+from utils.auth import ClassLoginRequired, authenticate_required
 
 
 
@@ -28,7 +28,7 @@ class PostView(DetailView):
     template_name = "posts/post.html"
     form = CommentForm
 
-    # login_required (!)
+    @authenticate_required
     def post(self, *args, **kwargs):
         f: CommentForm = self.form(self.request.POST)
         if f.is_valid():
@@ -60,8 +60,7 @@ class PostView(DetailView):
         return data
 
 
-# login required (!)
-class CreatePostView(FormView):
+class CreatePostView(ClassLoginRequired, FormView):
     form_class = CreatePostForm
     success_url = reverse_lazy("main")
     template_name = "posts/create_post.html"
@@ -85,8 +84,8 @@ class CreatePostView(FormView):
         return form
 
 
-# login required (!)
-class UpdatePostView(UpdateView):
+
+class UpdatePostView(ClassLoginRequired, UpdateView):
     model = Post
     context_object_name = "post"
     fields = ["title", "text", "description", "cover", "category", "tags"]
@@ -109,8 +108,8 @@ class UpdatePostView(UpdateView):
         cd["is_editing"] = True
         return cd
 
-# login required (!)
-class DeletePostView(DeleteView):
+
+class DeletePostView(ClassLoginRequired, DeleteView):
     model = Post
     context_object_name = "post"
     template_name = "posts/delete_post.html"
