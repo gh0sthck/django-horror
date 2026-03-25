@@ -1,15 +1,9 @@
-from dataclasses import dataclass
-from typing import Optional
 from django.db import models
 from slugify import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
 from users.models import CustomUser
 
-@dataclass
-class CommentModel:
-    comment: str
-    answer: Optional["CommentModel"] = None
 
 class Comments(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор комментария")

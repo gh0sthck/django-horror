@@ -100,21 +100,30 @@ body {
   font-variation-settings: "wdth" 100;
 }
 
-.text strong {
+.text, .ck strong {
   font-weight: 700;
 }
 
-.text i {
+.text, .ck i {
   font-style: italic;
 }
 
-.text ul {
-  list-style: circle;
-  list-style-type: circle;
+.text ul li, .ck ul li {
+  list-style-type: disc;
 }
 
-.text ol {
+.text ol li, .ck ol li {
   list-style-type: decimal;
+}
+
+.text, .ck i strong {
+  font-style: oblique;
+  font-weight: bold;
+}
+
+.text blockquote, .ck blockquote {
+  border-left: 3px solid white;
+  padding-left: 16px;
 }
 
 /* MISC */
