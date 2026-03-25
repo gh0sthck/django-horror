@@ -126,6 +126,37 @@ body {
   padding-left: 16px;
 }
 
+.text img {
+  width: 50%;
+  height: 50%;
+}
+
+
+.text p code, .ck p code {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #2d2333;
+  padding: 15px 25px;
+  border-radius: 10px;
+  color: #ebebeb;
+  display: block;
+  width: 100%;
+}
+
+.text pre, .ck pre {
+  
+  background-color: #2d2333;
+  padding: 15px 25px;
+  border-radius: 10px;
+  color: #ebebeb;
+  display: block;
+  width: 100%;
+}
+
+.text pre code {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+
 /* MISC */
 .def_input {
   background-color: #201924;

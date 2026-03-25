@@ -133,7 +133,8 @@ CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': {
             'items': ['heading', '|', 'bold', 'italic', 'link',
-                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload',
+                       '|', 'code', 'codeBlock' ],
                     }
 
     },
@@ -143,6 +144,9 @@ CKEDITOR_5_CUSTOM_CSS = "/static/editor.css"
 
 
 CKEDITOR_5_FILE_UPLOAD_PERMISSION = "authenticated"
+CKEDITOR_5_FILE_STORAGE = "core.ckstorage.CustomCKStorage"
+CKEDITOR_5_UPLOAD_FILE_TYPES = ['jpeg', 'jpg', 'png']
+CKEDITOR_5_MAX_FILE_SIZE = 5  # 5 mb
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
