@@ -1,0 +1,34 @@
+version: "5"
+services:
+  django:
+    container_name: django
+    build: .
+    tty: true
+    ports:
+      - 8000:8000
+    restart: always
+    volumes:
+      - .:/project/
+    environment:
+      - DB_PASS=root
+      - DB_USER=root
+      - DB_NAME=project
+      - DB_HOST=postgres
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:18.3-alpine3.23
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_DB=project
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+    ports:
+      - 5432:5432
+
+volumes:
+  pgdata:

@@ -9,7 +9,6 @@ from users.models import CustomUser
 class BlogNote(models.Model):
     title = models.CharField(verbose_name="Заголовок", max_length=90)
     slug = models.SlugField(verbose_name="Слаг", max_length=90)
-    # text = models.TextField(verbose_name="Текст", null=False)
     text = CKEditor5Field("Содержание")
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор")
     is_news = models.BooleanField(verbose_name="Новость", default=False)
