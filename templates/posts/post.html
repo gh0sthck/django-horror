@@ -58,6 +58,28 @@
             {% endif %}
         {% endif %}
 
+        <div class="current_post__detail">
+            <span style="color: gray;"><img src="https://static.vecteezy.com/system/resources/thumbnails/014/615/397/small_2x/eye-icon-simple-flat-eye-design-vision-care-concept-wear-glasses-for-a-clear-vision-png.png" width="45px" height="35px" alt="#"> {{ post.get_views_count }}</span>
+            <span>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if not is_liked %}
+                        <input type="hidden" name="lk" value="lk">
+                        <button class="btn_link" type="submit" style="display: flex; align-items: center">
+                            <img src="/static/defaults/purpleheart.png" width="15px" height="15px" alt=":heart">
+                            <span style="margin-left: 4px; color: #875ca7">{{ post.get_likes_count }}</span>
+                        </button>
+                    {% else %}
+                        <input type="hidden" name="nlk" value="nlk">
+                        <button class="rev_btn" type="submit" style="display: flex; align-items: center">
+                            <img src="/static/defaults/whiteheart.png" width="15px" height="15px" alt=":heart">
+                            <span style="margin-left: 4px;">{{ post.get_likes_count }}</span>
+                        </button> 
+                    {% endif %}
+                </form>
+            </span>
+        </div>
+
 
         <div style="padding: 25px; display: flex;  margin: 10px 0px;" class="current__post-hader-description">
             {% if post.cover %}

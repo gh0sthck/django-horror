@@ -2,29 +2,32 @@ from django.db import models
 from slugify import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
+from core.redis_c import get_redis_connection
 from users.models import CustomUser
 
 
 class Comments(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор комментария")
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, verbose_name="Автор комментария"
+    )
     comment = models.TextField(verbose_name="", null=False)
     answer = models.ManyToManyField("Comments", blank=True)
     # TODO: likes to commnt (redis?)
     date = models.DateTimeField(verbose_name="Дата комменатрия", auto_now_add=True)
 
-    def get_answers_for_comment(self, index: int = 1, comment: "Comments" = None): 
+    def get_answers_for_comment(self, index: int = 1, comment: "Comments" = None):
         if not comment:
-            comment = self 
-        ls = [(index, comment)] 
+            comment = self
+        ls = [(index, comment)]
         if len(comment.answer.all()) > 0:
             for answer in comment.answer.all():
-                ls += self.get_answers_for_comment(index=index+1, comment=answer) 
+                ls += self.get_answers_for_comment(index=index + 1, comment=answer)
             return ls
         return ls
-    
+
     def __repr__(self) -> str:
         return f"<Comment: {self.user.username}: {self.comment[:20]}>"
-    
+
     def __str__(self) -> str:
         return self.comment[:20]
 
@@ -35,14 +38,16 @@ class Comments(models.Model):
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=90, verbose_name="Имя категории", unique=True, null=False)
-    
+    name = models.CharField(
+        max_length=90, verbose_name="Имя категории", unique=True, null=False
+    )
+
     def __str__(self) -> str:
         return self.name
-    
+
     def __repr__(self) -> str:
         return f"<Category: {self.name}>"
-    
+
     class Meta:
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
@@ -51,13 +56,13 @@ class Category(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(verbose_name="Имя тега", max_length=80, null=False)
-    
+
     def __str__(self):
         return self.name
 
     def __repr__(self):
         return f"<Tag: {self.name}>"
-    
+
     class Meta:
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
@@ -65,10 +70,16 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=90, verbose_name="Имя поста", unique=True, null=False)
+    title = models.CharField(
+        max_length=90, verbose_name="Имя поста", unique=True, null=False
+    )
     text = CKEditor5Field("Содержание")
-    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name="Автор")
-    description = models.TextField(max_length=512, verbose_name="Описание", null=True, blank=True)
+    author = models.ForeignKey(
+        CustomUser, on_delete=models.CASCADE, verbose_name="Автор"
+    )
+    description = models.TextField(
+        max_length=512, verbose_name="Описание", null=True, blank=True
+    )
     tags = models.ManyToManyField(Tag, verbose_name="Теги", blank=True)
     # TODO: views - redis array
     # TODO: likes - redis array
@@ -77,35 +88,85 @@ class Post(models.Model):
     updated_date = models.DateField(auto_now_add=True, verbose_name="Дата изменения")
     slug = models.SlugField(verbose_name="Слаг", max_length=90, unique=True, null=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
-    cover = models.ImageField(verbose_name="Обложка", null=True, blank=True, upload_to="posts")
+    cover = models.ImageField(
+        verbose_name="Обложка", null=True, blank=True, upload_to="posts"
+    )
 
     def __str__(self) -> str:
         return self.title
-    
+
     def __repr__(self) -> str:
         return f"<Post: {self.title}>"
-   
+
     def get_cover(self):
-        try:  
+        try:
             cover = self.cover.url
         except ValueError:
             cover = "/static/defaults/avatar.png"
         return cover
-    
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        return super().save(*args, **kwargs)
+
+        super().save(*args, **kwargs)
+
+        redis_connection = get_redis_connection()
+        redis_likes_id = f"pl_{self.pk}"
+        redis_views_id = f"pv_{self.pk}"
+
+        if (redis_connection.get(redis_likes_id) is None) and (
+            redis_connection.get(redis_views_id) is None
+        ):
+            redis_connection.rpush(redis_likes_id, -1)
+            redis_connection.rpush(redis_views_id, -1)
+        return None
 
     def get_comments(self) -> list[Comments]:
         return self.comments.all()
-    
+
     def get_comments_count(self) -> int:
         return len(self.comments.all())
+
+    def get_likes_count(self) -> int:
+        r_conn = get_redis_connection()
+        return int(r_conn.llen(f"pl_{self.pk}")) - 1
+
+    def set_like(self, user_id: int):
+        r_conn = get_redis_connection()
+        r_conn.rpush(f"pl_{self.pk}", user_id)
+        return user_id
+
+    def check_like(self, user_id: int):
+        r_conn = get_redis_connection()
+        like_list = r_conn.lrange(f"pl_{self.pk}", 0, -1)
+        like_list = [int(id_) for id_ in like_list]
+        return user_id in like_list
+
+    def remove_like(self, user_id: int):
+        r_conn = get_redis_connection()
+        like_list = r_conn.lrange(f"pl_{self.pk}", 0, -1)
+        like_list = [int(id_) for id_ in like_list]
+        like_list.remove(user_id)
+        r_conn.delete(f"pl_{self.pk}")
+        r_conn.rpush(f"pl_{self.pk}", *like_list)
+        return user_id
+
+    def get_views_count(self) -> int:
+        r_conn = get_redis_connection()
+        return int(r_conn.llen(f"pv_{self.pk}")) - 1
+
+    def set_view(self, user_id: int):
+        r_conn = get_redis_connection()
+        r_conn.rpush(f"pv_{self.pk}", user_id)
+        return user_id
+
+    def check_view(self, user_id: int):
+        r_conn = get_redis_connection()
+        views_list = r_conn.lrange(f"pv_{self.pk}", 0, -1)
+        views_list = [int(id_) for id_ in views_list]
+        return user_id in views_list
 
     class Meta:
         ordering = ["-title"]
         verbose_name = "Пост"
         verbose_name_plural = "Посты"
-
-
-

@@ -1,3 +1,5 @@
+import re
+
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
@@ -8,6 +10,7 @@ from django.core.paginator import Paginator
 from django_ckeditor_5.widgets import CKEditor5Widget
 
 from blog.models import BlogNote
+from core.redis_c import get_redis_connection
 from posts.forms import CreatePostForm
 from posts.models import Category, Post, Comments, Tag
 from posts.forms import CommentForm
@@ -27,36 +30,53 @@ class PostView(DetailView):
     context_object_name = "post"
     template_name = "posts/post.html"
     form = CommentForm
+    r_conn = get_redis_connection()
 
     @authenticate_required
-    def post(self, *args, **kwargs):
-        f: CommentForm = self.form(self.request.POST)
-        if f.is_valid():
-            data: Comments = f.save(commit=False)
-            data.user = self.request.user
-            data.save()
-            
-            post: Post = self.get_object()
-            if self.request.POST.get("answer_to"):
-                answer_to_comment: Comments = Comments.objects.get(id=self.request.POST.get("answer_to"))
-                answer_to_comment.answer.add(data) 
-            else: 
-                post.comments.add(data)
-            return redirect("specific_post", slug=post.slug)
-        return self.form()
-
+    def post(self, request: HttpRequest, *args, **kwargs):
+        if request.POST.get("lk") == "lk":
+            print(f"INTO SET LIKE: {request.user.id}")
+            self.get_object().set_like(request.user.id) 
+            return redirect("specific_post", slug=self.get_object().slug)
+        elif request.POST.get("nlk") == "nlk":
+            self.get_object().remove_like(request.user.id) 
+            return redirect("specific_post", slug=self.get_object().slug)
+        else:
+            f: CommentForm = self.form(self.request.POST)
+            if f.is_valid():
+                data: Comments = f.save(commit=False)
+                data.user = self.request.user
+                data.save()
+                
+                post: Post = self.get_object()
+                if self.request.POST.get("answer_to"):
+                    answer_to_comment: Comments = Comments.objects.get(id=self.request.POST.get("answer_to"))
+                    answer_to_comment.answer.add(data) 
+                else: 
+                    post.comments.add(data)
+                return redirect("specific_post", slug=post.slug)
+            return self.form()
+    
+    def check_view(self, request: HttpRequest):
+        if request.user.is_authenticated:
+            if not self.get_object().check_view(request.user.id):
+                self.get_object().set_view(request.user.id)
 
     def get(self, request: HttpRequest, *args, **kwargs):
+        self.check_view(request=request) 
         if request.GET.get("is_favorite") == "fv":
             self.request.user.add_to_favorites(self.get_object())
         if request.GET.get("not_favorite") == "nfv":
             self.request.user.remove_from_favorites(self.get_object())
-        
+        # if request.POST.get("lk") == "lk":
+        # if request.POST.get("nlk") == "nlk":
+            # self.get_object().remove_like(request.user.id)
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         data: dict = super().get_context_data(**kwargs)
         data["form"] = self.form()
+        data["is_liked"] = self.get_object().check_like(self.request.user.id) if self.request.user.is_authenticated else False
         return data
 
 
@@ -114,7 +134,12 @@ class DeletePostView(ClassLoginRequired, DeleteView):
     context_object_name = "post"
     template_name = "posts/delete_post.html"
     success_url = reverse_lazy("main")
-
+    
+    def delete(self, request, *args, **kwargs):
+        r_conn = get_redis_connection()
+        r_conn.delete(f"pl_{self.get_object().pk}", f"pv_{self.get_object().pk}")
+        return super().delete(request, *args, **kwargs)
+    
 
 class ReadView(View):
     def get(self, request: HttpRequest):

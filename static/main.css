@@ -79,6 +79,48 @@ body {
     color: rgb(235, 235, 235);
 }
 
+.btn_link {
+  border: 1px solid #875ca7;
+  padding: 3px 10px;
+  color: #875ca7;
+  border-radius: 5px;
+  background: none;
+}
+
+.btn_link:hover * {
+    transition: .4s;
+    /* background-color: #875ca7; */
+    color: rgb(235, 235, 235);
+}
+
+.rev_btn {
+  border: 1px solid #875ca7;
+  padding: 3px 10px;
+  color: rgb(235, 235, 235);
+  background-color: #875ca7;
+  border-radius: 5px;
+}
+
+.rev_btn:hover {
+    transition: .4s;
+    background: none;
+    color: rgb(235, 235, 235);
+}
+
+.rev_link_purple {
+  border: 1px solid #875ca7;
+  padding: 5px 15px;
+  color: rgb(235, 235, 235);
+  background-color: #875ca7;
+  border-radius: 5px;
+}
+
+.rev_link_purple:hover {
+    transition: .4s;
+    background: none;
+    color: rgb(235, 235, 235);
+}
+
 .text {
   font-family: "Noto Serif", serif;
   font-optical-sizing: auto;
