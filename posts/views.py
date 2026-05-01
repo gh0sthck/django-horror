@@ -83,6 +83,7 @@ class CreatePostView(ClassLoginRequired, FormView):
         post: Post = form.save(commit=False)
         post.author = self.request.user
         post.save()
+        form.save_m2m() 
         return redirect("specific_post", slug=post.slug)
 
     def get_form_class(self):
