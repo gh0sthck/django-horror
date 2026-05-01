@@ -15,6 +15,8 @@ class CustomUser(AbstractUser):
     
     favorites = models.ManyToManyField("posts.Post", verbose_name="Избранное", blank=True)
     blog_following = models.ManyToManyField("CustomUser", verbose_name="Подписки", blank=True)
+    
+    email_verified = models.BooleanField(verbose_name="Подтверждение почты", default=False)
 
     # TODO: add achivement system (?)
 

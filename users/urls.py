@@ -1,5 +1,5 @@
 from django.urls import path
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 
 from users.views import (
     ProfileDeleteView,
@@ -10,7 +10,9 @@ from users.views import (
     ProfileSubscribesView,
     ProfileView,
     RegisterView,
-    CustomLoginView
+    CustomLoginView,
+    change_password_view,
+    email_verification_view
 )
 
 
@@ -25,4 +27,6 @@ urlpatterns = [
     path("stories/<slug:slug>/", ProfileStoriesView.as_view(), name="us_stories"),
     path("edit/<slug:slug>/", ProfileEditView.as_view(), name="us_update"),
     path("delete/<slug:slug>/", ProfileDeleteView.as_view(), name="us_delete"),
+    path("email_verification", email_verification_view, name="verify_email"),
+    path("password_change", change_password_view, name="change_password")
 ]

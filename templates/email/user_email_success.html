@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}
+Подтверждено
+{% endblock title %}
+
+{% block main %}
+<div class="image" style="height: 85vh; background-image: url('/static/defaults/email.png'); background-position: left; background-repeat: no-repeat; background-size: contain; display: flex; align-items: center; flex-direction: column; justify-content: center;">
+    <div style="width: 100%;" class="info">
+        {% if success %}
+            <h1>Email успешно подтвержден!</h1>
+        {% else %}
+            <h1>Токен устарел, попробуйте снова  :(</h1> 
+        {% endif %}
+    </div> 
+</div>
+{% endblock main %}

@@ -89,7 +89,6 @@ body {
 
 .btn_link:hover * {
     transition: .4s;
-    /* background-color: #875ca7; */
     color: rgb(235, 235, 235);
 }
 

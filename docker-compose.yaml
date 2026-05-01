@@ -17,6 +17,8 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=root
+      - EMAIL_HOST_USER=yourmail@ya.ru
+      - EMAIL_HOST_PASSWORD=secretkey
       - CELERY_BROKER_URL=redis://redis:6379/0
     depends_on:
       - postgres
@@ -59,9 +61,10 @@ services:
     environment:
       - DB_NAME=project
       - DB_USER=root
-      - DB_PASSWD=root
+      - DB_PASS=root
       - DB_HOST=postgres
       - CELERY_BROKER_URL=redis://redis:6379/0
-
+      - EMAIL_HOST_USER=yourhostmail@ya.ru
+      - EMAIL_HOST_PASSWORD=secretkey
 volumes:
   pgdata:

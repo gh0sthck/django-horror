@@ -12,8 +12,23 @@ from django.contrib.auth.views import LoginView
 from blog.models import BlogNote
 from posts.models import Post
 from users.models import CustomUser
+from users.tasks import celery_send_email, celery_send_password
 
 from .forms import RegisterForm
+
+
+def email_verification_view(request: HttpRequest):
+    if not request.user.email_verified:
+        celery_send_email.delay(request.user.pk)
+        return render(request, "email/user_email_sent.html")
+    return redirect("main")
+
+
+def change_password_view(request: HttpRequest):
+    if request.user.is_authenticated:
+        celery_send_password.delay(request.user.pk)
+        return render(request, "email/user_password_sent.html")
+    return redirect("main")
 
 
 class CustomLoginView(LoginView):
@@ -26,6 +41,7 @@ class CustomLoginView(LoginView):
                 field.widget.attrs["placeholder"] = "Пароль"
             field.label = ""
         return form
+
 
 class RegisterView(FormView):
     template_name = "users/register.html"
@@ -52,7 +68,7 @@ class ProfileEditView(UpdateView):
     template_name = "users/update.html"
     fields = ["username", "avatar", "birthday", "status", "bio"]
     success_url = reverse_lazy("main")
-    
+
     def get_form_class(self):
         form: forms.Form = super().get_form_class()
         for field in form.base_fields.values():
@@ -64,10 +80,12 @@ class ProfileEditView(UpdateView):
             if isinstance(field.widget, forms.widgets.Textarea):
                 field.widget.attrs["style"] = "height: 220px;"
             if isinstance(field.widget, forms.widgets.DateInput):
-                field.widget = forms.SelectDateWidget(years=tuple(y for y in range(1990, 2021)))
+                field.widget = forms.SelectDateWidget(
+                    years=tuple(y for y in range(1990, 2021))
+                )
                 field.widget.attrs["class"] = "def_input"
                 field.widget.attrs["style"] = "padding: 8px 10px; margin-left: 5px;"
-                        
+
         return form
 
 
@@ -75,17 +93,21 @@ class ProfileView(DetailView):
     model = CustomUser
     context_object_name = "user"
     template_name = "users/profile.html"
-    
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         paginator = Paginator(BlogNote.objects.filter(author=self.get_object()), 4)
-        current_page = self.request.GET.get("page") if self.request.GET.get("page") else "1"
+        current_page = (
+            self.request.GET.get("page") if self.request.GET.get("page") else "1"
+        )
         posts_per_page = paginator.get_page(int(current_page))
         pages_cnt = paginator.num_pages
         ctx["blog_notes"] = posts_per_page
         ctx["pages"] = pages_cnt
         ctx["url"] = "?page="
-        ctx["followers_len"] = len(CustomUser.objects.filter(blog_following__in=[self.get_object()]))
+        ctx["followers_len"] = len(
+            CustomUser.objects.filter(blog_following__in=[self.get_object()])
+        )
         ctx["stories_len"] = len(Post.objects.filter(author=self.get_object()))
         return ctx
 
@@ -103,26 +125,38 @@ class ProfileSubscribesView(View):
     def get(self, request: HttpRequest, slug):
         user = CustomUser.objects.get(slug=slug)
         subscriptions: list[CustomUser] = user.blog_following.all()
-        
-        return render(request, "users/subscriptions.html", {
-            "user": user,
-            "subs": subscriptions,
-            "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
-            "stories_len": len(Post.objects.filter(author=user)),
-        })
-        
+
+        return render(
+            request,
+            "users/subscriptions.html",
+            {
+                "user": user,
+                "subs": subscriptions,
+                "followers_len": len(
+                    CustomUser.objects.filter(blog_following__in=[user])
+                ),
+                "stories_len": len(Post.objects.filter(author=user)),
+            },
+        )
+
 
 class ProfileFollowersView(View):
     def get(self, request: HttpRequest, slug):
         user = CustomUser.objects.get(slug=slug)
         followers = CustomUser.objects.filter(blog_following__in=[user])
-        
-        return render(request, "users/subscriptions.html", {
-            "user": user,
-            "subs": followers,
-            "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
-            "stories_len": len(Post.objects.filter(author=user)),
-        })
+
+        return render(
+            request,
+            "users/subscriptions.html",
+            {
+                "user": user,
+                "subs": followers,
+                "followers_len": len(
+                    CustomUser.objects.filter(blog_following__in=[user])
+                ),
+                "stories_len": len(Post.objects.filter(author=user)),
+            },
+        )
 
 
 # Can be private or not
@@ -132,26 +166,28 @@ class ProfileFavoritesList(View):
         user_favs = []
         if user:
             user_favs = [p for p in user.favorites.all()]
-            
+
             fv_pagin = Paginator(user_favs, 5)
-            
+
             num_pages = fv_pagin.num_pages
             url = "?page="
             current_page = request.GET.get("page") if request.GET.get("page") else "1"
             pg = fv_pagin.get_page(int(current_page))
-            
+
             return render(
-                request, 
-                "users/favorites.html", 
+                request,
+                "users/favorites.html",
                 {
-                    "favs": pg, 
+                    "favs": pg,
                     "user": user,
-                    "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
+                    "followers_len": len(
+                        CustomUser.objects.filter(blog_following__in=[user])
+                    ),
                     "stories_len": len(Post.objects.filter(author=user)),
                     "num_pages": num_pages,
                     "current_page": current_page,
-                    "url": url
-                }
+                    "url": url,
+                },
             )
         raise Http404("Такого пользователя не существует")
 
@@ -160,23 +196,29 @@ class ProfileStoriesView(View):
     def get(self, request: HttpRequest, slug):
         user = CustomUser.objects.get(slug=slug)
         user_stories = Post.objects.filter(author=user)
-        
+
         pag = Paginator(user_stories, 7)
         current_page = request.GET.get("page") if request.GET.get("page") else "1"
         stories = pag.get_page(int(current_page))
         pages = pag.num_pages
         url = "?page="
-        
-        return render(request, "users/stories.html", {
-            "user": user,
-            "followers_len": len(CustomUser.objects.filter(blog_following__in=[user])),
-            "stories_len": len(user_stories),
-            "stories": stories,
-            "url": url,
-            "pages": pages,
-            "current_page": current_page,
-        })
-        
+
+        return render(
+            request,
+            "users/stories.html",
+            {
+                "user": user,
+                "followers_len": len(
+                    CustomUser.objects.filter(blog_following__in=[user])
+                ),
+                "stories_len": len(user_stories),
+                "stories": stories,
+                "url": url,
+                "pages": pages,
+                "current_page": current_page,
+            },
+        )
+
 
 class ProfileDeleteView(DeleteView):
     model = CustomUser

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from typing import Any
 
 from django.conf.global_settings import STATIC_ROOT, STATICFILES_DIRS
 from dotenv import load_dotenv
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_ckeditor_5",
+    "django_email_verification",
     "users.apps.UsersConfig",
     "posts.apps.PostsConfig",
     "blog.apps.BlogConfig",
@@ -89,7 +91,7 @@ DATABASES = {
         "NAME": os.getenv("DB_NAME"),
         "HOST": os.getenv("DB_HOST"),
         "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASS")
+        "PASSWORD": os.getenv("DB_PASS"),
     }
 }
 
@@ -137,22 +139,32 @@ MEDIA_ROOT = BASE_DIR / MEDIA_URL
 MEDIAFILS_DIRS = [MEDIA_ROOT]
 
 CKEDITOR_5_CONFIGS = {
-    'default': {
-        'toolbar': {
-            'items': ['heading', '|', 'bold', 'italic', 'link',
-                      'bulletedList', 'numberedList', 'blockQuote', 'imageUpload',
-                       '|', 'code', 'codeBlock' ],
-                    }
-
+    "default": {
+        "toolbar": {
+            "items": [
+                "heading",
+                "|",
+                "bold",
+                "italic",
+                "link",
+                "bulletedList",
+                "numberedList",
+                "blockQuote",
+                "imageUpload",
+                "|",
+                "code",
+                "codeBlock",
+            ],
+        }
     },
 }
 
-CKEDITOR_5_CUSTOM_CSS = "/static/editor.css" 
+CKEDITOR_5_CUSTOM_CSS = "/static/editor.css"
 
 
 CKEDITOR_5_FILE_UPLOAD_PERMISSION = "authenticated"
 CKEDITOR_5_FILE_STORAGE = "core.ckstorage.CustomCKStorage"
-CKEDITOR_5_UPLOAD_FILE_TYPES = ['jpeg', 'jpg', 'png']
+CKEDITOR_5_UPLOAD_FILE_TYPES = ["jpeg", "jpg", "png"]
 CKEDITOR_5_MAX_FILE_SIZE = 5  # 5 mb
 
 # Default primary key field type
@@ -165,7 +177,43 @@ AUTH_USER_MODEL = "users.CustomUser"
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/profile/login"
 
+
+def email_verify(user):
+    user.email_verified = True
+
+
+def change_password(user, new_password: str | Any):
+    user.set_password(new_password)
+
+
 TOKEN_LIFE = 60 * 2  # 2 minutes
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_PAGE_DOMAIN = "http://localhost:8000/"
+EMAIL_HOST = "smtp.yandex.ru"
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+EMAIL_MAIL_SUBJECT = "lit.fear > Подтверждение почты."
+EMAIL_MAIL_HTML = "email/user_email_confirm.html"
+EMAIL_MAIL_PLAIN = "email/user_email_confirm.txt"
+EMAIL_MAIL_PAGE_TEMPLATE = "email/user_email_success.html"
+
+EMAIL_PASSWORD_SUBJECT = "lit.fear > Изменение пароля."
+EMAIL_PASSWORD_HTML = "email/user_password_confirm.html"
+EMAIL_PASSWORD_PLAIN = "email/user_password_plain.txt"
+EMAIL_PASSWORD_PAGE_TEMPLATE = "email/user_password_success.html"
+EMAIL_PASSWORD_CHANGE_PAGE_TEMPLATE = "email/user_password_change.html"
+
+EMAIL_FROM_ADDRESS = EMAIL_HOST_USER
+EMAIL_PASSWORD_TOKEN_LIFE = TOKEN_LIFE
+EMAIL_MAIL_TOKEN_LIFE = TOKEN_LIFE
+
+EMAIL_MAIL_CALLBACK = email_verify
+EMAIL_PASSWORD_CALLBACK = change_password
 
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_TASK_TIME_LIMIT = TOKEN_LIFE
