@@ -59,6 +59,9 @@
             {% if request.user.is_authenticated %}
                 {% if request.user == user %}
                     <a href="{% url "us_update" user.slug %}">Изменить</a>
+                    {% if not request.user.email_verified %}
+                        <img src="/static/defaults/warn.png" alt=":warning:" width="17px" height="17px">
+                    {% endif %}
                 {% endif %}
 
                 {% if user != request.user %}

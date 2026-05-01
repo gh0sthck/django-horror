@@ -29,4 +29,4 @@ class RegisterForm(forms.ModelForm):
             "bio": forms.Textarea(attrs={"placeholder": "Напишите пару слов о себе: чем увлекаетесь, что пишите или что читаете!"}),
             "birthday": forms.DateInput(attrs={"placeholder": "Дата рождения"}),
             "password": forms.PasswordInput(attrs={"placeholder": "Пароль"}),
-        }  # add date choice in form (?: "birthday": forms.DateInput())
+        }

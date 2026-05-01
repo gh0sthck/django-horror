@@ -37,6 +37,12 @@
             <input type="submit" value="Сохранить">
 
             <a class="link_purple" href="{% url "us_delete" form.username.value %}">Удалить профиль</a>
+           
+            {% if not request.user.email_verified %}
+                <a class="link_warning" href="{% url "verify_email" %}">Подтвердить почту</a> 
+            {% else %}
+                <a class="link_purple" href="{% url "change_password" %}">Изменить пароль</a> 
+            {% endif %}
             
         </div>
 

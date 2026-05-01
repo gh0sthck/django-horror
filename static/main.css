@@ -65,6 +65,42 @@ body {
   background-color: #0c0213;
 }
 
+.shine-text {
+  position: relative;
+  display: inline-block;
+  font-size: 48px;
+  font-weight: bold;
+  overflow: hidden;
+}
+
+.shine-text::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100px;              /* ширина блика */
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.8) 50%,
+    transparent 100%
+  );
+  animation: shine 3s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -100px;
+  }
+  20% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
 .link_purple {
   text-decoration: none;
   border: 1px solid #875ca7;
@@ -78,6 +114,23 @@ body {
     background-color: #875ca7;
     color: rgb(235, 235, 235);
 }
+
+
+.link_warning {
+  text-decoration: none;
+  border: 1px solid #c7c16a;
+  padding: 5px 15px;
+  color: #c7c16a;
+  border-radius: 5px;
+}
+
+.link_warning:hover {
+    transition: .4s;
+    background-color: #c7c16a;
+    color: rgb(235, 235, 235);
+}
+
+
 
 .btn_link {
   border: 1px solid #875ca7;

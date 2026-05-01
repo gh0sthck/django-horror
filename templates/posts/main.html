@@ -7,6 +7,7 @@
 
 {% block main %}
 <div class="main__stories">
+        <h1 style="font-weight: 900; margin-botton: 30px;" class="shine-text">lit.fear</h1>
     {% if not request.user.is_authenticated %}
         <p>
             Рады, что вы попали на наш сайт: вы сможете прочитать множество страшных рассказов
@@ -18,7 +19,7 @@
     <div class="main__stories_new_stories">
         <div class="main__stories_new_stories-header">
             <div class="header__title">
-                <h2>Новинки</h2>
+                <h3>Новинки</h3>
             </div>
             
             <div style="text-align: end;width: 100%;" class="header__link">
@@ -35,7 +36,7 @@
                     <img class="row" src="{{ story.get_cover }}" alt="Image here">
 
                     <div class="story__body row">
-                        <h3 style="word-break: break-all;">{{ story.title }}</h3>
+                        <h4 style="word-break: break-all;">{{ story.title }}</h4>
                         <p>{{ story.description|truncatechars:"30" }}</p>
                     </div>
                 </a>
@@ -48,7 +49,7 @@
             class="man__stories_news-header">
             
             <div class="header__title">
-                <h2 style="display: block; width: 100%;">Новости</h2>
+                <h3 style="display: block; width: 100%;">Новости</h3>
             </div>
 
             <div style="text-align: end;width: 100%;" class="header__link">
@@ -65,7 +66,7 @@
                     <img class="row" src="{{ post.cover.url }}" alt="Image here">
 
                     <div class="story__body row">
-                        <h3>{{ post.title }}</h3>
+                        <h4>{{ post.title }}</h4>
                     </div>
                 </a>
             {% endfor %}

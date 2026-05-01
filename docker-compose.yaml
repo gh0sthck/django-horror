@@ -62,7 +62,7 @@ services:
       - DB_PASS=root
       - DB_HOST=postgres
       - CELERY_BROKER_URL=redis://redis:6379/0
-      - EMAIL_HOST_USER=yourhost@yandex.ru
+      - EMAIL_HOST_USER=yourhost@ya.ru
       - EMAIL_HOST_PASSWORD=secretkey
 volumes:
   pgdata:
