@@ -114,9 +114,7 @@ class Post(models.Model):
         redis_likes_id = f"pl_{self.pk}"
         redis_views_id = f"pv_{self.pk}"
 
-        if (redis_connection.get(redis_likes_id) is None) and (
-            redis_connection.get(redis_views_id) is None
-        ):
+        if (self.get_views_count() + 1 < 1) and (self.get_likes_count() + 1 < 1):
             redis_connection.rpush(redis_likes_id, -1)
             redis_connection.rpush(redis_views_id, -1)
         return None

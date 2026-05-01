@@ -1,5 +1,3 @@
-import re
-
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
@@ -35,7 +33,6 @@ class PostView(DetailView):
     @authenticate_required
     def post(self, request: HttpRequest, *args, **kwargs):
         if request.POST.get("lk") == "lk":
-            print(f"INTO SET LIKE: {request.user.id}")
             self.get_object().set_like(request.user.id) 
             return redirect("specific_post", slug=self.get_object().slug)
         elif request.POST.get("nlk") == "nlk":
@@ -68,9 +65,6 @@ class PostView(DetailView):
             self.request.user.add_to_favorites(self.get_object())
         if request.GET.get("not_favorite") == "nfv":
             self.request.user.remove_from_favorites(self.get_object())
-        # if request.POST.get("lk") == "lk":
-        # if request.POST.get("nlk") == "nlk":
-            # self.get_object().remove_like(request.user.id)
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):

@@ -17,6 +17,7 @@ services:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_PASSWORD=root
+      - CELERY_BROKER_URL=redis://redis:6379/0
     depends_on:
       - postgres
       - redis
@@ -43,6 +44,24 @@ services:
       - REDIS_PASSWORD=root
       - REDIS_USER=root
       - REDIS_USER_PASSWORD=root
+
+  celery:
+    container_name: celery
+    restart: always
+    build: .
+    command: celery -A core worker -l INFO -E
+    volumes:
+      - .:/project/
+    depends_on:
+      - postgres
+      - redis
+      - django
+    environment:
+      - DB_NAME=project
+      - DB_USER=root
+      - DB_PASSWD=root
+      - DB_HOST=postgres
+      - CELERY_BROKER_URL=redis://redis:6379/0
 
 volumes:
   pgdata:
