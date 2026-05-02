@@ -4,15 +4,21 @@
 Подписчики {{ user.username }}
 {% endblock profile_title %}
 
+{% block html %}
+{% load cache %}
+{% endblock html %}
+
 {% block profile_body %}
 <div class="profile__subscriptions">
     <div class="row row-cols-2 subscriptions__list">
+        {% cache 10 su %}
         {% for s in subs %}
             <a href="{% url "profile" s.username %}" class="col subscriptions__list-item"> 
                 <img src="{{ s.get_avatar }}" style="border-radius: 100%; width: 46px; height: 45px; margin-right: 10px;" alt="">
                 <span>{{ s.username }}</span>
             </a>
         {% endfor %}
+        {% endcache %}
     </div>
 </div>
 {% endblock profile_body %}

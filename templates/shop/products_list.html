@@ -4,9 +4,14 @@
 Товары
 {% endblock title %}
 
+{% block html %}
+{% load cache %}
+{% endblock html %}
+
 {% block main %}
 
 <div class="products">
+    {% cache 90 prods %}
     {% for product in products %}
         <div class="product">
             <div style="background-image: url('{% if product.image %}{{ product.image.url }}{% else %}/static/defaults/avatar.png{% endif %}')" class="product__image"></div>
@@ -17,6 +22,7 @@
             </div>
         </div>
     {% endfor %}
+    {% endcache %}
 </div>
 
 

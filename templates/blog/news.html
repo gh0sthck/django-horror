@@ -4,9 +4,13 @@
 Блог
 {% endblock title %}
 
+{% block html %}
+{% load cache %}
+{% endblock html %}
 
 {% block main %}
 <div class="blog">
+    {% cache 13 blogcache %}
     {% for news_post in news %}
         <a style="
         background-image: url('{{ news_post.cover.url }}')
@@ -27,5 +31,6 @@
             </div>
         </a> 
     {% endfor %}
+    {% endcache %}
 </div>
 {% endblock main %}

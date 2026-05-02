@@ -6,9 +6,14 @@
 {% endblock profile_title %}
 {% endblock title %}
 
+{% block html %}
+{% load cache %}
+{% endblock html %}
+
 {% block main %}
 <div class="profile">
     <div class="profile__header">
+        {% cache 5 u_avatar %} 
         <div class="profile__header-image">
             <img 
             style="
@@ -23,12 +28,12 @@
             {% if user.avatar %}
             src="{{ user.avatar.url }}"
             {% else %}
-            {% comment %} src="https://i.pinimg.com/736x/98/0c/ed/980ced886b5350513f5e45653ae739bb.jpg"  {% endcomment %}
             src="{{ user.get_avatar }}"
             {% endif %}
             
             alt="Profile avatar not found"/>
         </div>
+        {% endcache %}
 
         
 

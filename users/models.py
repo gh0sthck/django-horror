@@ -27,7 +27,7 @@ class CustomUser(AbstractUser):
         try:  
             avatar = self.avatar.url
         except ValueError:
-            avatar = "/static/defaults/avatar.png"
+            avatar = "/static/defaults/avatar.jpg"
         return avatar
 
     def __str__(self) -> str:

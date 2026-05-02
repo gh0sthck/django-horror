@@ -11,9 +11,11 @@
             <h1 class="current_post__header-title">
                 {{ post.title }}
             </h1>
+            
             <span style="font-size: 20px; background-color: #875ca7; color: rgb(235, 235, 235); border-radius: 10px; padding: 8px 15px; margin-left: 15px;" class="cat">
                 {{ post.category.name }}
             </span>
+            <span style="color: gray; margin-left: 30px;"> {{ post.get_views_count }} просмотра.</span>
         </div> 
         <div class="current_post__header-tags">
             <ul style="display: flex; flex-direction: row; padding: 0;">
@@ -38,30 +40,23 @@
                 <a class="current_post__header-author" 
                 href="{% url "profile" post.author.slug %}">
                 <img src="{{ post.author.get_avatar }}" alt="Avatar not found" style="border-radius: 100%; width: 40px; height: 40px; margin-right: 10px;">
-
                     {{ post.author.username }}
                 </a>
         </span>
 
-        {% if request.user.is_authenticated %}
-            {% if post not in request.user.favorites.all %}
+        <div class="current_post__detail" style="display: flex; align-items: center;">
+            {% if request.user.is_authenticated %}
                 <form method="get">
-                    <input type="hidden" name="is_favorite" value="fv">
-                    <input type="submit" value="Добавить в избранное">
+                    {% if post not in request.user.favorites.all %}
+                        <input type="hidden" name="is_favorite" value="fv">
+                        <input type="submit" value="Добавить в избранное">
+                    {% else %}
+                        <input type="hidden" name="not_favorite" value="nfv">
+                        <input type="submit" value="Удалить из избранного">
+                    {% endif %}
                 </form>
-            {% else %}
-                <form method="get">
-                    <input type="hidden" name="not_favorite" value="nfv">
-                    <input type="submit" value="Удалить из избранного">
-                </form>
-            
-            {% endif %}
-        {% endif %}
-
-        <div class="current_post__detail">
-            <span style="color: gray;"><img src="https://static.vecteezy.com/system/resources/thumbnails/014/615/397/small_2x/eye-icon-simple-flat-eye-design-vision-care-concept-wear-glasses-for-a-clear-vision-png.png" width="45px" height="35px" alt="#"> {{ post.get_views_count }}</span>
-            <span>
-                <form method="post">
+                
+                <form style="margin-left: 10px;" method="post">
                     {% csrf_token %}
                     {% if not is_liked %}
                         <input type="hidden" name="lk" value="lk">
@@ -77,7 +72,7 @@
                         </button> 
                     {% endif %}
                 </form>
-            </span>
+            {% endif %}
         </div>
 
 
@@ -85,7 +80,7 @@
             {% if post.cover %}
                 <div style="background-image: url('{{post.cover.url}}'); width: 35%; height: 280px;"></div>
             {% endif %}
-            <p style="padding: 25px; width: 65%;  word-wrap: break-word; word-break: break-word;">
+            <p style="padding: 25px; width: 65%;  word-wrap: break-word; word-break: break-word; font-size: 18px;">
                 {{ post.description }}
             </p>
         </div>
@@ -101,14 +96,19 @@
     <div style="margin-top: 50px;" class="current_post__comments">
         <h4>Комментарии</h4>
         
-        <div class="crrent_post__send-comment">
+        <div class="current_post__send-comment">
             
             {% if request.user.is_authenticated %}
-                <form method="post" class="current_post__comments-form">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Отправить">
-                </form>
+                <div style="display: flex; margin-top: 20px;" class="current_post__send-comment-data">
+                    <div style="width: 65px; height: 60px; margin-right: 15px; background-image: url('{{ request.user.get_avatar }}'); background-size: cover; background-position: center; border-radius: 100%;" class="current_post__send-comment-avatar">
+
+                    </div> 
+                    <form style="width: 100%;" method="post" class="current_post__comments-form">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Отправить">
+                    </form>
+                </div>
             {% else %}
                 <p>
                     <a href="{% url "login" %}">Войдите</a> или <a href="{% url "register" %}">зарегестрируйтесь</a>, чтобы оставлять комментарии
@@ -125,12 +125,12 @@
 
                     {% for index, comment in comment.get_answers_for_comment %}
                         <div style="border: 1px dashed rgb(42, 32, 49); padding: 15px 45px; border-radius: 10px; margin-bottom: 30px; display: flex; {% if index > 1 %} margin-left: {{ index }}8px {% endif %}" class="current_post__comment">
-                            <div style="width: 60px; height: 60px; background-image: url('{{ comment.user.get_avatar }}'); background-size: cover; background-position: center; border-radius: 100%; margin-right: 15px; margin-top: 3px;" class="post__comment-image">
+                            <div style="width: 65px; height: 60px; background-image: url('{{ comment.user.get_avatar }}'); background-size: cover; background-position: center; border-radius: 100%; margin-right: 15px; margin-top: 3px;" class="post__comment-image">
                             </div>
 
                             <div class="post__comment-content" style="width: 100%;">
                                 <span class="current_post__comment-user">
-                                    <a style="font-weight: 600; font-size: 18px; text-decoration: none;" href="{% url "profile" comment.user.slug %}" >{{ comment.user.username }}</a>
+                                    <a style="font-weight: 600; font-size: 18px; text-decoration: none;" href="{% url "profile" comment.user.slug %}" >{{ comment.user.username }} {% if comment.user == post.author %}<span style="font-size: 14px; color: #bea0d4;">[Автор]</span>{% endif %}</a>
                                     <span style="color: #827688;  font-size: 14px;" class="current_post__comment-pubdate">
                                         {{ comment.date }}
                                     </span>
@@ -143,7 +143,7 @@
                                     <div class="answer_form">
                                         <form method="post">
                                             {% csrf_token %}
-                                            {{ form }}
+                                            {{ form.as_p }}
                                             <input type="hidden" name="answer_to" value={{ comment.id }}>
                                             <input type="submit" value="Ответить">
                                         </form>

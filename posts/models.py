@@ -81,8 +81,6 @@ class Post(models.Model):
         max_length=512, verbose_name="Описание", null=True, blank=True
     )
     tags = models.ManyToManyField(Tag, verbose_name="Теги", blank=True)
-    # TODO: views - redis array
-    # TODO: likes - redis array
     comments = models.ManyToManyField(Comments, verbose_name="Комментарии", blank=True)
     created_date = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     updated_date = models.DateField(auto_now_add=True, verbose_name="Дата изменения")
@@ -102,7 +100,7 @@ class Post(models.Model):
         try:
             cover = self.cover.url
         except ValueError:
-            cover = "/static/defaults/avatar.png"
+            cover = "/static/defaults/avatar.jpg"
         return cover
 
     def save(self, *args, **kwargs):

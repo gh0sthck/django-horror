@@ -4,7 +4,12 @@
 Поиск
 {% endblock title %}
 
+{% block html %}
+{% load cache %}
+{% endblock html %}
+
 {% block main %}
+
 <div class="read">
     <div class="read__header">
         <div class="read__header-search">
@@ -22,7 +27,7 @@
         
         <div class="read__body-posts">
             <p class="read__body-count">Всего найдено: {{ posts_cnt }}</p>
-            
+            {% cache 13 postt %} 
             {% for post in posts %}
                 <a href="{% url "specific_post" post.slug %}" style="display: block; text-decoration: none;">
                     <div class="read__body-post">
@@ -45,7 +50,8 @@
                         </div>
                     </div>
                 </a>
-            {% endfor %}
+            {% endfor %} 
+            {% endcache %} 
 
             {% with current_page=posts pages=pages url=url %}
                 {% include "posts/pagination.html" %}
