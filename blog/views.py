@@ -3,6 +3,7 @@ from django.http import HttpRequest
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import View, DetailView, FormView, UpdateView, DeleteView
+from django.core.paginator import Paginator
 from django_ckeditor_5.widgets import CKEditor5Widget
 
 from blog.forms import CommentForm, CreateNoteForm
@@ -14,18 +15,38 @@ from utils.auth import ClassLoginRequired, authenticate_required
 
 class NewsView(View):
     def get(self, request: HttpRequest):
-        admin_notes: list[BlogNote] = list(BlogNote.objects.filter(is_news=True))
-        if request.user.is_authenticated:
+        url = "?page="
+        news_only = False
+        if request.GET.get("news_only"):
+            news_only = True
+            url = "?news_only=on&page="
+        
+        admin_notes: list[BlogNote] = list(BlogNote.objects.filter(is_news=True).order_by("-pubdate"))
+        if request.user.is_authenticated and not news_only:
             current_user: CustomUser = request.user
-            following_notes: list[CustomUser] = current_user.blog_following.all()  # Date filter will be add
+            following_notes: list[CustomUser] = (
+                current_user.blog_following.all()
+            )
             for user in following_notes:
-                for note in BlogNote.objects.filter(author=user):
+                for note in BlogNote.objects.filter(author=user).order_by("-pubdate"):
                     admin_notes.append(note) if note not in admin_notes else ""
-        return render(request, "blog/news.html", {"news": admin_notes})
 
+        paginator = Paginator(admin_notes, 5)
+        current_page = request.GET.get("page") if request.GET.get("page") else "1"
+        notes_per_page = paginator.get_page(int(current_page))
+        notes_count = paginator.num_pages
 
-class UserNotesView(View):
-    pass
+        return render(
+            request,
+            "blog/news.html",
+            {
+                "news": notes_per_page,
+                "pages": notes_count,
+                "url": url,
+                "notes": notes_per_page,
+                "no": news_only 
+            },
+        )
 
 
 class NoteView(DetailView):
@@ -33,7 +54,7 @@ class NoteView(DetailView):
     template_name = "blog/note.html"
     context_object_name = "note"
     form = CommentForm
-    
+
     @authenticate_required
     def post(self, *args, **kwargs):
         f: CommentForm = self.form(self.request.POST)
@@ -41,19 +62,21 @@ class NoteView(DetailView):
             data: Comments = f.save(commit=False)
             data.user = self.request.user
             data.save()
-            
+
             note: BlogNote = self.get_object()
             if self.request.POST.get("answer_to"):
-                answer_to_comment: Comments = Comments.objects.get(id=self.request.POST.get("answer_to"))
-                answer_to_comment.answer.add(data) 
-            else: 
+                answer_to_comment: Comments = Comments.objects.get(
+                    id=self.request.POST.get("answer_to")
+                )
+                answer_to_comment.answer.add(data)
+            else:
                 note.comments.add(data)
             return redirect("specific_note", slug=note.slug)
         return self.form()
-    
+
     def get_context_data(self, **kwargs):
-        data =  super().get_context_data(**kwargs)
-        data["form"] = self.form() 
+        data = super().get_context_data(**kwargs)
+        data["form"] = self.form()
         return data
 
 
@@ -63,7 +86,7 @@ class EditNoteView(ClassLoginRequired, UpdateView):
     context_object_name = "note"
     template_name = "blog/edit_note.html"
     success_url = reverse_lazy("main")
-    
+
     def get_form_class(self):
         form: forms.Form = super().get_form_class()
         for field in form.base_fields.values():
@@ -72,9 +95,9 @@ class EditNoteView(ClassLoginRequired, UpdateView):
                 field.widget = forms.widgets.FileInput()
             else:
                 if not isinstance(field.widget, CKEditor5Widget):
-                    field.widget.attrs["class"] = "post_create_input" 
+                    field.widget.attrs["class"] = "post_create_input"
         return form
-    
+
     def get_context_data(self, **kwargs):
         cd: dict = super().get_context_data(**kwargs)
         cd["is_editing"] = True
@@ -86,13 +109,13 @@ class CreateNoteView(ClassLoginRequired, FormView):
     template_name = "blog/edit_note.html"
     success_url = reverse_lazy("main")
     form_class = CreateNoteForm
-    
+
     def form_valid(self, form: CreateNoteForm):
         data: BlogNote = form.save(commit=False)
         data.author = self.request.user
         data.save()
         return super().form_valid(form)
-    
+
     def get_form_class(self):
         form: forms.Form = super().get_form_class()
         for field in form.base_fields.values():
@@ -101,7 +124,7 @@ class CreateNoteView(ClassLoginRequired, FormView):
                 field.widget = forms.widgets.FileInput()
             else:
                 if not isinstance(field.widget, CKEditor5Widget):
-                    field.widget.attrs["class"] = "post_create_input" 
+                    field.widget.attrs["class"] = "post_create_input"
         return form
 
 

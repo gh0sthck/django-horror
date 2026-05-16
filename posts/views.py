@@ -13,7 +13,6 @@ from posts.forms import CreatePostForm
 from posts.models import Category, Post, Comments, Tag
 from posts.forms import CommentForm
 from utils.auth import ClassLoginRequired, authenticate_required
-from django.views.decorators.cache import cache_page
 
 
 class MainPage(View):

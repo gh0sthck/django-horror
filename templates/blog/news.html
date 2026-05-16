@@ -10,7 +10,16 @@
 
 {% block main %}
 <div class="blog">
-    {% cache 13 blogcache %}
+    {% comment %} {% cache 13 blogcache %} {% endcomment %}
+    <form method="get">
+        {% if not no %}
+        <input type="hidden" name="news_only" value="on" id="new_only_field"> 
+        <input type="submit" value="Показывать только новости">
+        {% else %}
+        <input type="hidden" name="news_only" value="">
+        <input type="submit" value="Показывать всё">
+        {% endif %}
+    </form>
     {% for news_post in news %}
         <a style="
         background-image: url('{{ news_post.cover.url }}')
@@ -31,6 +40,12 @@
             </div>
         </a> 
     {% endfor %}
-    {% endcache %}
+    {% comment %} {% endcache %} {% endcomment %}
+
+    {% if not pages == 1 %}
+    {% with current_page=notes pages=pages url=url %}
+        {% include "posts/pagination.html" %}
+    {% endwith %}
+    {% endif %}
 </div>
 {% endblock main %}
