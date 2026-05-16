@@ -27,7 +27,7 @@
         
         <div class="read__body-posts">
             <p class="read__body-count">Всего найдено: {{ posts_cnt }}</p>
-            {% cache 13 postt %} 
+            {% comment %} {% cache 5 postt %}  {% endcomment %}
             {% for post in posts %}
                 <a href="{% url "specific_post" post.slug %}" style="display: block; text-decoration: none;">
                     <div class="read__body-post">
@@ -51,11 +51,14 @@
                     </div>
                 </a>
             {% endfor %} 
-            {% endcache %} 
-
+            {% comment %} {% endcache %}  {% endcomment %}
+            
+            {% if not pages == 1 %}
             {% with current_page=posts pages=pages url=url %}
                 {% include "posts/pagination.html" %}
             {% endwith %}
+            
+            {% endif %}
         </div>
 
         <div class="read__body-filters">
@@ -77,7 +80,7 @@
                     <hr />
                     <select class="filters-tags-content" name="tags" id="langs" multiple>
                         {% for tag in tags %}
-                            <option value="{{ tag.name }}">#{{ tag.name }}</option> 
+                            <option value="{{ tag.name }}">{{ tag.name }}</option> 
                         {% endfor %} 
                     </select>
                 </div>

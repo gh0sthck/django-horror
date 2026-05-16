@@ -201,17 +201,17 @@ class ReadView(View):
                 + "&page="
             )
         elif tg:
-            posts = [post for post in Post.objects.filter(tags__name__in=tg)]
+            posts = [post for post in Post.objects.filter(tags__name__in=tg).distinct()]
             url = "?" + "&".join("tags=" + t.name for t in tg) + "&page="
         elif cats:
-            posts = [post for post in Post.objects.filter(category__name__in=cats)]
+            posts = [post for post in Post.objects.filter(category__name__in=cats).distinct()]
             url = "?" + "&".join("cat=" + c.name for c in cats) + "&page="
         elif request.GET.get("q"):
             q = request.GET.get("q")
-            posts = [post for post in Post.objects.filter(title__contains=q)]
+            posts = [post for post in Post.objects.filter(title__contains=q).distinct()]
             url = f"?q={q}&page="
         else:
-            url = "?page="
+            url = "?page=" 
 
         all_posts_count = len(posts)
 

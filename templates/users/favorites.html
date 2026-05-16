@@ -23,9 +23,11 @@
             {% endfor %}
         </ul>
 
+        {% if not num_pages == 1 %}
         {% with url=url current_page=favs pages=num_pages %}
             {% include "users/pagination.html" %}
         {% endwith %}
+        {% endif %}
     {% endif %}
     
 </div>

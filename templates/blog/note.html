@@ -45,10 +45,12 @@
     {% if not note.is_news %} 
         <div style="margin-top: 50px;" class="current_post__comments">
             <h4>Комментарии</h4> 
-            <div class="crrent_post__send-comment">
+            <div  style="display: flex; margin-top: 20px;" class="crrent_post__send-comment">
+                 <div style="width: 65px; height: 60px; margin-right: 15px; background-image: url('{{ request.user.get_avatar }}'); background-size: cover; background-position: center; border-radius: 100%;" class="current_post__send-comment-avatar">
+                </div> 
                 
                 {% if request.user.is_authenticated %}
-                    <form method="post" class="current_post__comments-form">
+                    <form style="width: 100%;" method="post" class="current_post__comments-form">
                         {% csrf_token %}
                         {{ form.as_p }}
                         <input type="submit" value="Отправить">
@@ -61,7 +63,12 @@
             </div>
         <div>
     {% endif %}
-
+        
+    {% if note.comments.all %}
+    
+    {% else %}
+        <p style="color: gray; text-align: center; margin-bottom: 50px;">Пока не оставлено ни одного комментария - будьте первыми! :)</p> 
+    {% endif %}
     <div style="margin-top: 20px;" class="current_post__comments-comms">
         {% if note.comments.all and not note.is_news %} 
             {% for comment in note.comments.all %}

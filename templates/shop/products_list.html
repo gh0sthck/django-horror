@@ -11,7 +11,7 @@
 {% block main %}
 
 <div class="products">
-    {% cache 90 prods %}
+    {% comment %} {% cache 90 prods %} {% endcomment %}
     {% for product in products %}
         <div class="product">
             <div style="background-image: url('{% if product.image %}{{ product.image.url }}{% else %}/static/defaults/avatar.png{% endif %}')" class="product__image"></div>
@@ -22,7 +22,7 @@
             </div>
         </div>
     {% endfor %}
-    {% endcache %}
+    {% comment %} {% endcache %} {% endcomment %}
 </div>
 
 

@@ -21,10 +21,11 @@
         {% endfor %}
     </ul>
 
+    {% if not pages == 1 %}
     {% with current_page=stories url=url pages=pages %}
         {% include "users/pagination.html" %}
     {% endwith %}
-    
+    {% endif %} 
 </div>
 {% endblock profile_body %}
 
