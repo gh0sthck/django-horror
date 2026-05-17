@@ -27,7 +27,7 @@
         
         <div class="read__body-posts">
             <p class="read__body-count">Всего найдено: {{ posts_cnt }}</p>
-            {% comment %} {% cache 5 postt %}  {% endcomment %}
+            {% cache 5 postt %} 
             {% for post in posts %}
                 <a href="{% url "specific_post" post.slug %}" style="display: block; text-decoration: none;">
                     <div class="read__body-post">
@@ -51,7 +51,7 @@
                     </div>
                 </a>
             {% endfor %} 
-            {% comment %} {% endcache %}  {% endcomment %}
+            {% endcache %} 
             
             {% if not pages == 1 %}
             {% with current_page=posts pages=pages url=url %}

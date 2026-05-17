@@ -10,7 +10,7 @@
 
 {% block main %}
 <div class="blog">
-    {% comment %} {% cache 13 blogcache %} {% endcomment %}
+    {% cache 5 blogcache %}
     <form method="get">
         {% if not no %}
         <input type="hidden" name="news_only" value="on" id="new_only_field"> 
@@ -40,7 +40,7 @@
             </div>
         </a> 
     {% endfor %}
-    {% comment %} {% endcache %} {% endcomment %}
+    {% endcache %}
 
     {% if not pages == 1 %}
     {% with current_page=notes pages=pages url=url %}

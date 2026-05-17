@@ -153,12 +153,6 @@ body {
   border-radius: 5px;
 }
 
-.rev_btn:hover {
-  transition: 0.4s;
-  background: none;
-  color: rgb(235, 235, 235);
-}
-
 .rev_link_purple {
   border: 1px solid #875ca7;
   padding: 5px 15px;
@@ -199,12 +193,17 @@ body {
 }
 
 textarea#id_comment {
-    width: 100%;
-    height: 120px;
+  width: 100%;
+  height: 120px;
 }
 
-.text h1, .text h2, .text h3, .text h4, .text h5, .text h6 {
-    font-weight: 800;
+.text h1,
+.text h2,
+.text h3,
+.text h4,
+.text h5,
+.text h6 {
+  font-weight: 800;
 }
 
 .text strong,
@@ -419,6 +418,20 @@ ul a {
   border-radius: 10px;
 }
 
+.week_story {
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    justify-content: space-between;
+    background-color: rgba(24, 17, 29, 0.8);
+    border-radius: 10px;
+}
+
+.week_story:hover {
+  transition: all 0.5s ease 0s;
+  background-color: rgba(223, 218, 226, 0.8);
+}
+
 .new {
   text-decoration: none;
   display: flex;
@@ -437,7 +450,7 @@ ul a {
   background-color: rgba(223, 218, 226, 0.8);
 }
 
-.story:hover * {
+.story:hover *, .week_story:hover * {
   color: rgba(24, 17, 29, 0.8);
 }
 
@@ -559,6 +572,10 @@ ul a {
 
 .read__body-post:hover .read__post-img div {
   display: none;
+}
+
+.week_story:hover .read__post-img div {
+    display: none;
 }
 
 .read__body-post:hover * {

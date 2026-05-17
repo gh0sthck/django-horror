@@ -13,7 +13,6 @@
 {% block main %}
 <div class="profile">
     <div class="profile__header">
-        {% cache 5 u_avatar %} 
         <div class="profile__header-image">
             <img 
             style="
@@ -33,8 +32,6 @@
             
             alt="Profile avatar not found"/>
         </div>
-        {% endcache %}
-
         
 
         <div class="profile__header-info">

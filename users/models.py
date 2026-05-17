@@ -34,7 +34,7 @@ class CustomUser(AbstractUser):
         return self.username
     
     def save(self, *args, **kwargs):
-        self.slug = self.username
+        self.slug = self.username.strip().replace(" ", "")
         return super().save(*args, **kwargs)
     
     def add_to_favorites(self, post):

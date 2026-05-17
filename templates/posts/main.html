@@ -49,8 +49,34 @@
             {% endcache %} 
         </div>
     </div>
+
+
+    <div class="main__stories_week_story" style="margin-bottom: 30px;">
+        <h2>Рассказ недели 🔥</h2>
+        <div style="margin-top: 30px; width: 100%;" class="week_read">
+            <a 
+                href="{% url "specific_post" week_read.slug %}" 
+                class="main__stories_new_stories-story week_story">
+
+                <div class="read__post-img" style="background-image: url('{{week_read.get_cover}}'); width: 50%;">
+                    <div style="background-color: rgba(24, 17, 29, 0.7); border-top-left-radius: 10px; border-bottom-left-radius: 10px; width: 100; height: 100%;"></div>
+                </div>
+
+                <div class="story__body" style="display: flex; flex-direction: column; width: 50%; padding: 50px;">
+                    <h4 style="word-break: break-all">{{ week_read.title }}</h4>
+                    <span style="color: #875ca7; font-size: 20px;">[{{ week_read.category.name }}]</span> 
+                    <ul style="display: flex; flex-direction: row; padding: 0; margin-top: 20px;">
+                        {% for tag in week_read.tags.all %}
+                            <li class="tag-item" style="background-color:rgba(135, 92, 167, 0.2); margin-left: 5px; border-radius: 10px; padding: 5px 10px;">{{ tag.name }}</li> 
+                        {% endfor %}
+                    </ul>
+                    <p>{{ week_read.description }}</p>
+                </div>
+            </a>
+        </div>
+    </div>
     
-    <div class="main__stories_news">
+    <div class="main__stories_news" style="margin-bottom: 50px;">
         <div 
             class="man__stories_news-header">
             
@@ -58,7 +84,7 @@
                 <h3 style="display: block; width: 100%;">Новости</h3>
             </div>
 
-            <div style="text-align: end;width: 100%;" class="header__link">
+            <div style="text-align: end;" class="header__link">
                <a href="{% url "blog" %}">Перейти в блог →</a>
             </div>
             
@@ -80,22 +106,8 @@
             {% endcache %}
         </div>
     </div>
-    </div>
 
-    <div class="main__stories_week_story" style="margin-bottom: 50px;">
-        <h2>Рассказ недели</h2>
-        <div style="margin-top: 30px; width: 60%;" class="week_read row">
-            <a 
-                href="{% url "specific_post" week_read.slug %}" 
-                class="main__stories_new_stories-story story col">
-                <img class="row" src="{{ week_read.get_cover }}" style="object-fit: cover" alt="Image here">
-
-                <div class="story__body row">
-                    <h4 style="word-break: break-all;">{{ week_read.title }}</h4>
-                    <p>{{ week_read.description|truncatechars:"30" }}</p>
-                </div>
-            </a>
-        </div>
+    
     </div>
 </div>
 
