@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
 from django.shortcuts import render, redirect
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
@@ -6,6 +9,7 @@ from django.views.generic import FormView, DetailView, UpdateView, DeleteView
 from django import forms
 from django.core.paginator import Paginator
 from django_ckeditor_5.widgets import CKEditor5Widget
+from django.utils.timezone import make_aware
 
 from blog.models import BlogNote
 from core.redis_c import get_redis_connection
@@ -16,10 +20,20 @@ from utils.auth import ClassLoginRequired, authenticate_required
 
 
 class MainPage(View):
+    def stories_sort(self, stories: list[Post]):
+        nl = []
+        for story in stories:
+            likes, views = story.get_likes_count(), story.get_views_count()
+            nl.append((story, likes+views))
+           
+        nl.sort(key=lambda x: x[1], reverse=True) 
+        return [story[0] for story in nl] 
+         
     def get(self, request: HttpRequest) -> HttpResponse:
-        stories = Post.objects.all()[:4]
-        news = BlogNote.objects.filter(is_news=True)[:5]
-        return render(request, "posts/main.html", {"stories": stories, "news": news})
+        tz = ZoneInfo("Europe/Moscow")
+        stories = Post.objects.filter(created_date__gt=make_aware(datetime.now()-timedelta(days=7), tz))
+        news = BlogNote.objects.filter(is_news=True).order_by("-pubdate")[:5]
+        return render(request, "posts/main.html", {"stories": self.stories_sort(stories)[:4], "news": news})
 
 
 class PostView(DetailView):
