@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block html %}
+{% load read %}
+{% endblock html %}
+
 {% block title %}
 {{ note.title }}
 {% endblock title %}
@@ -64,7 +68,7 @@
         <div>
        
         {% if note.comments.all %}
-            <p style="color: gray; margin-top: 10px;">Всего {{ note.comments.all|length }} комментариев</p> 
+            <p style="color: gray; margin-top: 10px;">Всего {{ note.comments.all|length }} {{ note.comments.all|length|get_readable_comments }}</p> 
             {% if note.comments.all and not note.is_news %} 
                 {% for comment in note.comments.all %}
                     {% for index, comment in comment.get_answers_for_comment %}

@@ -14,11 +14,11 @@
     {% comment %} {% cache 90 prods %} {% endcomment %}
     {% for product in products %}
         <div class="product">
-            <div style="background-image: url('{% if product.image %}{{ product.image.url }}{% else %}/static/defaults/avatar.png{% endif %}')" class="product__image"></div>
+            <div style="background-image: url('{% if product.image %} {{ product.image.url }} {% else %} /static/defaults/avatar.png {% endif %}'); background-position: center; background-size: cover;" class="product__image"></div>
             <div class="product__description" >
                 <h6>{{ product.name }}</h4>
                 <p style="color: #ece6e6; font-size: 14px;">{{ product.description }}</p>
-                <a href="#" class="link_purple">Купить</a>
+                <a href="#" class="link_purple">Перейти к оплате</a>
             </div>
         </div>
     {% endfor %}

@@ -82,8 +82,20 @@
     </div>
     </div>
 
-    <div class="main__stories_day_story">
+    <div class="main__stories_week_story" style="margin-bottom: 50px;">
         <h2>Рассказ недели</h2>
+        <div style="margin-top: 30px; width: 60%;" class="week_read row">
+            <a 
+                href="{% url "specific_post" week_read.slug %}" 
+                class="main__stories_new_stories-story story col">
+                <img class="row" src="{{ week_read.get_cover }}" style="object-fit: cover" alt="Image here">
+
+                <div class="story__body row">
+                    <h4 style="word-break: break-all;">{{ week_read.title }}</h4>
+                    <p>{{ week_read.description|truncatechars:"30" }}</p>
+                </div>
+            </a>
+        </div>
     </div>
 </div>
 

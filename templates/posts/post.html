@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block html %}
+{% load read %}
+{% endblock html %}
+
 {% block title %}
 {{ post.title }}
 {% endblock title %}
@@ -15,7 +19,7 @@
             <span style="font-size: 20px; background-color: #875ca7; color: rgb(235, 235, 235); border-radius: 10px; padding: 8px 15px; margin-left: 15px;" class="cat">
                 {{ post.category.name }}
             </span>
-            <span style="color: gray; margin-left: 30px;"> {{ post.get_views_count }} просмотра.</span>
+            <span style="color: gray; margin-left: 30px;"> {{ post.get_views_count }} {{ post.get_views_count|get_readable_views }}</span>
         </div> 
         <div class="current_post__header-tags">
             <ul style="display: flex; flex-direction: row; padding: 0;">
@@ -118,7 +122,7 @@
 
        <div style="margin-top: 20px;" class="current_post__comments-comms">
             {% if post.comments.all %} 
-                <p style="color: gray">Всего {{ post.comments.all|length }} комментариев</p>
+                <p style="color: gray">Всего {{ post.get_comments_count }} {{ post.get_comments_count|get_readable_comments }}</p>
 
                 {% for comment in post.comments.all %}
                     {% for index, comment in comment.get_answers_for_comment %}

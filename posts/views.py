@@ -23,17 +23,29 @@ class MainPage(View):
     def stories_sort(self, stories: list[Post]):
         nl = []
         for story in stories:
-            likes, views = story.get_likes_count(), story.get_views_count()
-            nl.append((story, likes+views))
-           
-        nl.sort(key=lambda x: x[1], reverse=True) 
-        return [story[0] for story in nl] 
-         
+            likes, views, comms = (
+                story.get_likes_count(),
+                story.get_views_count(),
+                story.get_comments_count(),
+            )
+            nl.append((story, likes + views + comms))
+
+        nl.sort(key=lambda x: x[1], reverse=True)
+        return [story[0] for story in nl]
+
     def get(self, request: HttpRequest) -> HttpResponse:
         tz = ZoneInfo("Europe/Moscow")
-        stories = Post.objects.filter(created_date__gt=make_aware(datetime.now()-timedelta(days=7), tz))
+        stories = Post.objects.filter(
+            created_date__gt=make_aware(datetime.now() - timedelta(days=7), tz)
+        )
         news = BlogNote.objects.filter(is_news=True).order_by("-pubdate")[:5]
-        return render(request, "posts/main.html", {"stories": self.stories_sort(stories)[:4], "news": news})
+        sorted_stories = self.stories_sort(stories)
+        week_read = sorted_stories[0]
+        return render(
+            request,
+            "posts/main.html",
+            {"stories": sorted_stories[1:5], "news": news, "week_read": week_read},
+        )
 
 
 class PostView(DetailView):
@@ -152,10 +164,10 @@ class DeletePostView(ClassLoginRequired, DeleteView):
         r_conn = get_redis_connection()
         print("DELETING")
         r_conn.delete(f"pl_{self.get_object().pk}", f"pv_{self.get_object().pk}")
-        try: 
-            a = r_conn.lrange(f"pl{self.get_object().pk}", 0, -1) 
+        try:
+            a = r_conn.lrange(f"pl{self.get_object().pk}", 0, -1)
         except Exception:
-            print("error") 
+            print("error")
         return super().post(request, *args, **kwargs)
 
 
@@ -217,14 +229,16 @@ class ReadView(View):
             posts = [post for post in Post.objects.filter(tags__name__in=tg).distinct()]
             url = "?" + "&".join("tags=" + t.name for t in tg) + "&page="
         elif cats:
-            posts = [post for post in Post.objects.filter(category__name__in=cats).distinct()]
+            posts = [
+                post for post in Post.objects.filter(category__name__in=cats).distinct()
+            ]
             url = "?" + "&".join("cat=" + c.name for c in cats) + "&page="
         elif request.GET.get("q"):
             q = request.GET.get("q")
             posts = [post for post in Post.objects.filter(title__contains=q).distinct()]
             url = f"?q={q}&page="
         else:
-            url = "?page=" 
+            url = "?page="
 
         all_posts_count = len(posts)
 
