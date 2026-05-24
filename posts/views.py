@@ -29,7 +29,6 @@ class MainPage(View):
                 story.get_comments_count(),
             )
             nl.append((story, likes + views + comms))
-
         nl.sort(key=lambda x: x[1], reverse=True)
         return [story[0] for story in nl]
 
@@ -38,6 +37,8 @@ class MainPage(View):
         stories = Post.objects.filter(
             created_date__gt=make_aware(datetime.now() - timedelta(days=7), tz)
         )
+        if len(stories) < 5:  # If new stories not created - get all
+            stories = Post.objects.all()
         news = BlogNote.objects.filter(is_news=True).order_by("-pubdate")[:5]
         sorted_stories = self.stories_sort(stories)
         week_read = sorted_stories[0]
